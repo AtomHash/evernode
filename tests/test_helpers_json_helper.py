@@ -1,7 +1,7 @@
 # pylint: skip-file
 
 import unittest
-from everflow.helpers import JsonHelper
+from evernode.helpers import JsonHelper
 
 class Test_test_helper_json_helper(unittest.TestCase):
     def test_json_read_not_found(self):

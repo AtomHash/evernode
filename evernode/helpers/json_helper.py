@@ -19,13 +19,16 @@ class JsonHelper():
     def iterate_object(obj) -> dict:
         """ Convert object to flattened object """
         new_obj = {}
-        for key, value in obj.items():
-            string_val = ""
-            if hasattr(value, '__dict__'):
-                string_val = JsonHelper.iterate_object(value)
-            else:
-                string_val = value
-            new_obj[key] = string_val
+        if hasattr(obj, 'items'):
+            for key, value in obj.items():
+                string_val = ""
+                if hasattr(value, '__dict__'):
+                    string_val = JsonHelper.iterate_object(value)
+                else:
+                    string_val = value
+                new_obj[key] = string_val
+        else:
+            new_obj = obj
         obj_to_dict = ast.literal_eval(str(new_obj))
         return obj_to_dict
 
