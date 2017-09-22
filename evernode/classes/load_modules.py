@@ -2,6 +2,7 @@
     Loads custom Modules into flask in modules folder. Routes use: routes.py
 """
 import os
+import sys
 import importlib
 from pathlib import Path
 from ..functions import get_subdirectories
@@ -30,7 +31,7 @@ class LoadModules(object):
 
     def get_modules(self) -> list:
         """  Get the subdirectories of modules folder """
-        directory = os.path.join(Path(__file__).parents[2], 'modules')
+        directory = os.path.join(sys.path[0], 'modules')
         return get_subdirectories(directory)
 
     def make_route(self, route) -> dict:

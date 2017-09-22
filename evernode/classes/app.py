@@ -1,6 +1,9 @@
 """
     Creates a Flask App using custom framework logic
 """
+import sys
+import os
+from pathlib import Path
 from flask import Flask
 from flask_cors import CORS
 from ..middleware import RouteBeforeMiddleware, LanguageBeforeMiddleware
@@ -55,7 +58,7 @@ class App:
 
     def load_config(self):
         """ Load config.json into memory """
-        config = JsonHelper.from_file('../config.json')
+        config = JsonHelper.from_file(os.path.join(Path(sys.path[0]).parent, 'config.json'))
         if config is None:
            raise FileNotFoundError
         self.app.config.update(config)

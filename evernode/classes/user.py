@@ -34,6 +34,8 @@ class User:
             session_id = Session.create_session_id()
             jwt = JWT().create_token(session_id)
             Session.create_session(session_id, user.id)
+            #init database model
+            user.id
             return {'token': jwt, 'user': user}
         return None
 
