@@ -1,7 +1,7 @@
 # pylint: skip-file
 
 import unittest
-from everflow.classes import App
+from evernode.classes import App
 from flask import Flask
 
 class Test_test_app(unittest.TestCase):
