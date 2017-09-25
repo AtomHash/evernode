@@ -1,6 +1,7 @@
 """
     Collect email information
 """
+from flask import current_app
 import os
 import sys
 from pathlib import Path
@@ -19,7 +20,8 @@ class Email:
 
     def __init__(self, config_path=None):
         if config_path is None:
-            self.config_path = os.path.join(Path(sys.path[0]).parent, 'config.json')
+            if 'CONFIG_PATH' in current_app.config:
+                self.config_path = current_app.config['CONFIG_PATH']
 
     def add_address(self, address):
         """ add email address """

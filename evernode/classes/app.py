@@ -58,10 +58,12 @@ class App:
 
     def load_config(self):
         """ Load config.json into memory """
-        config = JsonHelper.from_file(os.path.join(Path(sys.path[0]).parent, 'config.json'))
+        config_path = os.path.join(Path(sys.path[0]).parent, 'config.json')
+        config = JsonHelper.from_file(config_path)
         if config is None:
            raise FileNotFoundError
         self.app.config.update(config)
+        self.app.config.update(CONFIG_PATH=config_path)
 
     def load_modules(self, override=False):
         """ Load folders(custom modules) in modules folder """
