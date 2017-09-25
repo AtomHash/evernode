@@ -2,6 +2,7 @@
     Collect email information
 """
 import os
+import sys
 from pathlib import Path
 import subprocess
 import json
@@ -9,11 +10,16 @@ import base64
 
 class Email:
     """ Set up an email """
+    config_path = None
     __addresses = []
     __html = ''
     __text = ''
     __subject = ''
     __data = {}
+
+    def __init__(self, config_path=None):
+        if config_path is None:
+            self.config_path = os.path.join(Path(sys.path[0]).parent, 'config.json')
 
     def add_address(self, address):
         """ add email address """
@@ -35,6 +41,7 @@ class Email:
         """ Construct the email """
         #TODO: Use pickle instead of encode base64 & JSON
         self.__data = json.dumps({
+            'config_path': self.encode(self.config_path),
             'subject': self.encode(self.__subject),
             'text': self.encode(self.__text),
             'html': self.encode(self.__html),

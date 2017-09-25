@@ -15,6 +15,7 @@ class SendEmail:
     """ send email from the command line with async abilities """
     multipart = MIMEMultipart
     smtp = smtplib.SMTP
+    config_path = None
     config = None
     subject = None
     text = None
@@ -22,19 +23,19 @@ class SendEmail:
     addresses = None
 
     def __init__(self):
-        print('Alive')
-        with open('../../../config.json', 'r') as json_stream:
+        self.parse()
+        with open(self.config_path, 'r') as json_stream:
             self.config = json.load(json_stream)['EMAIL']
             self.smtp = smtplib.SMTP(self.config['HOST'], self.config['PORT'])
             self.smtp.starttls()
             self.smtp.set_debuglevel(0)
             self.multipart = MIMEMultipart('alternative')
-            self.parse()
             self.create_email()
 
     def parse(self):
         """ parses args json """
         data = json.loads(sys.argv[1])
+        self.config_path = self.decode(data['config_path'])
         self.subject = self.decode(data['subject'])
         self.text = self.decode(data['text'])
         self.html = self.decode(data['html'])
