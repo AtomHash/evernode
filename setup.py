@@ -16,7 +16,7 @@ setup(
   author = 'AtomHash',
   author_email = 'me@dylanharty.com',
   url = 'https://github.com/atomhash/evernode',
-  download_url = 'https://github.com/atomhash/evernode/archive/0.1.7.tar.gz',
+  download_url = 'https://github.com/atomhash/evernode/archive/0.1.8.tar.gz',
   keywords = ['server', 'flask-based', 'restful', 'modular', 'evernode'],
   install_requires=[
     'flask',
