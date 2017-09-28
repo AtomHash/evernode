@@ -3,7 +3,7 @@
 from .auth import Auth
 from .jwt import JWT
 from .session import Session
-from ..models import UserModel
+from ..models import BaseUserModel
 from ..models import SessionModel
 
 class User:
@@ -11,7 +11,7 @@ class User:
     auth = Auth
     user_model = None
 
-    def __init__(self, user_model=UserModel):
+    def __init__(self, user_model=BaseUserModel):
         self.user_model = user_model
         self.auth = Auth()
 
@@ -21,7 +21,7 @@ class User:
         Using the Auth class that autoloads username and
         password from a post request, validate against a
         user. If successful return {'token': jwtToken, 'user':
-        UserModel()} else return None
+        BaseUserModel()} else return None
         """
         username = self.auth.username()
         if username is None:
