@@ -6,10 +6,12 @@ from sqlalchemy import Column, String
 from ..classes.security import Security
 from . import BaseModel, JsonModel
 
-class UserModel(BaseModel, JsonModel):
+class BaseUserModel(BaseModel, JsonModel):
     """ user db model """
 
+    __abstract__ = True
     __tablename__ = 'users'
+    __table_args__ = {'extend_existing': True}
     email = Column(String(255), unique=True)
     password = Column(String(255))
     firstname = Column(String(255))
@@ -39,4 +41,4 @@ class UserModel(BaseModel, JsonModel):
         """ exclue some attributes on jsonify """
         if exclude_list is None:
             exclude_list = ['password', 'updated_at', 'created_at', 'id']
-        return super().__repr__(exclude_list)
+        return super(JsonModel, self).__repr__(exclude_list)

@@ -1,6 +1,6 @@
-""" Easy password reset for UserModel"""
+""" Easy password reset for BaseUserModel"""
 
-from ..models import UserModel
+from ..models import BaseUserModel
 from ..models import PasswordResetModel
 from .security import Security
 
@@ -21,7 +21,7 @@ class PasswordReset:
         set self.code to unhashed code, while hashed code gets stored in the database
         you may email the code to the user or use it for something else
         """
-        user = UserModel.get_by_email(self.email)
+        user = BaseUserModel.get_by_email(self.email)
         if user is None:
             return False
         PasswordResetModel.delete_by_email(self.email)
@@ -45,7 +45,7 @@ class PasswordReset:
         if password_reset_model is None:
             return False
         if Security.verify_hash(self.code, password_reset_model.code):
-            user = UserModel.get_by_email(self.email)
+            user = BaseUserModel.get_by_email(self.email)
             if user is None:
                 return False
             user.set_password(self.new_password)
