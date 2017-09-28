@@ -32,4 +32,4 @@ class JsonModel(object):
         return components[0] + "".join(x.title() for x in components[1:])
 
     def __str__(self, exclude_list=None):
-        return self.__repr__(exclude_list)
+        return self.json(exclude_list)
