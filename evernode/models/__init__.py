@@ -4,5 +4,5 @@ from .database_model import DatabaseModel, db
 from .json_model import JsonModel
 from .response_model import ResponseModel
 from .session_model import SessionModel
-from .user_model import UserModel
+from .base_user_model import BaseUserModel
 from .password_reset_model import PasswordResetModel
