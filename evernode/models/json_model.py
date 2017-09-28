@@ -4,15 +4,17 @@ from datetime import datetime
 
 class JsonModel(object):
     """ easy class to JSON convertion """
-    def __repr__(self, exclude_list=None):
+    def __repr__(self):
         #exclude some keys, convert all to lowercase snake and string
         #dictionary
-        default_exclude_list = ['_session',
-            '_sa_instance_state']
+        return self.json()
+        
+    def json(self, exclude_list=None):
+        default_exclude_list = ['_session','_sa_instance_state']
         if exclude_list is None:
-            merged_exclude_list = default_exclude_list
+             merged_exclude_list = default_exclude_list
         else:
-            merged_exclude_list = default_exclude_list + exclude_list
+             merged_exclude_list = default_exclude_list + exclude_list
         fields = {}
         for key, item in vars(self).items():
             if key in merged_exclude_list:
