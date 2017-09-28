@@ -8,7 +8,7 @@ class JsonModel(object):
         #exclude some keys, convert all to lowercase snake and string
         #dictionary
         return self.json()
-        
+
     def json(self, exclude_list=None):
         default_exclude_list = ['_session','_sa_instance_state']
         if exclude_list is None:
