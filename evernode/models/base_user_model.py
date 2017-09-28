@@ -41,4 +41,4 @@ class BaseUserModel(BaseModel, JsonModel):
         """ exclue some attributes on jsonify """
         if exclude_list is None:
             exclude_list = ['password', 'updated_at', 'created_at', 'id']
-        return super(JsonModel, self).__repr__(exclude_list)
+        return super().json(exclude_list)
