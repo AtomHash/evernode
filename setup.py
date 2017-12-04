@@ -1,7 +1,7 @@
 from setuptools import setup
 setup(
   name = 'evernode',
-  version = '0.2.0',
+  version = '0.2.1',
   packages = [
     'evernode',
     'evernode.classes',
@@ -24,7 +24,6 @@ setup(
     'mysqlclient',
     'Flask-SQLAlchemy>=2.2',
     'PyJWT',
-    'dill',
     'cryptography',
     'requests'
   ],

@@ -4,7 +4,8 @@
 
 from sqlalchemy import Column, String
 from ..classes.security import Security
-from . import BaseModel, JsonModel
+from ..classes.session import Session
+from . import BaseModel, JsonModel, SessionModel
 
 class BaseUserModel(BaseModel, JsonModel):
     """ user db model """
@@ -36,6 +37,13 @@ class BaseUserModel(BaseModel, JsonModel):
         """ set user password with hash """
         self.password = Security.hash(password)
         self.save()
+
+    @classmethod
+    def by_current_session(cls):
+        session = Session.current_session()
+        if session is None:
+            return None
+        return cls.get_by_id(session.user_id)
 
     def __repr__(self, exclude_list=None):
         """ exclue some attributes on jsonify """
