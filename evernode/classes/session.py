@@ -27,7 +27,7 @@ class Session():
     def current_session() -> str:
         """ return session id in app config, only current user """
         if 'SESSION_ID' in current_app.config:
-            return current_app.config['SESSION_ID']
+            return SessionModel.get_by_session_id(current_app.config['SESSION_ID'])
         return None
 
     @classmethod

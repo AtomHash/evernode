@@ -13,9 +13,6 @@ class SessionMiddleware(Middleware):
         jwt = JWT()
         if jwt.verify_token():
             session = SessionModel.get_by_session_id(jwt.session_id)
-            print(jwt.session_id)
-            print(str(SessionModel.get_by_session_id(jwt.session_id)))
-            print(str(SessionModel))
             if session is None:
                 return False
             Session.set_current_session(jwt.session_id)

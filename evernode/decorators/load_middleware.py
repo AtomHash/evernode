@@ -9,7 +9,6 @@ def load_middleware(func):
     @wraps(func)
     def parse(*args, **kwargs):
         """ get middleware from route, execute middleware in order """
-        print(str(request.method))
         middleware = copy.deepcopy(kwargs['middleware'])
         kwargs.pop('middleware')
         if request.method == "OPTIONS":

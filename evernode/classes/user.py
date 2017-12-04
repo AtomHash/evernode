@@ -44,7 +44,4 @@ class User:
         ** Get current session and user **
         Uses a session_id to locate user_id
         """
-        session = SessionModel.get_by_session_id(Session.current_session())
-        if session is None:
-            return None
-        return self.user_model.get_by_id(session.user_id)
+        return self.user_model.by_current_session()
