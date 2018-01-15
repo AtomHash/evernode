@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class DatabaseModel(db.Model):
     """ abstract class for db models """
 

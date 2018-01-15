@@ -1,5 +1,4 @@
-""" declare middlewares """
-from .route_before_middleware import RouteBeforeMiddleware
-from .language_before_middleware import LanguageBeforeMiddleware
-from .jwt_middleware import JWTMiddleware
-from .session_middleware import SessionMiddleware
+from .route_before_middleware import RouteBeforeMiddleware # noqa
+from .language_before_middleware import LanguageBeforeMiddleware # noqa
+from .jwt_middleware import JWTMiddleware # noqa
+from .session_middleware import SessionMiddleware # noqa

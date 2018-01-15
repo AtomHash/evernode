@@ -1,11 +1,12 @@
 """
     Easy JSON Web Token implementation for Flask
 """
-from datetime import datetime, timedelta
 import re
 import jwt
+from datetime import datetime, timedelta
 from flask import current_app, Flask, request
 from .security import Security
+
 
 class JWT:
     """ Gets request information to validate JWT """
@@ -28,8 +29,8 @@ class JWT:
             'data': {
                 'session_id': session_id
             },
-            'exp': datetime.utcnow() + timedelta(days=days_to_expire)
-            }, self.app_secret)
+            'exp': datetime.utcnow() + timedelta(days=days_to_expire)},
+            self.app_secret)
         return Security.encrypt(jwt_token)
 
     def verify_token(self) -> bool:
@@ -41,7 +42,10 @@ class JWT:
                 jwt_token = parsed_token.group(1)
                 try:
                     decrypted_token = Security.decrypt(jwt_token)
-                    session_id = jwt.decode(decrypted_token, self.app_secret)['data']['session_id']
+                    session_id = \
+                        jwt.decode(
+                            decrypted_token,
+                            self.app_secret)['data']['session_id']
                     self.session_id = session_id
                     return True
                 except (Exception, BaseException) as error:

@@ -11,6 +11,7 @@ from email.mime.text import MIMEText
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 os.chdir(FILE_PATH)
 
+
 class SendEmail:
     """ send email from the command line with async abilities """
     multipart = MIMEMultipart
@@ -62,7 +63,8 @@ class SendEmail:
         """ send email message for to que """
         self.smtp.ehlo()
         self.smtp.login(self.config['USERNAME'], self.config['PASSWORD'])
-        self.smtp.send_message(self.multipart, self.config['EMAIL'], self.addresses)
+        self.smtp.send_message(
+            self.multipart, self.config['EMAIL'], self.addresses)
         self.smtp.quit()
 
     def create_email(self):
@@ -71,5 +73,6 @@ class SendEmail:
         self.courier()
         self.send()
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     SendEmail()

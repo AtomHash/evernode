@@ -4,6 +4,7 @@
 from flask import request, current_app, Flask
 from .security import Security
 
+
 class Auth:
     """ Helper class for creating user based authentication """
 

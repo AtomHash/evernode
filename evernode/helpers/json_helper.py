@@ -6,6 +6,7 @@ import ast
 import json as system_json
 from collections import namedtuple
 
+
 class JsonHelper():
     """ help break down and construct json objects """
 
@@ -35,7 +36,7 @@ class JsonHelper():
     @staticmethod
     def string(object_class):
         """ alias for object_dict """
-        return  JsonHelper.object_dict(object_class)
+        return JsonHelper.object_dict(object_class)
 
     @staticmethod
     def parse(string, is_file=False, obj=False):
@@ -47,12 +48,14 @@ class JsonHelper():
                 return system_json.loads(string)
             else:
                 if is_file:
-                    return system_json.load(string, \
-                        object_hook=lambda d: namedtuple('j', \
-                            d.keys())(*d.values()))
-                return system_json.loads(string, \
-                        object_hook=lambda d: namedtuple('j', \
-                            d.keys())(*d.values()))
+                    return system_json.load(
+                        string,
+                        object_hook=lambda d: namedtuple('j', d.keys())
+                        (*d.values()))
+                return system_json.loads(
+                    string,
+                    object_hook=lambda d: namedtuple('j', d.keys())
+                    (*d.values()))
         except ValueError:
             return None
 

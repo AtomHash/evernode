@@ -5,6 +5,7 @@ from ..classes.session import Session
 from ..models import SessionModel
 from ..classes.jwt import JWT
 
+
 class SessionMiddleware(Middleware):
     """ Middleware to handle sessions with JWT """
 

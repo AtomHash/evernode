@@ -3,11 +3,11 @@
 """
 from flask import current_app
 import os
-import sys
 from pathlib import Path
 import subprocess
 import json
 import base64
+
 
 class Email:
     """ Set up an email """
@@ -41,7 +41,7 @@ class Email:
 
     def __create__(self):
         """ Construct the email """
-        #TODO: Use pickle instead of encode base64 & JSON
+        # TODO: Use pickle instead of encode base64 & JSON
         self.__data = json.dumps({
             'config_path': self.encode(self.config_path),
             'subject': self.encode(self.__subject),
@@ -61,13 +61,14 @@ class Email:
         uses the /usr/bin/python to execute email script
         """
         self.__create__()
-        email_script = os.path.join(Path(__file__).parents[1], 'scripts', 'sendemail.py')
+        email_script = \
+            os.path.join(Path(__file__).parents[1], 'scripts', 'sendemail.py')
         if os.path.exists(email_script):
             python = str(os.__file__.rsplit('/')[-2])
             python_bin = '/usr/bin/' + python
-            subprocess.Popen([python_bin, \
-                email_script, self.__data], \
-                    stdin=None, stdout=None, stderr=None, close_fds=True)
+            subprocess.Popen(
+                [python_bin, email_script, self.__data],
+                stdin=None, stdout=None, stderr=None, close_fds=True)
             """
             output = subprocess.check_output([python_bin, \
                 email_script, self.__data])

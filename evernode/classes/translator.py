@@ -4,6 +4,7 @@ import sys
 from flask import current_app
 from ..helpers import JsonHelper
 
+
 class Translator:
     """ Uses dot-key syntax to translate phrases to words """
     path = None
@@ -13,15 +14,24 @@ class Translator:
     def __init__(self, module_folder_name=None):
         self.app_language = current_app.config['LANGUAGE']
         if module_folder_name is None:
-            path = os.path.join(sys.path[0], 'resources', 'lang', self.app_language)
+            path = os.path.join(
+                sys.path[0], 'resources', 'lang', self.app_language)
             if os.path.isdir(path):
                 self.path = path
             else:
-                self.path = os.path.join(sys.path[0], \
-                    'resources', 'lang', current_app.config['DEFAULT_LANGUAGE'])
+                self.path = os.path.join(
+                    sys.path[0],
+                    'resources',
+                    'lang',
+                    current_app.config['DEFAULT_LANGUAGE'])
         else:
-            path = os.path.join(sys.path[0], \
-                'modules', module_folder_name, 'resources', 'lang', self.app_language)
+            path = os.path.join(
+                sys.path[0],
+                'modules',
+                module_folder_name,
+                'resources',
+                'lang',
+                self.app_language)
             if os.path.isdir(path):
                 self.path = path
             else:
@@ -37,10 +47,12 @@ class Translator:
         Example:
             Translator.trans('messages.hello')
             If language is en,
-            In the example a file called resources/lang/en/messages.lang will be opened
+            In the example a file called
+                resources/lang/en/messages.lang will be opened
             and parsed for { 'hello': 'Some english text' }
             If language is fr,
-            In the example a file called resources/lang/fr/messages.lang will be opened
+            In the example a file called
+                resources/lang/fr/messages.lang will be opened
             and parsed for { 'hello': 'Some french text' }
         """
         key_list = self.__list_key__(key)

@@ -4,6 +4,7 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, DateTime
 from .database_model import DatabaseModel
 
+
 class BaseModel(DatabaseModel):
     """ adds usefull custom attributes for applciation use """
 
@@ -41,7 +42,7 @@ class BaseModel(DatabaseModel):
             self.database.session.delete(self)
             self.database.session.commit()
         except (Exception, BaseException) as error:
-            #fail silently
+            # fail silently
             return None
 
     def save(self):
@@ -49,8 +50,8 @@ class BaseModel(DatabaseModel):
         try:
             if self.exists() is False:
                 self.database.session.add(self)
-            #self.database.session.merge(self)
+            # self.database.session.merge(self)
             self.database.session.commit()
         except Exception:
-            #fail silently
+            # fail silently
             return None

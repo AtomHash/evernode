@@ -6,6 +6,7 @@ from flask import current_app, Response, Flask
 from .translator import Translator
 from ..models.response_model import ResponseModel
 
+
 class BaseResponse:
     """ Base class for a HTTP response """
     __mimetype__ = "text/plain; charset=utf-8"
@@ -21,7 +22,7 @@ class BaseResponse:
         """ Set status or Get Status """
         if status_code is not None:
             self.response_model.status = status_code
-        #return string for response support
+        # return string for response support
         return str(self.response_model.status)
 
     def message(self, message=None):

@@ -3,7 +3,8 @@ import secrets
 from flask import current_app
 from ..models.session_model import SessionModel
 
-class Session():
+
+class Session:
     """ helper class for app state-less sessions """
 
     @staticmethod
@@ -27,13 +28,14 @@ class Session():
     def current_session() -> str:
         """ return session id in app config, only current user """
         if 'SESSION_ID' in current_app.config:
-            return SessionModel.get_by_session_id(current_app.config['SESSION_ID'])
+            return SessionModel.get_by_session_id(
+                current_app.config['SESSION_ID'])
         return None
 
     @classmethod
     def create_session(cls, session_id, user_id):
         """
-        ** save a new session to the database **
+        save a new session to the database
         Using the ['AUTH']['MAX_SESSIONS'] config setting
         a session with be created within the MAX_SESSIONS
         limit. Once this limit is hit, delete the earliest
