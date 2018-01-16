@@ -65,7 +65,7 @@ class Email:
             os.path.join(Path(__file__).parents[1], 'scripts', 'sendemail.py')
         if os.path.exists(email_script):
             python = str(os.__file__.rsplit('/')[-2])
-            python_bin = '/usr/bin/' + python
+            python_bin = '/usr/bin/%s' % (python)
             subprocess.Popen(
                 [python_bin, email_script, self.__data],
                 stdin=None, stdout=None, stderr=None, close_fds=True)

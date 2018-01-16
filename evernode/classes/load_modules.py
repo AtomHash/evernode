@@ -62,16 +62,6 @@ class LoadModules:
         for module_name in modules:
             with self.app.app_context():
                 module = importlib.import_module(
-                    'modules.' + module_name + '.routes')
+                    'modules.%s.routes' % (module_name))
                 for route in module.routes:
                     self.routes.append(self.make_route(route))
-
-    def save_routes(self):
-        """ NotImplemented """
-        # Intended to save as a cache.
-        raise NotImplementedError
-    """
-    temp_dir = tempfile.gettempdir();
-    with open(os.path.join(temp_dir, 'routes.txt'),"w") as f:
-        f.write(json.dumps(routes));
-    """

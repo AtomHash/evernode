@@ -41,7 +41,7 @@ class App:
     def load_default_database(self):
         """ Set default database form config.json """
         self.app.config['SQLALCHEMY_DATABASE_URI'] = \
-            self.app.config['SQLALCHEMY_BINDS']['default']
+            self.app.config['SQLALCHEMY_BINDS']['DEFAULT']
 
     def api_prefix(self):
         """ Get api prefix set in config.json """
@@ -49,8 +49,8 @@ class App:
         config_api_version = self.app.config['API']['VERSION']
         version_ident = '{version}'
         if '{version}' in config_api_prefix:
-            return '/' + \
-                config_api_prefix.replace(version_ident, config_api_version)
+            return '/%s' % (config_api_prefix.replace(
+                version_ident, config_api_version))
         return ''
 
     def load_before_middleware(self):
