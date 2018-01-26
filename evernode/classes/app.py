@@ -70,7 +70,6 @@ class App:
         self.app.config.update(config)
         self.app.config.update(CONFIG_PATH=config_path)
 
-    def load_modules(self, override=False):
+    def load_modules(self):
         """ Load folders(custom modules) in modules folder """
-        if self.app.config['DEBUG'] is True or override:
-            LoadModules(self.app)()
+        LoadModules(self.app)()

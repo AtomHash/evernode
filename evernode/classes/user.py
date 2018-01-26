@@ -30,7 +30,7 @@ class User:
         if user is None:
             return None
         user.updated()
-        if self.auth.verify(user.password) is True:
+        if self.auth.verify(user.password):
             session_id = Session.create_session_id()
             jwt = JWT().create_token(session_id)
             Session.create_session(session_id, user.id)
