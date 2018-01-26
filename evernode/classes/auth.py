@@ -27,10 +27,10 @@ class Auth:
         field_count = 0
         request_json = request.get_json()
         if self.user_field in request_json:
-            self.__username = request.values[self.user_field]
+            self.__username = request_json[self.user_field]
             field_count += 1
         if self.password_field in request_json:
-            self.__password = request.values[self.password_field]
+            self.__password = request_json[self.password_field]
             field_count += 1
         return field_count
 
