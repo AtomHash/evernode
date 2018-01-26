@@ -27,6 +27,7 @@ class App:
 
     def load_cors(self):
         """ default cors allow all """
+        # add cors.json config support for headers and origins
         CORS(self.app, resources=r'/*',
              allow_headers=[
                  'Origin',
