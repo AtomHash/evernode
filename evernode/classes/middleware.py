@@ -4,7 +4,8 @@
 from flask import current_app, Flask, Response
 from .json_response import JsonResponse
 
-class Middleware(object):
+
+class Middleware:
     """ Provides useful defaults for creating fast middleware """
     status = False
     response = Response

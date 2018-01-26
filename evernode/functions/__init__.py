@@ -1,2 +1,1 @@
-""" import core functions """
-from .utils import get_subdirectories
+from .utils import get_subdirectories # noqa

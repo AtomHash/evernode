@@ -11,6 +11,7 @@ from .load_modules import LoadModules
 from ..helpers import JsonHelper
 from ..models import db
 
+
 class App:
     """ Creates a Custom Flask App """
     app = Flask
@@ -26,6 +27,7 @@ class App:
 
     def load_cors(self):
         """ default cors allow all """
+        # add cors.json config support for headers and origins
         CORS(self.app, resources=r'/*',
              allow_headers=[
                  'Origin',
@@ -39,7 +41,8 @@ class App:
 
     def load_default_database(self):
         """ Set default database form config.json """
-        self.app.config['SQLALCHEMY_DATABASE_URI'] = self.app.config['SQLALCHEMY_BINDS']['default']
+        self.app.config['SQLALCHEMY_DATABASE_URI'] = \
+            self.app.config['SQLALCHEMY_BINDS']['DEFAULT']
 
     def api_prefix(self):
         """ Get api prefix set in config.json """
@@ -47,25 +50,27 @@ class App:
         config_api_version = self.app.config['API']['VERSION']
         version_ident = '{version}'
         if '{version}' in config_api_prefix:
-            return '/' + config_api_prefix.replace(version_ident, config_api_version)
+            return '/%s' % (config_api_prefix.replace(
+                version_ident, config_api_version))
         return ''
 
     def load_before_middleware(self):
         """ Set before app middleware """
-        self.app.wsgi_app = RouteBeforeMiddleware(self.app.wsgi_app, \
+        self.app.wsgi_app = RouteBeforeMiddleware(
+            self.app.wsgi_app,
             self.app, prefix=self.api_prefix())
-        self.app.wsgi_app = LanguageBeforeMiddleware(self.app.wsgi_app, self.app)
+        self.app.wsgi_app = LanguageBeforeMiddleware(
+            self.app.wsgi_app, self.app)
 
     def load_config(self):
         """ Load config.json into memory """
         config_path = os.path.join(Path(sys.path[0]).parent, 'config.json')
         config = JsonHelper.from_file(config_path)
         if config is None:
-           raise FileNotFoundError
+            raise FileNotFoundError
         self.app.config.update(config)
         self.app.config.update(CONFIG_PATH=config_path)
 
-    def load_modules(self, override=False):
+    def load_modules(self):
         """ Load folders(custom modules) in modules folder """
-        if self.app.config['DEBUG'] != True or override:
-            LoadModules(self.app)()
+        LoadModules(self.app)()

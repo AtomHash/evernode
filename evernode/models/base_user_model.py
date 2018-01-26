@@ -5,7 +5,8 @@
 from sqlalchemy import Column, String
 from ..classes.security import Security
 from ..classes.session import Session
-from . import BaseModel, JsonModel, SessionModel
+from . import BaseModel, JsonModel
+
 
 class BaseUserModel(BaseModel, JsonModel):
     """ user db model """

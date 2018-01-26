@@ -1,2 +1,1 @@
-""" import decorators """
-from .load_middleware import load_middleware
+from .load_middleware import load_middleware # noqa

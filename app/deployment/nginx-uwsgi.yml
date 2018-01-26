@@ -1,0 +1,12 @@
+version: "2"
+services:
+  nginx-uwsgi:
+    build:
+      context: ./build
+    volumes:
+      - ../app:/srv/
+      - ../../dist:/var/evernode/
+    ports:
+      - "80:80"
+    expose:
+      - "80"

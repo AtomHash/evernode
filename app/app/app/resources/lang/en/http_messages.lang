@@ -1,0 +1,6 @@
+{
+  "200": "Connection Successful",
+  "404": "Not Found",
+  "401": "Unauthorized",
+  "400": "Bad Request"
+}

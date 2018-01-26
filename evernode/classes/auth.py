@@ -4,6 +4,7 @@
 from flask import request, current_app, Flask
 from .security import Security
 
+
 class Auth:
     """ Helper class for creating user based authentication """
 
@@ -24,10 +25,11 @@ class Auth:
     def collect_fields(self) -> int:
         """ use field values from config.json and collect from request """
         field_count = 0
-        if self.user_field in request.values:
+        request_json = request.get_json()
+        if self.user_field in request_json:
             self.__username = request.values[self.user_field]
             field_count += 1
-        if self.password_field in request.values:
+        if self.password_field in request_json:
             self.__password = request.values[self.password_field]
             field_count += 1
         return field_count

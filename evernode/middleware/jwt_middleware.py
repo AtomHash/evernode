@@ -5,6 +5,7 @@ from ..classes.middleware import Middleware
 from ..classes.json_response import JsonResponse
 from ..classes.jwt import JWT
 
+
 class JWTMiddleware(Middleware):
     """ Middleware to conditionally accept a JWT request """
 

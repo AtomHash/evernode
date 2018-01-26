@@ -1,5 +1,6 @@
 """ LanguageBeforeMiddleware """
 
+
 class LanguageBeforeMiddleware:
     """ set current language for app user """
     wsgi_app = None

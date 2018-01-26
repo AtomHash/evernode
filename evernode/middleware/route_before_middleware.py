@@ -2,6 +2,7 @@
 
 from ..classes.json_response import JsonResponse
 
+
 class RouteBeforeMiddleware:
     """ add prefix to url """
     wsgi_app = None
@@ -19,5 +20,7 @@ class RouteBeforeMiddleware:
                 environ['SCRIPT_NAME'] = self.prefix
                 return self.wsgi_app(environ, start_response)
             json_response = JsonResponse(404)
-            start_response(json_response.status(), [('Content-Type', json_response.mimetype())])
+            start_response(
+                json_response.status(),
+                [('Content-Type', json_response.mimetype())])
             return [json_response.content().encode()]

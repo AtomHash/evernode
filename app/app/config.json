@@ -1,0 +1,30 @@
+{
+  "NAME": "EvernodeTest",
+  "DEBUG": true,
+  "SERECT": "TeSTSeCret",
+  "KEY": "SomEKeY-LL=",
+  "DATETIME": {
+    "TIMEZONE": "UTC",
+    "DATE_FORMAT": "%Y-%m-%d",
+    "TIME_FORMAT": "%H:%M:%S"
+  },
+  "DEFAULT_LANGUAGE": "en",
+  "HOST": "localhost",
+  "SQLALCHEMY_TRACK_MODIFICATIONS": false,
+  "SQLALCHEMY_ECHO": false,
+  "API": {
+    "VERSION": "1",
+    "PREFIX": "v{version}"
+  },
+  "AUTH": {
+    "MAX_SESSIONS": 1,
+    "USER_FIELD": "email",
+    "PASSWORD_FIELD": "password",
+    "PASSWORD_HASHING": "pbkdf2:sha512"
+  },
+  "SQLALCHEMY_POOL_SIZE": 100,
+  "SQLALCHEMY_POOL_RECYCLE": 280,
+  "SQLALCHEMY_BINDS": {
+    "DEFAULT": "mysql://test:password@localhost/test"
+  }
+}

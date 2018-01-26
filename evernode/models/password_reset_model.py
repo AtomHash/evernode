@@ -4,10 +4,11 @@
 from .base_model import BaseModel
 from sqlalchemy import Column, String, Integer
 
+
 class PasswordResetModel(BaseModel):
     """ user db model """
 
-    __tablename__ = 'user_passwordresets'
+    __tablename__ = 'user_password_resets'
     email = Column(String(255), unique=True)
     code = Column(String(255))
     user_id = Column(Integer)

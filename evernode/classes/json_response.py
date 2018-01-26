@@ -4,6 +4,7 @@
 from flask import Response
 from .base_response import BaseResponse
 
+
 class JsonResponse(BaseResponse):
     """ JsonResponse is a wrapper for BaseResponse """
     __mimetype__ = "application/json; charset=utf-8"

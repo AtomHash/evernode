@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from .base_model import BaseModel
 
+
 class SessionModel(BaseModel):
     """ class to handle db model for session """
     __tablename__ = 'user_sessions'
@@ -36,4 +37,5 @@ class SessionModel(BaseModel):
     @classmethod
     def count(cls, user_id):
         """ count sessions wuth user_id """
-        return cls.query.with_entities(cls.user_id).filter_by(user_id=user_id).count()
+        return cls.query.with_entities(
+            cls.user_id).filter_by(user_id=user_id).count()

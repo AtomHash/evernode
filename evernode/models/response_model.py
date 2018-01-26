@@ -1,6 +1,7 @@
 """ a structure for responses """
 from ..helpers import JsonHelper
 
+
 class ResponseModel:
     """ Class for a response a centralized response structure """
     status = 200

@@ -4,7 +4,7 @@ from .auth import Auth
 from .jwt import JWT
 from .session import Session
 from ..models import BaseUserModel
-from ..models import SessionModel
+
 
 class User:
     """ User class """
@@ -17,7 +17,7 @@ class User:
 
     def signin(self) -> dict:
         """
-        Easy signin for user objects 
+        Easy signin for user objects
         Using the Auth class that autoloads username and
         password from a post request, validate against a
         user. If successful return {'token': jwtToken, 'user':
@@ -30,18 +30,18 @@ class User:
         if user is None:
             return None
         user.updated()
-        if self.auth.verify(user.password) is True:
+        if self.auth.verify(user.password):
             session_id = Session.create_session_id()
             jwt = JWT().create_token(session_id)
             Session.create_session(session_id, user.id)
-            #init database model
+            # init database model
             user.id
             return {'token': jwt, 'user': user}
         return None
 
     def current_user(self):
         """
-        ** Get current session and user **
+        Get current session and user
         Uses a session_id to locate user_id
         """
         return self.user_model.by_current_session()
