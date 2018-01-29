@@ -10,8 +10,8 @@ class Auth:
 
     app = Flask
     algo = None
-    user_field = ""
-    password_field = ""
+    user_field = ''
+    password_field = ''
     __username = None
     __password = None
 
@@ -26,12 +26,13 @@ class Auth:
         """ use field values from config.json and collect from request """
         field_count = 0
         request_json = request.get_json()
-        if self.user_field in request_json:
-            self.__username = request_json[self.user_field]
-            field_count += 1
-        if self.password_field in request_json:
-            self.__password = request_json[self.password_field]
-            field_count += 1
+        if request_json is not None:
+            if self.user_field in request_json:
+                self.__username = request_json[self.user_field]
+                field_count += 1
+            if self.password_field in request_json:
+                self.__password = request_json[self.password_field]
+                field_count += 1
         return field_count
 
     def username(self) -> str:

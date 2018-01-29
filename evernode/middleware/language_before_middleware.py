@@ -17,5 +17,5 @@ class LanguageBeforeMiddleware:
         else:
             language = self.flask_app.config['DEFAULT_LANGUAGE']
 
-        self.flask_app.config.update({"LANGUAGE": language})
+        self.flask_app.config.update({'LANGUAGE': language})
         return self.wsgi_app(environ, start_response)
