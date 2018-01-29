@@ -1,7 +1,7 @@
 from setuptools import setup
 setup(
     name='evernode',
-    version='0.2.5',
+    version='0.2.6',
     packages=[
         'evernode',
         'evernode.classes',

@@ -24,7 +24,7 @@ class JsonModel:
             key = self.camel_case(key)
             new_key = key[0].lower() + key[1:]
             if isinstance(item, datetime):
-                item = item.now()
+                item = item.strftime('%x %X')
             fields[new_key] = item
         return str(fields)
 
