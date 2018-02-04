@@ -62,8 +62,5 @@ class JsonHelper():
     @staticmethod
     def from_file(file_path) -> dict:
         """ load small json file """
-        try:
-            with open(file_path, 'r') as json_stream:
-                return JsonHelper.parse(json_stream, True)
-        except OSError:
-            return None
+        with open(file_path, 'r') as json_stream:
+            return JsonHelper.parse(json_stream, True)

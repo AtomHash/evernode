@@ -1,5 +1,6 @@
 """ convert a class to json """
 
+import flask
 from datetime import datetime
 
 
@@ -24,7 +25,16 @@ class JsonModel:
             key = self.camel_case(key)
             new_key = key[0].lower() + key[1:]
             if isinstance(item, datetime):
-                item = item.strftime('%x %X')
+                app = flask.current_app
+                if 'DATETIME' in app.config:
+                    if 'DATE_FORMAT' in app.config['DATETIME'] \
+                            and 'TIME_FORMAT' in app.config['DATETIME']:
+                                item = item.strftime('{0}{1}{2}'.format(
+                                    app.config['DATETIME']['DATE_FORMAT'],
+                                    app.config['DATETIME']['SEPARATOR'],
+                                    app.config['DATETIME']['TIME_FORMAT']))
+                else:
+                    item = item.strftime('%x %X')
             fields[new_key] = item
         return str(fields)
 
