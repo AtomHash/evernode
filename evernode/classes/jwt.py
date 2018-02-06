@@ -15,7 +15,7 @@ class JWT:
     app_key = None
     app_secret = None
     request = None
-    session_id = None
+    data = None
 
     def __init__(self):
         self.app = current_app
@@ -23,12 +23,10 @@ class JWT:
         self.app_secret = self.app.config['SERECT']
         self.request = request
 
-    def create_token(self, session_id, days_to_expire=7) -> str:
+    def create_token(self, data, days_to_expire=7) -> str:
         """ Construct a JWT """
         jwt_token = jwt.encode({
-            'data': {
-                'session_id': session_id
-            },
+            'data': data,
             'exp': datetime.utcnow() + timedelta(days=days_to_expire)},
             self.app_secret)
         return Security.encrypt(jwt_token)
@@ -42,11 +40,9 @@ class JWT:
                 jwt_token = parsed_token.group(1)
                 try:
                     decrypted_token = Security.decrypt(jwt_token)
-                    session_id = \
-                        jwt.decode(
-                            decrypted_token,
-                            self.app_secret)['data']['session_id']
-                    self.session_id = session_id
+                    self.data = jwt.decode(
+                        decrypted_token,
+                        self.app_secret)['data']
                     return True
                 except (Exception, BaseException) as error:
                     """ catch all decoding exceptions """

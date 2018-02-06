@@ -26,4 +26,4 @@ ADD nginx /etc/nginx
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-ENTRYPOINT pip3 install var/evernode/evernode-0.2.2.tar.gz --upgrade && ./usr/bin/supervisord
+ENTRYPOINT pip3 install var/evernode/evernode-0.2.6.tar.gz --upgrade && ./usr/bin/supervisord

@@ -6,7 +6,8 @@
   "DATETIME": {
     "TIMEZONE": "UTC",
     "DATE_FORMAT": "%Y-%m-%d",
-    "TIME_FORMAT": "%H:%M:%S"
+    "TIME_FORMAT": "%H:%M:%S",
+    "SEPARATOR": " "
   },
   "DEFAULT_LANGUAGE": "en",
   "HOST": "localhost",

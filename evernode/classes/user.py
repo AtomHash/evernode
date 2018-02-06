@@ -1,5 +1,6 @@
 """ Accomplish common user tasks """
 
+import flask
 from .auth import Auth
 from .jwt import JWT
 from .session import Session
@@ -23,6 +24,7 @@ class User:
         user. If successful return {'token': jwtToken, 'user':
         BaseUserModel()} else return None
         """
+        app = flask.current_app
         username = self.auth.username()
         if username is None:
             return None
@@ -32,10 +34,13 @@ class User:
         user.updated()
         if self.auth.verify(user.password):
             session_id = Session.create_session_id()
-            jwt = JWT().create_token(session_id)
+            data = {
+                'session_id': session_id,
+                'user_id': user.id,
+                'user_email': user.email,
+            }
+            jwt = JWT().create_token(data, app.config['AUTH']['JWT_EXP'])
             Session.create_session(session_id, user.id)
-            # init database model
-            user.id
             return {'token': jwt, 'user': user}
         return None
 

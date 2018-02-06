@@ -1,4 +1,5 @@
 """ Expending upon JWT and using session tokens in middleware """
+import flask
 from ..classes.middleware import Middleware
 from ..classes.json_response import JsonResponse
 from ..classes.session import Session
@@ -13,10 +14,12 @@ class SessionMiddleware(Middleware):
         """ check JWT, then check session for validity """
         jwt = JWT()
         if jwt.verify_token():
-            session = SessionModel.get_by_session_id(jwt.session_id)
-            if session is None:
-                return False
-            Session.set_current_session(jwt.session_id)
+            if not flask.current_app.config['AUTH']['FAST_SESSIONS']:
+                session = SessionModel.get_by_session_id(
+                    jwt.data['session_id'])
+                if session is None:
+                    return False
+            Session.set_current_session(jwt.data['session_id'])
             return True
         return False
 
