@@ -39,7 +39,7 @@ class Email:
         """ Set email subject """
         self.__subject = subject
 
-    def __create__(self):
+    def __create(self):
         """ Construct the email """
         # TODO: Use pickle instead of encode base64 & JSON
         self.__data = json.dumps({
@@ -60,7 +60,7 @@ class Email:
         Finds python binary by os.py, then
         uses the /usr/bin/python to execute email script
         """
-        self.__create__()
+        self.__create()
         email_script = \
             os.path.join(Path(__file__).parents[1], 'scripts', 'sendemail.py')
         if os.path.exists(email_script):

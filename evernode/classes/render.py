@@ -10,64 +10,49 @@ from flask import current_app
 class Render:
     """ Jinja template renderer """
 
-    path = None
-    extension = '.html'
-    extension_text = '.txt'
     jinja = None
-    html = None
-    text = None
+    template_path = None
+    templates = {}
 
-    def __init__(self, module_folder_name=None):
-        if module_folder_name is None:
-            path = os.path.join(sys.path[0], 'resources', 'emails')
+    def __init__(self, module_name=None):
+        if module_name is None:
+            path = os.path.join(sys.path[0], 'resources', 'templates')
             if os.path.isdir(path):
-                self.path = path
+                self.template_path = path
             else:
                 raise NotADirectoryError
         else:
             path = os.path.join(
                 sys.path[0],
                 'modules',
-                module_folder_name,
+                module_name,
                 'resources',
-                'emails')
+                'templates')
             if os.path.isdir(path):
-                self.path = path
+                self.template_path = path
             else:
                 raise NotADirectoryError
-        self.__jinja_init__()
+        self.__init_jinja()
 
-    def __jinja_init__(self):
+    def __init_jinja(self):
         self.jinja = Environment(
-            loader=FileSystemLoader(self.path),
+            loader=FileSystemLoader(self.template_path),
             trim_blocks=True)
 
-    def compile_text(self, template_name, data=None):
-        """
-        renders template_name + self.extension_text
-        file with data using jinja
-        """
-        if data is None:
-            data = {}
-        try:
-            self.text = self.jinja.get_template(
-                template_name + self.extension_text).render(data)
-        except TemplateNotFound as template_error:
-            if current_app.config['DEBUG']:
-                print(template_error)
-            return None
-
-    def compile(self, template_name, data=None):
+    def compile(self, name, folder=None, data=None):
         """
         renders template_name + self.extension file with data using jinja
         """
+        template_name = name.replace('/', "")
+        if folder is None:
+            folder = ""
+        full_name = os.path.join(
+            folder.strip('/'), template_name)
         if data is None:
             data = {}
         try:
-            self.html = self.jinja.get_template(
-                template_name + self.extension).render(data)
-            self.compile_text(template_name, data)
+            self.templates[template_name] = \
+                self.jinja.get_template(full_name).render(data)
         except TemplateNotFound as template_error:
             if current_app.config['DEBUG']:
-                print(template_error)
-            return None
+                raise template_error

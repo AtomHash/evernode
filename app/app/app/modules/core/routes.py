@@ -42,4 +42,9 @@ routes = [
         'url': '/test-security',
         'name': 'core-test-security',
         'methods': ['GET'],
-        'function': CoreController.test_security}]
+        'function': CoreController.test_security},
+    {
+        'url': '/test-render',
+        'name': 'core-test-render',
+        'methods': ['GET'],
+        'function': CoreController.test_render}]

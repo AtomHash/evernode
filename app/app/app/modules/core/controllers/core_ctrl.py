@@ -22,6 +22,15 @@ class CoreController:
         return JsonResponse(200, None, "").create()
 
     @staticmethod
+    def test_render():
+        """ evernode testing """
+        render = Render()
+        render.compile('ev/ern/ode.html', folder="emails/user")
+        render.templates['evernode.html']
+        return JsonResponse(200, None,
+                            render.templates['evernode.html']).create()
+
+    @staticmethod
     def test_security():
         security_functions = dict(
             string="EverNode",
