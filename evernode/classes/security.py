@@ -12,6 +12,10 @@ class Security:
     """ static functions to help app security """
 
     @staticmethod
+    def generate_key() -> str:
+        return Fernet.generate_key().decode("utf-8")
+
+    @staticmethod
     def encrypt(clear_text) -> str:
         """ use config.json key to encrypt """
         cipher = Fernet(current_app.config['KEY'])

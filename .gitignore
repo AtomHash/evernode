@@ -19,6 +19,7 @@ _build
 
 # Installer logs
 pip-log.txt
+build.txt
 
 # Unit test / coverage reports
 .coverage

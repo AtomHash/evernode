@@ -18,6 +18,7 @@ class BaseUserModel(BaseModel, JsonModel):
     password = Column(String(255))
     firstname = Column(String(255))
     lastname = Column(String(255))
+    exclude_list = ['password', 'updated_at', 'created_at', 'id']
 
     @classmethod
     def get_by_username(cls, username):
@@ -46,8 +47,5 @@ class BaseUserModel(BaseModel, JsonModel):
             return None
         return cls.get_by_id(session.user_id)
 
-    def __repr__(self, exclude_list=None):
-        """ exclue some attributes on jsonify """
-        if exclude_list is None:
-            exclude_list = ['password', 'updated_at', 'created_at', 'id']
-        return super().json(exclude_list)
+    def __repr__(self):
+        return super().json()

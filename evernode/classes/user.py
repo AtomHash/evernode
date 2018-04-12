@@ -39,7 +39,11 @@ class User:
                 'user_id': user.id,
                 'user_email': user.email,
             }
-            jwt = JWT().create_token(data, app.config['AUTH']['JWT_EXP'])
+            jwt_exp_secs = app.config['AUTH']['JWT_EXP_SECS'] if \
+                'JWT_EXP_SECS' in app.config['AUTH'] else 180
+            print('------')
+            print(jwt_exp_secs)
+            jwt = JWT().create_token(data, jwt_exp_secs)
             Session.create_session(session_id, user.id)
             return {'token': jwt, 'user': user}
         return None

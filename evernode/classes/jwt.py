@@ -23,11 +23,11 @@ class JWT:
         self.app_secret = self.app.config['SERECT']
         self.request = request
 
-    def create_token(self, data, days_to_expire=7) -> str:
+    def create_token(self, data, seconds_to_expire=180) -> str:
         """ Construct a JWT """
         jwt_token = jwt.encode({
             'data': data,
-            'exp': datetime.utcnow() + timedelta(days=days_to_expire)},
+            'exp': datetime.utcnow() + timedelta(seconds=seconds_to_expire)},
             self.app_secret)
         return Security.encrypt(jwt_token)
 

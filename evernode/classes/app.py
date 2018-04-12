@@ -19,25 +19,60 @@ class App:
     def __init__(self, name):
         self.app = Flask(name)
         db.init_app(self.app)
-        self.load_cors()
         self.load_config()
+        self.load_cors()
         self.load_default_database()
         self.load_modules()
         self.load_before_middleware()
 
     def load_cors(self):
         """ default cors allow all """
-        # add cors.json config support for headers and origins
-        CORS(self.app, resources=r'/*',
-             allow_headers=[
-                 'Origin',
-                 'Content-Type',
-                 'Accept',
-                 'Authorization',
-                 'X-Request-With',
-                 'Content-Language'
-             ],
-             supports_credentials=True)
+        options = dict(
+            origins='*',
+            methods=[
+                'GET',
+                'HEAD',
+                'POST',
+                'OPTIONS',
+                'PUT',
+                'PATCH',
+                'DELETE'],
+            allow_headers='*',
+            expose_headers=None,
+            supports_credentials=False,
+            max_age=None,
+            send_wildcard=False,
+            vary_header=True,
+            resources=r'/*')
+        if 'CORS' in self.app.config:
+            if 'ORIGINS' in self.app.config['CORS']:
+                options['origins'] = \
+                    self.app.config['CORS']['ORIGINS']
+            if 'METHODS' in self.app.config['CORS']:
+                options['methods'] = \
+                    self.app.config['CORS']['METHODS']
+            if 'ALLOW_HEADERS' in self.app.config['CORS']:
+                options['allow_headers'] = \
+                    self.app.config['CORS']['ALLOW_HEADERS']
+            if 'EXPOSE_HEADERS' in self.app.config['CORS']:
+                options['expose_headers'] = \
+                    self.app.config['CORS']['EXPOSE_HEADERS']
+            if 'SUPPORTS_CREDENTIALS' in self.app.config['CORS']:
+                options['supports_credentials'] = \
+                    self.app.config['CORS']['SUPPORTS_CREDENTIALS']
+            if 'MAX_AGE' in self.app.config['CORS']:
+                options['max_age'] = \
+                    self.app.config['CORS']['MAX_AGE']
+            if 'SEND_WILDCARD' in self.app.config['CORS']:
+                options['send_wildcard'] = \
+                    self.app.config['CORS']['SEND_WILDCARD']
+            if 'VARY_HEADER' in self.app.config['CORS']:
+                options['vary_header'] = \
+                    self.app.config['CORS']['VARY_HEADER']
+            if 'RESOURCES' in self.app.config['CORS']:
+                options['resources'] = \
+                    self.app.config['CORS']['RESOURCES']
+        CORS(self.app, **options)
 
     def load_default_database(self):
         """ Set default database form config.json """
