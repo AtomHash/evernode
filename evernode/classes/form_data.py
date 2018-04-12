@@ -1,9 +1,9 @@
 """
     Fetch form data
 """
+import os
 from flask import abort, request, current_app
 from werkzeug.utils import secure_filename
-import os
 from .json_response import JsonResponse
 
 

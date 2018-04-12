@@ -1,4 +1,6 @@
-""" a structure for responses """
+"""
+    Structure for responses
+"""
 from ..helpers import JsonHelper
 
 

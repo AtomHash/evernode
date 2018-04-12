@@ -2,8 +2,8 @@
     Core Controller
 """
 from flask import request, current_app # noqa
-from evernode.classes import JsonResponse, Render, Security, Email, User, FormData # noqa
-from evernode.decorators import load_middleware # noqa
+from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData # noqa
+from evernode.decorators import middleware # noqa
 from ..models import UserModel # noqa
 from evernode.models import PasswordResetModel # noqa
 
@@ -20,6 +20,11 @@ class CoreController:
     def test():
         """ evernode testing """
         return JsonResponse(200, None, "").create()
+
+    @staticmethod
+    @middleware
+    def user_check():
+        return JsonResponse(200, None, "is logged in").create()
 
     @staticmethod
     def test_form_upload():
@@ -54,8 +59,11 @@ class CoreController:
         user.save()
         return JsonResponse(200, None, user).create()
 
-    def create_session_jwt():
-        signin = User(UserModel).signin()
-        if signin is None:
+    def user_token():
+        session = UserAuth(
+            UserModel,
+            username_error="Please enter a username",
+            password_error="Please Enter a password").session()
+        if session is None:
             return JsonResponse(401).create()
-        return JsonResponse(200, None, signin).create()
+        return JsonResponse(200, None, session).create()

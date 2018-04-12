@@ -1,12 +1,12 @@
 """
     Collect email information
 """
-from flask import current_app
 import os
-from pathlib import Path
 import subprocess
 import json
 import base64
+from flask import current_app
+from pathlib import Path
 
 
 class Email:

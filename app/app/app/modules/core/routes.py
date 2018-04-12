@@ -13,10 +13,16 @@ routes = [
         'methods': ['GET'],
         'function': CoreController.make_user},
     {
-        'url': '/login',
-        'name': 'core-login',
+        'url': '/user-token',
+        'name': 'core-user-token',
         'methods': ['POST'],
-        'function': CoreController.create_session_jwt},
+        'function': CoreController.user_token},
+    {
+        'url': '/user-check',
+        'name': 'core-user-check',
+        'methods': ['GET'],
+        'middleware': [SessionMiddleware],
+        'function': CoreController.user_check},
     {
         'url': '/test_form',
         'name': 'core-test-form',

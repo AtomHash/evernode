@@ -5,7 +5,7 @@ from flask import request
 from ..classes import JsonResponse
 
 
-def load_middleware(func):
+def middleware(func):
     """ executes middleware """
     @wraps(func)
     def parse(*args, **kwargs):
