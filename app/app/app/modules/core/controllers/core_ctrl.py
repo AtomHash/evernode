@@ -22,6 +22,15 @@ class CoreController:
         return JsonResponse(200, None, "").create()
 
     @staticmethod
+    def test_security():
+        security_functions = dict(
+            string="EverNode",
+            encrypted=Security.encrypt("EverNode"),
+            decrypt=Security.decrypt(Security.encrypt("EverNode")),
+        )
+        return JsonResponse(200, None, security_functions).create()
+
+    @staticmethod
     @middleware
     def user_check():
         return JsonResponse(200, None, "is logged in").create()

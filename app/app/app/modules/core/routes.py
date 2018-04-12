@@ -37,4 +37,9 @@ routes = [
         'url': '/upload',
         'name': 'core-upload',
         'methods': ['POST'],
-        'function': CoreController.test_form_upload}]
+        'function': CoreController.test_form_upload},
+    {
+        'url': '/test-security',
+        'name': 'core-test-security',
+        'methods': ['GET'],
+        'function': CoreController.test_security}]

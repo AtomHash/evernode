@@ -55,8 +55,8 @@ class Translator:
                 resources/lang/fr/messages.lang will be opened
             and parsed for { 'hello': 'Some french text' }
         """
-        key_list = self.__list_key__(key)
-        json = self.__load_file__(key_list)
+        key_list = self.__list_key(key)
+        json = self.__load_file(key_list)
         current_selection = json
         for parsed_dot_key in key_list:
             try:
@@ -67,7 +67,7 @@ class Translator:
                 return None
         return current_selection
 
-    def __load_file__(self, key_list) -> str:
+    def __load_file(self, key_list) -> str:
         """ Load a translator file """
         file = str(key_list[0]) + self.extension
         key_list.pop(0)
@@ -75,6 +75,6 @@ class Translator:
         if os.path.exists(file_path):
             return JsonHelper.from_file(file_path)
 
-    def __list_key__(self, key) -> list:
+    def __list_key(self, key) -> list:
         """ list a trans command by splitting dot-key syntax """
         return key.split(".")

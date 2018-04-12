@@ -19,13 +19,13 @@ class Security:
     def encrypt(clear_text) -> str:
         """ use config.json key to encrypt """
         cipher = Fernet(current_app.config['KEY'])
-        return base64.b64encode(cipher.encrypt(clear_text)).decode()
+        return cipher.encrypt(str.encode(clear_text)).decode("utf-8")
 
     @staticmethod
     def decrypt(crypt_text) -> str:
         """ use config.json key to decrypt """
         cipher = Fernet(current_app.config['KEY'])
-        return cipher.decrypt(base64.b64decode(crypt_text))
+        return cipher.decrypt(str.encode(crypt_text)).decode("utf-8")
 
     @staticmethod
     def random_string(length) -> str:
