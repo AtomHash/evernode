@@ -13,6 +13,7 @@ class UserAuth:
     """ Helper class for creating user based authentication """
 
     algo = None
+    user = None
     user_model = None
     username = None
     password = None
@@ -41,23 +42,23 @@ class UserAuth:
         self.password = form.values[self.__password_field]
         return
 
-    def session(self) -> dict:
-        user = self.user_model.get_by_username(self.username)
-        if user is None:
+    def session(self) -> str:
+        self.user = self.user_model.get_by_username(self.username)
+        if self.user is None:
             return None
-        user.updated()  # update timestamp on user access
-        if self.verify_password(user.password):
+        self.user.updated()  # update timestamp on user access
+        if self.verify_password(self.user.password):
             session_id = Session.create_session_id()
             data = {
                 'session_id': session_id,
-                'user_id': user.id,
-                'user_email': user.email,
+                'user_id': self.user.id,
+                'user_email': self.user.email,
             }
             jwt_exp_secs = current_app.config['AUTH']['JWT_EXP_SECS'] if \
                 'JWT_EXP_SECS' in current_app.config['AUTH'] else 180
-            jwt = JWT().create_token(data, jwt_exp_secs)
-            Session.create_session(session_id, user.id)
-            return {'session': jwt, 'user': user}
+            session_jwt = JWT().create_token(data, jwt_exp_secs)
+            Session.create_session(session_id, self.user.id)
+            return session_jwt
         return None
 
     def verify_password(self, hashed_password) -> bool:
