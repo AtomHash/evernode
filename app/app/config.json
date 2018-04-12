@@ -1,7 +1,7 @@
 {
   "NAME": "EvernodeTest",
   "DEBUG": true,
-  "SERECT": "65C45AA38EF19A52D1213FBCAEE3665C45AA38EF19A52D1213FBCAEE36",
+  "SERECT": "sgmABbi6V5DLmLsjCAkf68UHYYIJEtGF714MnmPRSp4=",
   "KEY": "sgmABbi6V5DLmLsjCAkf68UHYYIJEtGF714MnmPRSp4=",
   "DATETIME": {
     "TIMEZONE": "UTC",
@@ -16,6 +16,13 @@
   "API": {
     "VERSION": "1",
     "PREFIX": "v{version}"
+  },
+  "UPLOADS": {
+    "FOLDER": "/srv/uploads",
+    "EXTENSIONS": [
+      "png",
+      "jpg"
+    ]
   },
   "CORS": {
     "ALLOW_HEADERS": [
@@ -35,6 +42,7 @@
     "PASSWORD_FIELD": "password",
     "PASSWORD_HASHING": "pbkdf2:sha512"
   },
+  "MAX_CONTENT_LENGTH": 20000000
   "SQLALCHEMY_POOL_SIZE": 100,
   "SQLALCHEMY_POOL_RECYCLE": 280,
   "SQLALCHEMY_BINDS": {

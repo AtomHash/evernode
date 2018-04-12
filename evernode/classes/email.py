@@ -69,9 +69,3 @@ class Email:
             subprocess.Popen(
                 [python_bin, email_script, self.__data],
                 stdin=None, stdout=None, stderr=None, close_fds=True)
-            """
-            output = subprocess.check_output([python_bin, \
-                email_script, self.__data])
-            print(str(output))
-            print(python_bin)
-            """

@@ -26,4 +26,9 @@ routes = [
         'url': '/generate_key',
         'name': 'core-generate-key',
         'methods': ['GET', 'POST'],
-        'function': CoreController.generate_key}]
+        'function': CoreController.generate_key},
+    {
+        'url': '/upload',
+        'name': 'core-upload',
+        'methods': ['POST'],
+        'function': CoreController.test_form_upload}]

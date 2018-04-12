@@ -1,16 +1,16 @@
 """
     Core Controller
 """
-from flask import request # noqa
+from flask import request, current_app # noqa
 from evernode.classes import JsonResponse, Render, Security, Email, User, FormData # noqa
-from evernode.models import JsonModel
 from evernode.decorators import load_middleware # noqa
 from ..models import UserModel # noqa
 from evernode.models import PasswordResetModel # noqa
 
 
-class TestJsonModel(JsonModel):
-    date = ""
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in \
+        current_app.config['UPLOADS']['EXTENSIONS']
 
 
 class CoreController:
@@ -19,8 +19,17 @@ class CoreController:
     @staticmethod
     def test():
         """ evernode testing """
-        key = Security.generate_key()
-        return JsonResponse(200, None, key).create()
+        return JsonResponse(200, None, "").create()
+
+    @staticmethod
+    def test_form_upload():
+        """ evernode testing """
+        form = FormData()
+        form.add_file("image-file")
+        form.add_file("another-file")
+        form.parse()
+        form.file_save('image-file')
+        return JsonResponse(200, None, str(form.files)).create()
 
     @staticmethod
     def generate_key():
