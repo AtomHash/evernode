@@ -4,6 +4,7 @@ from .json_response import JsonResponse # noqa
 from .base_response import BaseResponse # noqa
 from .email import Email # noqa
 from .jwt import JWT # noqa
+from .load_language_files import LoadLanguageFiles # noqa
 from .load_modules import LoadModules # noqa
 from .middleware import Middleware # noqa
 from .security import Security # noqa

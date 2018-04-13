@@ -1,41 +1,30 @@
 """ Easy Translator for modules and appp """
 import os
-import sys
-from flask import current_app
+from flask import current_app, request
+from werkzeug.utils import secure_filename
 from ..helpers import JsonHelper
 
 
 class Translator:
     """ Uses dot-key syntax to translate phrases to words """
-    path = None
-    extension = '.lang'
     app_language = ''
+    module_name = None
 
-    def __init__(self, module_folder_name=None):
-        self.app_language = current_app.config['LANGUAGE']
-        if module_folder_name is None:
-            path = os.path.join(
-                sys.path[0], 'resources', 'lang', self.app_language)
-            if os.path.isdir(path):
-                self.path = path
-            else:
-                self.path = os.path.join(
-                    sys.path[0],
-                    'resources',
-                    'lang',
-                    current_app.config['DEFAULT_LANGUAGE'])
+    def __init__(self, module_name=None):
+        self.app_language = request.headers.get('Content-Language')
+        if self.app_language is None:
+            if 'DEFAULT_LANGUAGE' in current_app.config:
+                self.app_language = current_app.config['DEFAULT_LANGUAGE']
+            elif 'DEFAULT_LANGUAGE' not in current_app.config:
+                if current_app.config['DEBUG']:
+                    raise Exception(
+                        'Please set "DEFAULT_LANGUAGE" in evernode config')
         else:
-            path = os.path.join(
-                sys.path[0],
-                'modules',
-                module_folder_name,
-                'resources',
-                'lang',
-                self.app_language)
-            if os.path.isdir(path):
-                self.path = path
-            else:
-                raise NotADirectoryError
+            # just strip encase of a absolute path in content-language
+            self.app_language = secure_filename(self.app_language)
+        self.module_name = module_name
+        if self.module_name is None:
+            self.module_name = 'root'
 
     def trans(self, key) -> str:
         """
@@ -56,14 +45,15 @@ class Translator:
             and parsed for { 'hello': 'Some french text' }
         """
         key_list = self.__list_key(key)
-        json = self.__load_file(key_list)
-        current_selection = json
+        current_selection = \
+            current_app.config['LANGUAGE_PACKS'][
+                self.module_name][self.app_language]
         for parsed_dot_key in key_list:
             try:
                 current_selection = current_selection[parsed_dot_key]
             except (Exception, BaseException) as error:
                 if current_app.config['DEBUG']:
-                    print(error)
+                    raise error
                 return None
         return current_selection
 
@@ -74,6 +64,8 @@ class Translator:
         file_path = os.path.join(self.path, file)
         if os.path.exists(file_path):
             return JsonHelper.from_file(file_path)
+        else:
+            raise FileNotFoundError(file_path)
 
     def __list_key(self, key) -> list:
         """ list a trans command by splitting dot-key syntax """

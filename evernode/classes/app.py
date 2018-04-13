@@ -6,8 +6,9 @@ import os
 from pathlib import Path
 from flask import Flask
 from flask_cors import CORS
-from ..middleware import RouteBeforeMiddleware, LanguageBeforeMiddleware
+from ..middleware import RouteBeforeMiddleware
 from .load_modules import LoadModules
+from .load_language_files import LoadLanguageFiles
 from ..helpers import JsonHelper
 from ..models import db
 
@@ -16,14 +17,15 @@ class App:
     """ Creates a Custom Flask App """
     app = Flask
 
-    def __init__(self, name):
+    def __init__(self, name, middleware=None):
         self.app = Flask(name)
         db.init_app(self.app)
         self.load_config()
         self.load_cors()
         self.load_default_database()
         self.load_modules()
-        self.load_before_middleware()
+        self.load_language_files()
+        self.load_before_middleware(middleware)
 
     def load_cors(self):
         """ default cors allow all """
@@ -89,13 +91,20 @@ class App:
                 version_ident, config_api_version))
         return ''
 
-    def load_before_middleware(self):
+    def load_before_middleware(self, before_middleware):
         """ Set before app middleware """
+        # prefix api middleware
         self.app.wsgi_app = RouteBeforeMiddleware(
             self.app.wsgi_app,
             self.app, prefix=self.api_prefix())
-        self.app.wsgi_app = LanguageBeforeMiddleware(
-            self.app.wsgi_app, self.app)
+        # custom middleware
+        if before_middleware is not None:
+            for middleware in before_middleware:
+                if isinstance(middleware, dict):
+                    self.app.wsgi_app = middleware['middleware'](
+                        self.app.wsgi_app, self.app, middleware['kargs'])
+                else:
+                    self.app.wsgi_app = middleware(self.app.wsgi_app, self.app)
 
     def load_config(self):
         """ Load config.json into memory """
@@ -109,3 +118,6 @@ class App:
     def load_modules(self):
         """ Load folders(custom modules) in modules folder """
         LoadModules(self.app)()
+
+    def load_language_files(self):
+        LoadLanguageFiles(self.app)()

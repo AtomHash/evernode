@@ -2,7 +2,7 @@
     Core Controller
 """
 from flask import request, current_app # noqa
-from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData # noqa
+from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator # noqa
 from evernode.decorators import middleware # noqa
 from ..models import UserModel # noqa
 from evernode.models import PasswordResetModel # noqa
@@ -20,6 +20,12 @@ class CoreController:
     def test():
         """ evernode testing """
         return JsonResponse(200, None, "").create()
+
+    @staticmethod
+    def test_translator():
+        trans = Translator()
+        return JsonResponse(200, None,
+                            trans.trans('welcome.home')).create()
 
     @staticmethod
     def test_render():

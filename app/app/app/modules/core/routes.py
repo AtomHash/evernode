@@ -47,4 +47,9 @@ routes = [
         'url': '/test-render',
         'name': 'core-test-render',
         'methods': ['GET'],
-        'function': CoreController.test_render}]
+        'function': CoreController.test_render},
+    {
+        'url': '/test-translator',
+        'name': 'core-test-translator',
+        'methods': ['GET'],
+        'function': CoreController.test_translator}]

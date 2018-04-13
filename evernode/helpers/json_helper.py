@@ -3,8 +3,10 @@
 """
 
 import ast
+import io
 import json as system_json
 from collections import namedtuple
+from flask import current_app
 
 
 class JsonHelper():
@@ -45,22 +47,25 @@ class JsonHelper():
             if obj is False:
                 if is_file:
                     return system_json.load(string)
-                return system_json.loads(string)
+                return system_json.loads(string, ensure_ascii=False,
+                                         encoding='utf8')
             else:
                 if is_file:
                     return system_json.load(
                         string,
                         object_hook=lambda d: namedtuple('j', d.keys())
-                        (*d.values()))
+                        (*d.values()), ensure_ascii=False, encoding='utf8')
                 return system_json.loads(
                     string,
                     object_hook=lambda d: namedtuple('j', d.keys())
-                    (*d.values()))
+                    (*d.values()), ensure_ascii=False, encoding='utf8')
         except ValueError:
+            if current_app.config['DEBUG']:
+                raise ValueError
             return None
 
     @staticmethod
     def from_file(file_path) -> dict:
         """ load small json file """
-        with open(file_path, 'r') as json_stream:
+        with io.open(file_path, 'r', encoding='utf-8') as json_stream:
             return JsonHelper.parse(json_stream, True)
