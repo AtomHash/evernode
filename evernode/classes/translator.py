@@ -7,11 +7,19 @@ from ..helpers import JsonHelper
 
 class Translator:
     """ Uses dot-key syntax to translate phrases to words """
-    app_language = ''
+    app_language = None
     module_name = None
 
-    def __init__(self, module_name=None):
-        self.app_language = request.headers.get('Content-Language')
+    def __init__(self, module_name=None, environ=None):
+        try:
+            self.app_language = request.headers.get('Content-Language')
+        except (Exception, BaseException) as error:
+            if environ is not None:
+                if 'HTTP_CONTENT_LANGUAGE' in environ:
+                    self.app_language = environ['HTTP_CONTENT_LANGUAGE']
+            if environ is None and current_app.config['DEBUG']:
+                raise RuntimeError('When running out of request context, '
+                                   'please specify environ')
         if self.app_language is None:
             if 'DEFAULT_LANGUAGE' in current_app.config:
                 self.app_language = current_app.config['DEFAULT_LANGUAGE']

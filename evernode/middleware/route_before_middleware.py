@@ -19,7 +19,7 @@ class RouteBeforeMiddleware:
                 environ['PATH_INFO'] = environ['PATH_INFO'][len(self.prefix):]
                 environ['SCRIPT_NAME'] = self.prefix
                 return self.wsgi_app(environ, start_response)
-            json_response = JsonResponse(404)
+            json_response = JsonResponse(404, environ=environ)
             start_response(
                 json_response.status(),
                 [('Content-Type', json_response.mimetype())])
