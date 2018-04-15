@@ -2,13 +2,18 @@
 Provides an entrypoint for for uWSGI
 sets up a flask app with defaults from App.py
 """
-from evernode.classes import App
+from evernode.classes import App, JsonResponse
 from evernode.models import db
 
 # --- @boot ---
 app_class = App(__name__)
 app = app_class.app
 # --- @boot ---
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return JsonResponse(404).create()
 
 
 @app.teardown_request
