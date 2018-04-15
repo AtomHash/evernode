@@ -15,7 +15,7 @@
   "SQLALCHEMY_ECHO": true,
   "API": {
     "VERSION": "1",
-    "PREFIX": "v{version}"
+    "PREFIX": "v{v}"
   },
   "UPLOADS": {
     "FOLDER": "/srv/uploads",

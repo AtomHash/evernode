@@ -16,9 +16,11 @@ from ..models import db
 class App:
     """ Creates a Custom Flask App """
     app = Flask
+    __prefix = None
 
-    def __init__(self, name, middleware=None):
+    def __init__(self, name, prefix=None, middleware=None):
         self.app = Flask(name)
+        self.__prefix = prefix
         db.init_app(self.app)
         self.load_config()
         self.load_cors()
@@ -28,7 +30,7 @@ class App:
         self.load_before_middleware(middleware)
 
     def load_cors(self):
-        """ default cors allow all """
+        """ Default cors allow all """
         options = dict(
             origins='*',
             methods=[
@@ -81,22 +83,12 @@ class App:
         self.app.config['SQLALCHEMY_DATABASE_URI'] = \
             self.app.config['SQLALCHEMY_BINDS']['DEFAULT']
 
-    def api_prefix(self):
-        """ Get api prefix set in config.json """
-        config_api_prefix = self.app.config['API']['PREFIX']
-        config_api_version = self.app.config['API']['VERSION']
-        version_ident = '{version}'
-        if '{version}' in config_api_prefix:
-            return '/%s' % (config_api_prefix.replace(
-                version_ident, config_api_version))
-        return ''
-
     def load_before_middleware(self, before_middleware):
         """ Set before app middleware """
         # prefix api middleware
         self.app.wsgi_app = RouteBeforeMiddleware(
             self.app.wsgi_app,
-            self.app, prefix=self.api_prefix())
+            self.app, prefix=self.__prefix)
         # custom middleware
         if before_middleware is not None:
             for middleware in before_middleware:
@@ -120,4 +112,5 @@ class App:
         LoadModules(self.app)()
 
     def load_language_files(self):
+        """ Load language fiels in resources/lang dirs """
         LoadLanguageFiles(self.app)()
