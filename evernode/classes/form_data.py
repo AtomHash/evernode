@@ -100,4 +100,4 @@ class FormData:
                 'message': error
             }
         }
-        abort(JsonResponse(status_code=400, data=error).create())
+        abort(JsonResponse(status_code=400, data=error))

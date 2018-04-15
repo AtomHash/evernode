@@ -25,4 +25,4 @@ class SessionMiddleware(Middleware):
 
     def create_response(self):
         """ return 401 on invalid tokens """
-        self.response = JsonResponse(401).create()
+        self.response = JsonResponse(401)

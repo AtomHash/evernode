@@ -15,4 +15,4 @@ class JWTMiddleware(Middleware):
 
     def create_response(self):
         """ is condition false, return 401"""
-        self.response = JsonResponse(401).create()
+        self.response = JsonResponse(401)

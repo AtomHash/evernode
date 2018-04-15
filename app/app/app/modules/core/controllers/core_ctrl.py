@@ -19,13 +19,16 @@ class CoreController:
     @staticmethod
     def test():
         """ evernode testing """
-        return JsonResponse(200, None, "").create()
+        return JsonResponse(200, None, "")
 
     @staticmethod
     def test_translator():
         trans = Translator()
+        print('-------trans------')
+        print(trans.app_language)
+        print(str(trans.trans('welcome.home').encode('utf-8')))
         return JsonResponse(200, None,
-                            trans.trans('welcome.home')).create()
+                            trans.trans('welcome.home'))
 
     @staticmethod
     def test_render():
@@ -34,7 +37,7 @@ class CoreController:
         render.compile('ev/ern/ode.html', folder="emails/user")
         render.templates['evernode.html']
         return JsonResponse(200, None,
-                            render.templates['evernode.html']).create()
+                            render.templates['evernode.html'])
 
     @staticmethod
     def test_security():
@@ -43,12 +46,12 @@ class CoreController:
             encrypted=Security.encrypt("EverNode"),
             decrypt=Security.decrypt(Security.encrypt("EverNode")),
         )
-        return JsonResponse(200, None, security_functions).create()
+        return JsonResponse(200, None, security_functions)
 
     @staticmethod
     @middleware
     def user_check():
-        return JsonResponse(200, None, "is logged in").create()
+        return JsonResponse(200, None, "is logged in")
 
     @staticmethod
     def test_form_upload():
@@ -58,7 +61,7 @@ class CoreController:
         form.add_file("another-file")
         form.parse()
         form.file_save('image-file')
-        return JsonResponse(200, None, str(form.files)).create()
+        return JsonResponse(200, None, str(form.files))
 
     @staticmethod
     def generate_key():
@@ -72,7 +75,7 @@ class CoreController:
         form = FormData()
         form.add_field('name', error="you need a name", required=True)
         form.parse()
-        return JsonResponse(200, None, form.values['name']).create()
+        return JsonResponse(200, None, form.values['name'])
 
     def make_user():
         user = UserModel()
@@ -81,7 +84,7 @@ class CoreController:
         user.email = 'dylan.harty@growsafe.com'
         user.set_password('123321')
         user.save()
-        return JsonResponse(200, None, user).create()
+        return JsonResponse(200, None, user)
 
     def user_token():
         session = UserAuth(
@@ -90,4 +93,4 @@ class CoreController:
             password_error="Please Enter a password").session()
         if session is None:
             return JsonResponse(401).create()
-        return JsonResponse(200, None, session).create()
+        return JsonResponse(200, None, session)

@@ -2,7 +2,7 @@
     Response wrapper for HTTP request
 """
 
-from flask import Response
+from flask import current_app, Response
 from .translator import Translator
 from ..models.response_model import ResponseModel
 
@@ -18,7 +18,12 @@ class BaseResponse:
                  data=None, environ=None):
         self.environ = environ
         self.response_model = ResponseModel(
-            status_code, message, data=None)
+            status_code, message, data=data)
+
+    def __call__(self, environ=None, start_response=None) -> Response:
+        self.make_response()
+        start_response(self.status(), [('Content-Type', self.mimetype())])
+        return [self.content().encode('utf-8')]
 
     def status(self, status_code=None):
         """ Set status or Get Status """
@@ -46,6 +51,15 @@ class BaseResponse:
     def mimetype(self) -> str:
         """ Return private minetype """
         return self.__mimetype__
+
+    def make_response(self) -> Response:
+        """ Construct response """
+        self.response = current_app.response_class(
+            self.content(),
+            mimetype=self.mimetype()
+        )
+        self.response.status = self.status()
+        return self.response
 
     def quick_response(self, status_code):
         """ Quickly construct response using a status code """

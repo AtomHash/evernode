@@ -1,7 +1,6 @@
 """
     Easy JSON HTTP responses
 """
-from flask import current_app, Response
 from .base_response import BaseResponse
 
 
@@ -14,13 +13,3 @@ class JsonResponse(BaseResponse):
                          data=data, environ=environ)
         if message is None or data is None:
             self.quick_response(status_code)
-
-    def create(self) -> Response:
-        """ Construct response """
-        json_content = str(self.response_model)
-        self.response = current_app.response_class(
-            json_content,
-            mimetype=self.__mimetype__
-        )
-        self.response.status = self.status()
-        return self.response

@@ -23,4 +23,4 @@ class Middleware:
 
     def create_response(self):
         """ Default response for if condition is false(invalid) """
-        self.response = JsonResponse(401).create()
+        self.response = JsonResponse(401)

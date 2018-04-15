@@ -14,7 +14,7 @@ def middleware(func):
         kwargs.pop('middleware')
         if request.method == "OPTIONS":
             # return 200 json response for CORS
-            return JsonResponse(200).create()
+            return JsonResponse(200)
         if middleware is None:
             return func(*args, **kwargs)
         for mware in middleware:

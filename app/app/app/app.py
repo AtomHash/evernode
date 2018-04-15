@@ -13,7 +13,7 @@ app = app_class.app
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return JsonResponse(404).create()
+    return JsonResponse(404)
 
 
 @app.teardown_request
