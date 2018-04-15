@@ -24,9 +24,6 @@ class CoreController:
     @staticmethod
     def test_translator():
         trans = Translator()
-        print('-------trans------')
-        print(trans.app_language)
-        print(str(trans.trans('welcome.home').encode('utf-8')))
         return JsonResponse(200, None,
                             trans.trans('welcome.home'))
 
