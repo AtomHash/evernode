@@ -1,4 +1,4 @@
-""" Easy Translator for modules and appp """
+""" Easy Translator """
 import os
 from flask import current_app, request
 from werkzeug.utils import secure_filename
