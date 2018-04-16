@@ -1,4 +1,6 @@
-""" Easy password reset for BaseUserModel"""
+"""
+    Easy password reset for BaseUserModel
+"""
 
 from ..models import PasswordResetModel
 from .security import Security

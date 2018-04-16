@@ -1,4 +1,6 @@
-""" easy way to render jinja templates """
+"""
+    Easy way to render jinja templates
+"""
 
 import os
 import sys

@@ -36,12 +36,12 @@ class LoadLanguageFiles:
             self.app.config['LANGUAGE_PACKS'].update(language_pack)
 
     def __get_modules(self) -> list:
-        """  get the subdirectories of modules folder """
+        """  Get the subdirectories of modules folder """
         directory = os.path.join(sys.path[0], 'modules')
         return get_subdirectories(directory)
 
     def find_files(self):
-        """ gets modules routes.py and converts to module imports """
+        """ Gets modules routes.py and converts to module imports """
         modules = self.__get_modules()
         dirs = [dict(
             dir=os.path.join(sys.path[0], 'resources', 'lang'), module="root")]

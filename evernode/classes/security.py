@@ -1,6 +1,7 @@
-""" helper functions for application security """
+"""
+    Helper functions for application security
+"""
 
-import base64
 import random
 import string
 from cryptography.fernet import Fernet
@@ -9,7 +10,7 @@ from flask import current_app
 
 
 class Security:
-    """ static functions to help app security """
+    """ Static functions to help app security """
 
     @staticmethod
     def generate_key() -> str:
@@ -17,19 +18,19 @@ class Security:
 
     @staticmethod
     def encrypt(clear_text) -> str:
-        """ use config.json key to encrypt """
+        """ Use config.json key to encrypt """
         cipher = Fernet(current_app.config['KEY'])
         return cipher.encrypt(str.encode(clear_text)).decode("utf-8")
 
     @staticmethod
     def decrypt(crypt_text) -> str:
-        """ use config.json key to decrypt """
+        """ Use config.json key to decrypt """
         cipher = Fernet(current_app.config['KEY'])
         return cipher.decrypt(str.encode(crypt_text)).decode("utf-8")
 
     @staticmethod
     def random_string(length) -> str:
-        """ create a random string for security purposes """
+        """ Create a random string for security purposes """
         return ''.join(
             random.SystemRandom().choice(
                 string.ascii_uppercase + string.digits)
@@ -37,12 +38,12 @@ class Security:
 
     @staticmethod
     def hash(clear_text) -> str:
-        """ hash clear text """
+        """ Hash clear text """
         return generate_password_hash(
             clear_text,
             method=current_app.config['AUTH']['PASSWORD_HASHING'])
 
     @staticmethod
     def verify_hash(clear_text, hashed_text) -> bool:
-        """ check a hash """
+        """ Check a hash """
         return check_password_hash(hashed_text, clear_text)

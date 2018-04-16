@@ -18,9 +18,11 @@ class FormData:
         self.json_form_data = self.get_json_form_data()
 
     def get_json_form_data(self):
+        """ Load request Json Data, if any """
         return request.get_json(silent=True, force=True)
 
     def add_field(self, name, default=None, required=False, error=None):
+        """ Add a text/non-file field to parse for a value in the request """
         if name is None:
             return
         self.field_arguments.append(dict(
@@ -30,6 +32,7 @@ class FormData:
             error=error))
 
     def add_file(self, name, required=False, error=None, extensions=None):
+        """ Add a file field to parse on request (uploads) """
         if name is None:
             return
         self.file_arguments.append(dict(
@@ -39,6 +42,7 @@ class FormData:
             extensions=extensions))
 
     def file_save(self, name, filename=None, folder="", keep_ext=True) -> bool:
+        """ Easy save of a file """
         if name in self.files:
             file_object = self.files[name]
             clean_filename = secure_filename(file_object.filename)
@@ -53,6 +57,7 @@ class FormData:
         return None
 
     def parse(self):
+        """ Parse text fields and file fields for values and files """
         # get text fields
         for field in self.field_arguments:
             self.values[field['name']] = self.__get_value(field['name'])
@@ -65,6 +70,7 @@ class FormData:
                 self.__invalid_request(file['error'])
 
     def __get_value(self, field_name):
+        """ Get request Json value by field name """
         value = request.values.get(field_name)
         if value is None:
             if self.json_form_data is None:
@@ -74,6 +80,7 @@ class FormData:
         return value
 
     def __get_file(self, file):
+        """ Get request file and do a security check """
         file_object = None
         if file['name'] in request.files:
             file_object = request.files[file['name']]
@@ -88,6 +95,7 @@ class FormData:
         return file_object
 
     def __allowed_extension(self, filename, extensions):
+        """ Check allowed file extensions """
         allowed_extensions = current_app.config['UPLOADS']['EXTENSIONS']
         if extensions is not None:
             allowed_extensions = extensions
@@ -95,6 +103,8 @@ class FormData:
             allowed_extensions
 
     def __invalid_request(self, error):
+        """ Error response on failure """
+        # TODO: make this modifiable
         error = {
             'error': {
                 'message': error

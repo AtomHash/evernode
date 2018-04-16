@@ -1,7 +1,6 @@
 """
     Used for password verification
 """
-# from typing import Union
 from flask import current_app
 from .jwt import JWT
 from .form_data import FormData
@@ -31,7 +30,7 @@ class UserAuth:
         self.__collect_fields()
 
     def __collect_fields(self):
-        """ use field values from config.json and collect from request """
+        """ Use field values from config.json and collect from request """
         form = FormData()
         form.add_field(self.__username_field, required=True,
                        error=self.__username_error)
@@ -43,6 +42,7 @@ class UserAuth:
         return
 
     def session(self) -> str:
+        """ Generate a session(authorization Bearer) JWT token """
         self.user = self.user_model.get_by_username(self.username)
         if self.user is None:
             return None
@@ -62,5 +62,5 @@ class UserAuth:
         return None
 
     def verify_password(self, hashed_password) -> bool:
-        """ check a password hash """
+        """ Check a password hash """
         return Security.verify_hash(self.password, hashed_password)

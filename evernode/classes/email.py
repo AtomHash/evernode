@@ -24,7 +24,7 @@ class Email:
                 self.config_path = current_app.config['CONFIG_PATH']
 
     def add_address(self, address):
-        """ add email address """
+        """ Add email address """
         self.__addresses.append(address)
 
     def html(self, html):

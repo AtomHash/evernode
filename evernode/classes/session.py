@@ -1,11 +1,13 @@
-""" static methods to help handle state-less app sessions """
+"""
+    Static methods to help handle state-less app sessions
+"""
 import secrets
 from flask import current_app, g
 from ..models.session_model import SessionModel
 
 
 class Session:
-    """ helper class for app state-less sessions """
+    """ Helper class for app state-less sessions """
 
     @staticmethod
     def create_session_id() -> str:
@@ -19,14 +21,14 @@ class Session:
             g.session_id = session_id
             return True
         except (Exception, BaseException) as error:
-            """ catch all on config update """
+            # catch all on config update
             if current_app.config['DEBUG']:
                 print(error)
             return False
 
     @staticmethod
     def current_session() -> str:
-        """ return session id in app config, only current user """
+        """ Return session id in app globals, only current request """
         session_id = getattr(g, 'session_id', None)
         if session_id is not None:
             return SessionModel.get_by_session_id(session_id)
@@ -35,7 +37,7 @@ class Session:
     @classmethod
     def create_session(cls, session_id, user_id):
         """
-        save a new session to the database
+        Save a new session to the database
         Using the ['AUTH']['MAX_SESSIONS'] config setting
         a session with be created within the MAX_SESSIONS
         limit. Once this limit is hit, delete the earliest

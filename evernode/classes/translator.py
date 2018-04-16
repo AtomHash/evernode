@@ -28,7 +28,7 @@ class Translator:
                     raise Exception(
                         'Please set "DEFAULT_LANGUAGE" in evernode config')
         else:
-            # just strip encase of a absolute path in content-language
+            # just strip encase of an absolute path in content-language
             self.app_language = secure_filename(self.app_language)
         self.module_name = module_name
         if self.module_name is None:
@@ -76,5 +76,5 @@ class Translator:
             raise FileNotFoundError(file_path)
 
     def __list_key(self, key) -> list:
-        """ list a trans command by splitting dot-key syntax """
+        """ List a trans command by splitting dot-key syntax """
         return key.split(".")
