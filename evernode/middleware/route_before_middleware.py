@@ -1,4 +1,5 @@
 """ RouteBeforeMiddleware """
+from werkzeug.exceptions import NotFound
 from ..classes.json_response import JsonResponse
 
 
@@ -21,6 +22,13 @@ class RouteBeforeMiddleware:
                     environ['PATH_INFO'][len(self.prefix) + 1:]
                 environ['SCRIPT_NAME'] = self.prefix
                 return self.wsgi_app(environ, start_response)
+            if 404 in self.flask_app.error_handlers:
+                response = self.flask_app.error_handlers[404][NotFound](
+                    NotFound, environ=environ)
+                start_response(
+                    response.status(),
+                    [('Content-Type', response.mimetype())])
+                return [response.content().encode()]
             json_response = JsonResponse(404, environ=environ)
             start_response(
                 json_response.status(),

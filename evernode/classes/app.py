@@ -16,11 +16,11 @@ from ..models import db
 class App:
     """ Creates a Custom Flask App """
     app = Flask
-    __prefix = None
+    prefix = None
 
     def __init__(self, name, prefix=None, middleware=None):
         self.app = Flask(name)
-        self.__prefix = prefix
+        self.prefix = prefix
         db.init_app(self.app)
         self.load_config()
         self.load_cors()
@@ -88,7 +88,7 @@ class App:
         # prefix api middleware
         self.app.wsgi_app = RouteBeforeMiddleware(
             self.app.wsgi_app,
-            self.app, prefix=self.__prefix)
+            self.app, prefix=self.prefix)
         # custom middleware
         if before_middleware is not None:
             for middleware in before_middleware:
