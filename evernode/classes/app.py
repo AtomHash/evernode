@@ -3,7 +3,6 @@
 """
 import sys
 import os
-from pathlib import Path
 from flask import Flask
 from flask_cors import CORS
 from ..middleware import RouteBeforeMiddleware

@@ -1,7 +1,7 @@
 {
   "NAME": "EvernodeTest",
   "DEBUG": true,
-  "SERECT": "sgmABbi6V5DLmLsjCAkf68UHYYIJEtGF714MnmPRSp4=",
+  "SERECT": "d6vDaAP8JWDh9Vv3SrFUpBDdtrJEyL9XYJzvnt3m",
   "KEY": "sgmABbi6V5DLmLsjCAkf68UHYYIJEtGF714MnmPRSp4=",
   "DATETIME": {
     "TIMEZONE": "UTC",
@@ -33,6 +33,16 @@
       "X-Request-With",
       "Content-Language"
     ]
+  },
+  "EMAIL": {
+    "HOST": "smtp.example.com",
+    "PORT": 587,
+    "EMAIL": "noreply@example.com",
+    "NAME": "EverNode",
+    "AUTH": "true",
+    "TRANSPORT": "tls",
+    "USERNAME": "noreply@example.com",
+    "PASSWORD": "somePassword"
   },
   "AUTH": {
     "JWT_EXP_SECS": 360,

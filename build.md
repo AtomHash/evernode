@@ -23,7 +23,6 @@ try running docker-compose again
 run the docker python install commands.
 `wget https://bootstrap.pypa.io/get-pip.py && python3.6 get-pip.py`
 
-
 # Useful Libs
 * OTP HMAC-based (HOTP) and time-based (TOTP) passwords - https://github.com/tadeck/onetimepass/
 * OAuth 1.0/a & OAuth 2.0 - https://github.com/litl/rauth

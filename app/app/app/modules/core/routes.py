@@ -52,4 +52,9 @@ routes = [
         'url': '/test-translator',
         'name': 'core-test-translator',
         'methods': ['GET'],
-        'function': CoreController.test_translator}]
+        'function': CoreController.test_translator},
+    {
+        'url': '/test-email',
+        'name': 'core-test-email',
+        'methods': ['GET'],
+        'function': CoreController.test_email}]
