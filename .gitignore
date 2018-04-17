@@ -1,6 +1,8 @@
 # Test App
 app/app/logs/*
+!app/app/logs/.gitkeep 
 app/app/uploads/*
+!app/app/uploads/.gitkeep 
 
 # Python cache
 __pycache__
