@@ -6,10 +6,10 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from ..middleware import RouteBeforeMiddleware
+from .json import Json
 from .load_modules import LoadModules
 from .load_language_files import LoadLanguageFiles
 from ..functions import get_subdirectories
-from ..helpers import JsonHelper
 from ..models import db
 
 
@@ -137,7 +137,7 @@ class App:
         else:
             config_path = os.path.join(sys.path[0], 'config.json')
         if os.path.exists(config_path):
-            config = JsonHelper.from_file(config_path)
+            config = Json.from_file(config_path)
             if config is None:
                 raise RuntimeError('EverNode config.json requires valid json.')
             self.app.config.update(config)

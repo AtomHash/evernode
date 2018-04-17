@@ -3,7 +3,7 @@
 """
 import os
 import sys
-from ..helpers import JsonHelper
+from .json import Json
 
 
 class LoadLanguageFiles:
@@ -29,7 +29,7 @@ class LoadLanguageFiles:
                 file = file_pack['file']
                 data = None
                 if os.path.exists(file):
-                    data = JsonHelper.from_file(file)
+                    data = Json.from_file(file)
                 else:
                     raise FileNotFoundError(file)
                 current_pack[file_pack['language']] \

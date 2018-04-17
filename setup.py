@@ -7,7 +7,6 @@ setup(
         'evernode.classes',
         'evernode.decorators',
         'evernode.functions',
-        'evernode.helpers',
         'evernode.middleware',
         'evernode.models',
         'evernode.scripts',

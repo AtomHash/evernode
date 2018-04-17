@@ -6,8 +6,7 @@ from flask import Flask
 
 class Test_test_app(unittest.TestCase):
     def test_app_is_flask(self):
-        app_class = App(__name__, root_path=('C:\\Users\\dylan.harty\\Desktop'
-                                             '\\evernode\\app\\app\\app'))
+        app_class = App(__name__)
         self.assertIsInstance(app_class.app, Flask)
 
 

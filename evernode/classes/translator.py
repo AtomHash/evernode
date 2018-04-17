@@ -2,7 +2,7 @@
 import os
 from flask import current_app, request
 from werkzeug.utils import secure_filename
-from ..helpers import JsonHelper
+from .json import Json
 
 
 class Translator:
@@ -71,7 +71,7 @@ class Translator:
         key_list.pop(0)
         file_path = os.path.join(self.path, file)
         if os.path.exists(file_path):
-            return JsonHelper.from_file(file_path)
+            return Json.from_file(file_path)
         else:
             raise FileNotFoundError(file_path)
 
