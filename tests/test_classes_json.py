@@ -6,7 +6,7 @@ from json.decoder import JSONDecodeError
 from evernode.classes import Json
 
 
-class Test_test_json_filenotfound(unittest.TestCase):
+class Test_Classes_Json(unittest.TestCase):
     def test_json_read_not_found(self):
         self.assertRaises(FileNotFoundError, Json.from_file, 'nofile')
 

@@ -19,6 +19,8 @@ class Security:
     @staticmethod
     def encrypt(clear_text) -> str:
         """ Use config.json key to encrypt """
+        if not isinstance(clear_text, bytes):
+            clear_text = str.encode(clear_text)
         cipher = Fernet(current_app.config['KEY'])
         return cipher.encrypt(clear_text).decode("utf-8")
 
@@ -26,7 +28,9 @@ class Security:
     def decrypt(crypt_text) -> str:
         """ Use config.json key to decrypt """
         cipher = Fernet(current_app.config['KEY'])
-        return cipher.decrypt(str.encode(crypt_text)).decode("utf-8")
+        if not isinstance(crypt_text, bytes):
+            crypt_text = str.encode(crypt_text)
+        return cipher.decrypt(crypt_text).decode("utf-8")
 
     @staticmethod
     def random_string(length) -> str:
