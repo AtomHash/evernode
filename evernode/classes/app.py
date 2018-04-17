@@ -9,6 +9,7 @@ from flask_cors import CORS
 from ..middleware import RouteBeforeMiddleware
 from .load_modules import LoadModules
 from .load_language_files import LoadLanguageFiles
+from ..functions import get_subdirectories
 from ..helpers import JsonHelper
 from ..models import db
 
@@ -16,18 +17,52 @@ from ..models import db
 class App:
     """ Creates a Custom Flask App """
     app = Flask
+    root_path = None
+    config_path = None
     prefix = None
 
-    def __init__(self, name, prefix=None, middleware=None):
+    def __init__(self, name, prefix=None, middleware=None,
+                 root_path=None, config_path=None):
         self.app = Flask(name)
         self.prefix = prefix
-        db.init_app(self.app)
+        self.root_path = root_path
+        self.config_path = config_path
+        self.__root_path()
         self.load_config()
+        self.load_database()
         self.load_cors()
-        self.load_default_database()
         self.load_modules()
         self.load_language_files()
         self.load_before_middleware(middleware)
+
+    def __root_path(self):
+        """ Just checks the root path if set """
+        if self.root_path is not None:
+            if os.path.isdir(self.root_path):
+                sys.path.append(self.root_path)
+                return
+            raise RuntimeError('EverNode requires a valid root path.'
+                               ' Directory: %s does not exist'
+                               % (self.root_path))
+
+    def get_modules(self) -> list:
+        """  Get the module names(folders) in root modules folder """
+        directory = None
+        if self.root_path is not None:
+            directory = os.path.join(self.root_path, 'modules')
+        else:
+            directory = os.path.join(sys.path[0], 'modules')
+        if os.path.isdir(directory):
+            return get_subdirectories(directory)
+        raise RuntimeError('EverNode requires a valid root modules folder.'
+                           'Directory: %s does not exist' % (directory))
+
+    def load_database(self):
+        """ Load default database, init flask-SQLAlchemy """
+        if 'SQLALCHEMY_DATABASE_URI' not in self.app.config:
+            self.app.config['SQLALCHEMY_DATABASE_URI'] = \
+                self.app.config['SQLALCHEMY_BINDS']['DEFAULT']
+        db.init_app(self.app)
 
     def load_cors(self):
         """ Default cors allow all """
@@ -78,11 +113,6 @@ class App:
                     self.app.config['CORS']['RESOURCES']
         CORS(self.app, **options)
 
-    def load_default_database(self):
-        """ Set default database form config.json """
-        self.app.config['SQLALCHEMY_DATABASE_URI'] = \
-            self.app.config['SQLALCHEMY_BINDS']['DEFAULT']
-
     def load_before_middleware(self, before_middleware):
         """ Set before app middleware """
         # prefix api middleware
@@ -99,18 +129,27 @@ class App:
                     self.app.wsgi_app = middleware(self.app.wsgi_app, self.app)
 
     def load_config(self):
-        """ Load config.json into memory """
-        config_path = os.path.join(Path(sys.path[0]).parent, 'config.json')
-        config = JsonHelper.from_file(config_path)
-        if config is None:
-            raise FileNotFoundError
-        self.app.config.update(config)
-        self.app.config.update(CONFIG_PATH=config_path)
+        """ Load EverNode config.json """
+        config_path = None
+        if self.config_path is not None:
+            config_path = os.path.join(self.config_path, 'config.json')
+        elif self.root_path is not None and self.config_path is None:
+            config_path = os.path.join(self.root_path, 'config.json')
+        else:
+            config_path = os.path.join(sys.path[0], 'config.json')
+        if os.path.exists(config_path):
+            config = JsonHelper.from_file(config_path)
+            if config is None:
+                raise RuntimeError('EverNode config.json requires valid json.')
+            self.app.config.update(config)
+            self.app.config.update(CONFIG_PATH=config_path)
+            return
+        raise FileNotFoundError(config_path)
 
     def load_modules(self):
         """ Load folders(custom modules) in modules folder """
-        LoadModules(self.app)()
+        LoadModules(self)()
 
     def load_language_files(self):
         """ Load language fiels in resources/lang dirs """
-        LoadLanguageFiles(self.app)()
+        LoadLanguageFiles(self)()

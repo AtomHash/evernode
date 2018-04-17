@@ -3,17 +3,18 @@
 """
 import os
 import sys
-from ..functions import get_subdirectories
 from ..helpers import JsonHelper
 
 
 class LoadLanguageFiles:
     """ Loads modules and global language files """
     app = None
+    evernode_app = None
     module_packs = []
 
-    def __init__(self, app):
-        self.app = app
+    def __init__(self, evernode_app):
+        self.evernode_app = evernode_app
+        self.app = evernode_app.app
         self.app.config.update(dict(LANGUAGE_PACKS={}))
         self.find_files()
 
@@ -35,28 +36,23 @@ class LoadLanguageFiles:
                     .update({file_pack['name']: data})
             self.app.config['LANGUAGE_PACKS'].update(language_pack)
 
-    def __get_modules(self) -> list:
-        """  Get the subdirectories of modules folder """
-        directory = os.path.join(sys.path[0], 'modules')
-        return get_subdirectories(directory)
-
     def find_files(self):
         """ Gets modules routes.py and converts to module imports """
-        modules = self.__get_modules()
+        modules = self.evernode_app.get_modules()
+        root_path = sys.path[0] if self.evernode_app.root_path is None \
+            else self.evernode_app.root_path
         dirs = [dict(
-            dir=os.path.join(sys.path[0], 'resources', 'lang'), module="root")]
+            dir=os.path.join(root_path, 'resources', 'lang'), module="root")]
         for module_name in modules:
-            modules_folder = "modules/%s"
+            modules_folder = 'modules{}%s'.format(os.sep)
             if module_name is not None:
-                modules_folder = modules_folder % (module_name.strip('/'))
+                modules_folder = modules_folder % (module_name.strip(os.sep))
             else:
                 continue
             path = os.path.join(
-                sys.path[0], modules_folder, 'resources', 'lang')
-            if os.path.exists(path):
-                dirs.append(dict(
-                    dir=path,
-                    module=module_name))
+                root_path, modules_folder, 'resources', 'lang')
+            if os.path.isdir(path):
+                dirs.append(dict(dir=path, module=module_name))
         for dir in dirs:
             module_pack = {
                 'name': dir['module'],
@@ -70,14 +66,14 @@ class LoadLanguageFiles:
                     module_pack['file_packs'].append(dict(
                         file=os.path.join(path, name),
                         name=name.rsplit('.', 1)[0].lower(),
-                        language=path.split("lang/", 1)[1].strip()
+                        language=path.split("lang%s" % (os.sep), 1)[1].strip()
                     ))
             self.module_packs.append(module_pack)
         for module_pack in self.module_packs:
             module_pack['file_packs'] = \
                 list({v['file']: v for v in module_pack['file_packs']}
                      .values())
-        if 'DEBUG' in self.app.config and self.app.config['DEBUG']:
-            print('--- Loading Language Files ---')
+        if self.app.config['DEBUG']:
+            print('--- Loaded Language Files ---')
             print("Loaded Dirs: " + str(dirs))
-            print("Loaded Module Packs: " + str(self.module_packs))
+            print("Loaded Language Packs: " + str(self.module_packs))

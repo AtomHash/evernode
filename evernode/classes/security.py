@@ -20,7 +20,7 @@ class Security:
     def encrypt(clear_text) -> str:
         """ Use config.json key to encrypt """
         cipher = Fernet(current_app.config['KEY'])
-        return cipher.encrypt(str.encode(clear_text)).decode("utf-8")
+        return cipher.encrypt(clear_text).decode("utf-8")
 
     @staticmethod
     def decrypt(crypt_text) -> str:

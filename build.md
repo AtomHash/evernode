@@ -18,3 +18,12 @@ g userland proxy: mkdir /port/tcp:0.0.0.0:443:tcp:some_ip:443: input/output erro
 restart docker
 * Step 3
 try running docker-compose again
+
+# Useful commands to run evernode tests locally without docker
+run the docker python install commands.
+`wget https://bootstrap.pypa.io/get-pip.py && python3.6 get-pip.py`
+
+
+# Useful Libs
+* OTP HMAC-based (HOTP) and time-based (TOTP) passwords - https://github.com/tadeck/onetimepass/
+* OAuth 1.0/a & OAuth 2.0 - https://github.com/litl/rauth

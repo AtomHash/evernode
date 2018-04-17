@@ -1,5 +1,6 @@
 # Test App
 app/app/logs/*
+app/app/uploads/*
 
 # Python cache
 __pycache__

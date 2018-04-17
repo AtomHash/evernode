@@ -23,7 +23,7 @@ class BaseResponse:
     def __call__(self, environ=None, start_response=None) -> Response:
         self.make_response()
         start_response(self.status(), [('Content-Type', self.mimetype())])
-        return [self.content().encode('utf-8')]
+        return [self.content()]
 
     def status(self, status_code=None):
         """ Set status or Get Status """
