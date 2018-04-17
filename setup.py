@@ -1,7 +1,7 @@
 from setuptools import setup
 setup(
     name='evernode',
-    version='0.3.0',
+    version='1.0.0',
     packages=[
         'evernode',
         'evernode.classes',
@@ -15,8 +15,14 @@ setup(
     author='AtomHash',
     author_email='me@dylanharty.com',
     url='https://github.com/atomhash/evernode',
-    download_url='https://github.com/atomhash/evernode/archive/0.3.0.tar.gz',
-    keywords=['server', 'flask-based', 'restful', 'modular', 'evernode'],
+    download_url='https://github.com/atomhash/evernode/archive/1.0.0.tar.gz',
+    keywords=[
+        'server',
+        'flask-based',
+        'restful',
+        'modular',
+        'evernode'
+    ],
     install_requires=[
         'flask',
         'Flask-Cors>=3.0.3',
