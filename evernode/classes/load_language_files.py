@@ -15,6 +15,7 @@ class LoadLanguageFiles:
     def __init__(self, evernode_app):
         self.evernode_app = evernode_app
         self.app = evernode_app.app
+        self.module_packs = []
         self.app.config.update(dict(LANGUAGE_PACKS={}))
         self.find_files()
 
