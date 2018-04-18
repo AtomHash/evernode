@@ -1,26 +1,16 @@
 # pylint: skip-file
 
 import unittest
+import sys
 import os
 import datetime
 from json.decoder import JSONDecodeError
 from evernode.classes import Json
-from evernode.classes import App
+sys.path.append(os.path.join(os.path.dirname(__file__), os.pardir))
+from tests.test_class import TestClass # noqa
 
 
-class Test_Classes_Json(unittest.TestCase):
-
-    app_class = None
-
-    def setUp(self):
-        script_path = os.path.dirname(__file__)
-        root_path_file = os.path.join(script_path, 'root_path.txt')
-        with open(root_path_file, 'r') as opened_file:
-            root_path = opened_file.read().replace('\n', '')
-            self.app_class = App(__name__, root_path=(root_path))
-
-    def tearDown(self):
-        self.app_class = None
+class Test_Classes_Json(TestClass):
 
     def test_json_read_not_found(self):
         self.assertRaises(FileNotFoundError, Json.from_file, 'nofile')
