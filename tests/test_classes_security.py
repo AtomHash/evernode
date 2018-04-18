@@ -12,7 +12,7 @@ class Test_Classes_Security(unittest.TestCase):
 
     def setUp(self):
         script_path = os.path.dirname(__file__)
-        root_path_file = os.path.join(script_path, 'read_me.txt')
+        root_path_file = os.path.join(script_path, 'root_path.txt')
         with open(root_path_file, 'r') as opened_file:
             root_path = opened_file.read().replace('\n', '')
             self.app_class = App(__name__, root_path=(root_path))
