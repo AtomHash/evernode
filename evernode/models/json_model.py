@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 class JsonModel:
-    """ easy class to JSON convertion """
+    """ easy class to JSON conversion """
 
     exclude_list = []
 

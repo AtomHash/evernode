@@ -1,5 +1,7 @@
-""" a structure for responses """
-from ..helpers import JsonHelper
+"""
+    Structure for responses
+"""
+from ..classes.json import Json
 
 
 class ResponseModel:
@@ -16,7 +18,7 @@ class ResponseModel:
         self.data = data
 
     def __repr__(self):
-        return JsonHelper.string(self)
+        return Json.string(self)
 
     def __str__(self):
         return self.__repr__()

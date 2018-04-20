@@ -10,4 +10,4 @@ class DatabaseModel(db.Model):
 
     __abstract__ = True
     __bind_key__ = "DEFAULT"
-    database = db
+    db = db

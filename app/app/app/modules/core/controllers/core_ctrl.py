@@ -1,18 +1,16 @@
 """
     Core Controller
 """
-
-from datetime import datetime
-from flask import request # noqa
-from evernode.classes import JsonResponse, Render, Security, Email, User # noqa
-from evernode.models import JsonModel
-from evernode.decorators import load_middleware # noqa
+from flask import request, current_app # noqa
+from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator # noqa
+from evernode.decorators import middleware # noqa
 from ..models import UserModel # noqa
 from evernode.models import PasswordResetModel # noqa
 
 
-class TestJsonModel(JsonModel):
-    date = ""
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in \
+        current_app.config['UPLOADS']['EXTENSIONS']
 
 
 class CoreController:
@@ -21,6 +19,87 @@ class CoreController:
     @staticmethod
     def test():
         """ evernode testing """
-        test = TestJsonModel()
-        test.date = datetime.now()
-        return JsonResponse(200, None, test).create()
+        return JsonResponse(200, None, "")
+
+    @staticmethod
+    def test_email():
+        email = Email(send_as_one=True)
+        email.html('hello')
+        email.text('hello')
+        email.add_address('dylan.harty@growsafe.com')
+        email.add_address('me@dylanharty.com')
+        email.add_cc('dylantechy@gmail.com')
+        email.add_file('/srv/logs/uwsgi.log')
+        email.send()
+        return JsonResponse(200, None, "")
+
+    @staticmethod
+    def test_translator():
+        trans = Translator()
+        return JsonResponse(200, None,
+                            trans.trans('welcome.home'))
+
+    @staticmethod
+    def test_render():
+        """ evernode testing """
+        render = Render()
+        render.compile('ev/ern/ode.html', folder="emails/user")
+        render.templates['evernode.html']
+        return JsonResponse(200, None,
+                            render.templates['evernode.html'])
+
+    @staticmethod
+    def test_security():
+        security_functions = dict(
+            string="EverNode",
+            encrypted=Security.encrypt("EverNode"),
+            decrypt=Security.decrypt(Security.encrypt("EverNode")),
+        )
+        return JsonResponse(200, None, security_functions)
+
+    @staticmethod
+    @middleware
+    def user_check():
+        return JsonResponse(200, None, "is logged in")
+
+    @staticmethod
+    def test_form_upload():
+        """ evernode testing """
+        form = FormData()
+        form.add_file("image-file")
+        form.add_file("another-file")
+        form.parse()
+        form.file_save('image-file')
+        return JsonResponse(200, None, str(form.files))
+
+    @staticmethod
+    def generate_key():
+        """ evernode testing """
+        key = Security.generate_key()
+        return JsonResponse(200, None, key).create()
+
+    @staticmethod
+    def test_form():
+        """ evernode testing """
+        form = FormData()
+        form.add_field('name', error="you need a name", required=True)
+        form.parse()
+        return JsonResponse(200, None, form.values['name'])
+
+    def make_user():
+        user = UserModel()
+        user.firstname = 'Dylan'
+        user.lastname = 'Harty'
+        user.email = 'dylan.harty@growsafe.com'
+        user.set_password('123321')
+        user.save()
+        return JsonResponse(200, None, user)
+
+    def user_token():
+        session = UserAuth(
+            UserModel,
+            username_error="Please enter a username",
+            password_error="Please Enter a password").session()
+        if session is None:
+            return JsonResponse(401).create()
+        return JsonResponse(200, None, session)

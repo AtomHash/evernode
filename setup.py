@@ -1,13 +1,18 @@
+import io
+import re
 from setuptools import setup
+
+with io.open('evernode/__init__.py', 'rt', encoding='utf8') as f:
+    version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
+
 setup(
     name='evernode',
-    version='0.2.7',
+    version=version,
     packages=[
         'evernode',
         'evernode.classes',
         'evernode.decorators',
         'evernode.functions',
-        'evernode.helpers',
         'evernode.middleware',
         'evernode.models',
         'evernode.scripts',
@@ -16,8 +21,14 @@ setup(
     author='AtomHash',
     author_email='me@dylanharty.com',
     url='https://github.com/atomhash/evernode',
-    download_url='https://github.com/atomhash/evernode/archive/0.2.7.tar.gz',
-    keywords=['server', 'flask-based', 'restful', 'modular', 'evernode'],
+    download_url='https://github.com/atomhash/evernode/archive/%s.tar.gz' % (version),
+    keywords=[
+        'server',
+        'flask-based',
+        'restful',
+        'modular',
+        'evernode'
+    ],
     install_requires=[
         'flask',
         'Flask-Cors>=3.0.3',

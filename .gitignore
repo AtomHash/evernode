@@ -1,5 +1,11 @@
-# Test App
+# Demo App
 app/app/logs/*
+!app/app/logs/.gitkeep 
+app/app/uploads/*
+!app/app/uploads/.gitkeep 
+
+# Docs
+docs/_build/*
 
 # Python cache
 __pycache__
@@ -19,8 +25,10 @@ _build
 
 # Installer logs
 pip-log.txt
+build.txt
 
 # Unit test / coverage reports
 .coverage
 .tox
 .cache
+tests/root_path.txt

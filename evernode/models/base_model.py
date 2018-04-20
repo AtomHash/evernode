@@ -1,5 +1,5 @@
 """ sets base db model for applciation """
-
+from flask import current_app
 from datetime import datetime
 from sqlalchemy import Column, Integer, DateTime
 from .database_model import DatabaseModel
@@ -28,19 +28,13 @@ class BaseModel(DatabaseModel):
         self.updated_at = datetime.utcnow()
         self.save()
 
-    def update_timestamps(self):
-        """ update created_at and updated_at timestamps """
-        self.updated_at = datetime.utcnow()
-        self.created_at = datetime.utcnow()
-        self.save()
-
     def delete(self):
         """ easy delete for db models """
         try:
             if self.exists() is False:
                 return None
-            self.database.session.delete(self)
-            self.database.session.commit()
+            self.db.session.delete(self)
+            self.db.session.commit()
         except (Exception, BaseException) as error:
             # fail silently
             return None
@@ -49,9 +43,11 @@ class BaseModel(DatabaseModel):
         """ easy save(insert or update) for db models """
         try:
             if self.exists() is False:
-                self.database.session.add(self)
-            # self.database.session.merge(self)
-            self.database.session.commit()
-        except Exception:
+                self.db.session.add(self)
+            # self.db.session.merge(self)
+            self.db.session.commit()
+        except (Exception, BaseException) as error:
+            if current_app.config['DEBUG']:
+                print(error)
             # fail silently
             return None
