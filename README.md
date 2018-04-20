@@ -1,6 +1,6 @@
 EverNode
 ===
-[![Build Status](https://travis-ci.org/AtomHash/evernode.svg?branch=dev-1.0.0)](https://travis-ci.org/AtomHash/evernode) [![Pypi Package](https://badge.fury.io/py/evernode.svg)](https://pypi.org/project/evernode)
+[![Build Status](https://travis-ci.org/AtomHash/evernode.svg?branch=dev-1.0.0)](https://travis-ci.org/AtomHash/evernode) [![Pypi Package](https://badge.fury.io/py/evernode.svg)](https://pypi.org/project/evernode) [![Docs](https://readthedocs.org/projects/evernode/badge/)](http://evernode.readthedocs.io/en/latest/)
 
 EverNode for fast beautiful APIs
 ---
