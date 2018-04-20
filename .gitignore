@@ -4,6 +4,9 @@ app/app/logs/*
 app/app/uploads/*
 !app/app/uploads/.gitkeep 
 
+# Docs
+docs/_build/*
+
 # Python cache
 __pycache__
 
