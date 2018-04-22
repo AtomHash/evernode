@@ -11,4 +11,64 @@ config.json
 
 Your EverNode config should look like::
 
-    config.json
+    {
+      "NAME": "EvernodeTest",
+      "DEBUG": true,
+      "SERECT": "d6vDaAP8JWDh9Vv3SrFUpBDdtrJEyL9XYJzvnt3m",
+      "KEY": "sgmABbi6V5DLmLsjCAkf68UHYYIJEtGF714MnmPRSp4=",
+      "DATETIME": {
+        "TIMEZONE": "UTC",
+        "DATE_FORMAT": "%Y-%m-%d",
+        "TIME_FORMAT": "%H:%M:%S",
+        "SEPARATOR": " "
+      },
+      "DEFAULT_LANGUAGE": "en",
+      "HOST": "localhost",
+      "SQLALCHEMY_TRACK_MODIFICATIONS": false,
+      "SQLALCHEMY_ECHO": true,
+      "API": {
+        "VERSION": "1",
+        "PREFIX": "v{v}"
+      },
+      "UPLOADS": {
+        "FOLDER": "/srv/uploads",
+        "EXTENSIONS": [
+          "png",
+          "jpg"
+        ]
+      },
+      "CORS": {
+        "ALLOW_HEADERS": [
+          "Origin",
+          "Content-Type",
+          "Accept",
+          "Authorization",
+          "X-Request-With",
+          "Content-Language"
+        ]
+      },
+      "EMAIL": {
+        "HOST": "smtp.example.com",
+        "PORT": 587,
+        "EMAIL": "noreply@example.com",
+        "NAME": "EverNode",
+        "AUTH": "true",
+        "TRANSPORT": "tls",
+        "USERNAME": "noreply@example.com",
+        "PASSWORD": "somePassword"
+      },
+      "AUTH": {
+        "JWT_EXP_SECS": 360,
+        "FAST_SESSIONS": true,
+        "MAX_SESSIONS": 1,
+        "USERNAME_FIELD": "email",
+        "PASSWORD_FIELD": "password",
+        "PASSWORD_HASHING": "pbkdf2:sha512"
+      },
+      "MAX_CONTENT_LENGTH": 2000000,
+      "SQLALCHEMY_POOL_SIZE": 100,
+      "SQLALCHEMY_POOL_RECYCLE": 280,
+      "SQLALCHEMY_BINDS": {
+        "DEFAULT": "mysql://api_user:password@172.27.0.121/api"
+      }
+    }
