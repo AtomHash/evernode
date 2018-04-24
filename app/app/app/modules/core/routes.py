@@ -8,6 +8,11 @@ routes = [
         'methods': ['GET', 'POST'],
         'function': CoreController.test},
     {
+        'url': '/user-json',
+        'name': 'core-user-json',
+        'methods': ['GET'],
+        'function': CoreController.user_json},
+    {
         'url': '/make-user',
         'name': 'core-make-user',
         'methods': ['GET'],

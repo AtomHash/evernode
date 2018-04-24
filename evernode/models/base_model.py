@@ -3,9 +3,10 @@ from flask import current_app
 from datetime import datetime
 from sqlalchemy import Column, Integer, DateTime
 from .database_model import DatabaseModel
+from .json_model import JsonModel
 
 
-class BaseModel(DatabaseModel):
+class BaseModel(DatabaseModel, JsonModel):
     """ adds usefull custom attributes for applciation use """
 
     __abstract__ = True

@@ -13,14 +13,11 @@ class JsonModel:
         """
         using the exclude lists, convert fields to a string.
         """
-        default_exclude_list = ['_session', '_sa_instance_state']
         if self.exclude_list is None:
-            merged_exclude_list = default_exclude_list
-        else:
-            merged_exclude_list = default_exclude_list + self.exclude_list
+            self.exclude_list = []
         fields = {}
         for key, item in vars(self).items():
-            if key in merged_exclude_list:
+            if str(key).startswith('_') or key in self.exclude_list:
                 continue
             key = self.camel_case(key)
             new_key = key[0].lower() + key[1:]

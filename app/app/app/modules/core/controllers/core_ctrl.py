@@ -22,11 +22,15 @@ class CoreController:
         return JsonResponse(200, None, "")
 
     @staticmethod
+    def user_json():
+        user = UserModel.get_by_id(0)
+        return JsonResponse(200, None, user)
+
+    @staticmethod
     def test_email():
         email = Email(send_as_one=True)
         email.html('hello')
         email.text('hello')
-        email.add_address('dylan.harty@growsafe.com')
         email.add_address('me@dylanharty.com')
         email.add_cc('dylantechy@gmail.com')
         email.add_file('/srv/logs/uwsgi.log')
