@@ -2,6 +2,8 @@
 
 import flask
 from datetime import datetime
+from ..classes.json import Json
+import ast
 
 
 class JsonModel:
@@ -21,18 +23,11 @@ class JsonModel:
                 continue
             key = self.camel_case(key)
             new_key = key[0].lower() + key[1:]
-            if isinstance(item, datetime):
-                app = flask.current_app
-                if 'DATETIME' in app.config:
-                    if 'DATE_FORMAT' in app.config['DATETIME'] \
-                            and 'TIME_FORMAT' in app.config['DATETIME']:
-                                item = item.strftime('{0}{1}{2}'.format(
-                                    app.config['DATETIME']['DATE_FORMAT'],
-                                    app.config['DATETIME']['SEPARATOR'],
-                                    app.config['DATETIME']['TIME_FORMAT']))
-                else:
-                    item = item.strftime('%x %X')
+            item = item
             fields[new_key] = item
+        obj = Json.string(fields, to_json=False)
+        print('----4454---')
+        print(str(obj))
         return str(fields)
 
     def camel_case(self, snake_case):
@@ -41,6 +36,12 @@ class JsonModel:
         """
         components = snake_case.split('_')
         return components[0] + "".join(x.title() for x in components[1:])
+
+    def add(self, name, value):
+        setattr(self, name, value)
+
+    def remove(self, name):
+        del self.__dict__[name]
 
     def __repr__(self):
         """

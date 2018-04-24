@@ -13,48 +13,16 @@ from flask import current_app
 class Json():
     """ help break down and construct json objects """
 
-    @staticmethod
-    def object_dict(object_class) -> str:
-        """ convert a class object dict to json """
-        if not isinstance(object_class, dict):
-            obj_to_dict = Json.iterate_object(
-                dict(object_class.__dict__))
-        else:
-            obj_to_dict = Json.iterate_object(object_class)
-        return system_json.dumps(obj_to_dict, ensure_ascii=False)
+    def __init__(self, value):
+        self.value = value
 
     @staticmethod
-    def iterate_object(obj) -> dict:
-        """ Convert object to flattened object """
-        new_obj = {}
-        if hasattr(obj, 'items'):
-            for key, value in obj.items():
-                string_val = ""
-                if hasattr(value, '__dict__'):
-                    string_val = Json.iterate_object(value)
-                else:
-                    if isinstance(value, datetime.date):
-                        try:
-                            string_val = value.strftime('{0}{1}{2}'.format(
-                                current_app.config['DATETIME']['DATE_FORMAT'],
-                                current_app.config['DATETIME']['SEPARATOR'],
-                                current_app.config['DATETIME']['TIME_FORMAT']))
-                        except RuntimeError as error:
-                            string_val = value.strftime('%Y-%m-%d %H:%M:%S')
-                    elif isinstance(value, bytes):
-                        string_val = value.decode('utf-8')
-                    else:
-                        string_val = value
-                new_obj[key] = string_val
-        else:
-            new_obj = obj
-        obj_to_dict = ast.literal_eval(str(new_obj))
-        return obj_to_dict
-
-    @staticmethod
-    def string(object_class):
+    def string(value, to_json=True):
         """ alias for object_dict """
-        return Json.object_dict(object_class)
+        json = Json(value)
+        if to_json:
+            return system_json.dumps(json.__safe_object(), ensure_ascii=False)
+        return json.__safe_object()
 
     @staticmethod
     def parse(string, is_file=False, obj=False):
@@ -87,3 +55,58 @@ class Json():
         """ load small json file """
         with io.open(file_path, 'r', encoding='utf-8') as json_stream:
             return Json.parse(json_stream, True)
+
+    def __safe_object(self):
+        if isinstance(self.value, datetime.date):
+            return self.safe_datetime(self.value)
+        elif isinstance(self.value, dict) or hasattr(self.value, '__dict__'):
+            return self.__iterate_object(self.value)
+        else:
+            return self.value
+
+    def __iterate_object(self, obj) -> dict:
+        """ Convert object to flattened object """
+        if hasattr(obj, 'items'):
+            return self.construct_object(obj)
+        else:
+            return self.construct_object(vars(obj))
+        return None
+
+    def construct_object(self, obj):
+        new_obj = {}
+        for key, value in obj.items():
+            string_val = ""
+            if hasattr(value, '__dict__') or isinstance(value, dict):
+                string_val = self.__iterate_object(value)
+            else:
+                string_val = self.safe_values(value)
+            new_obj[self.camel_case(key)] = string_val
+        return new_obj
+
+    def safe_values(self, value):
+        string_val = ""
+        if isinstance(value, datetime.date):
+            string_val = self.safe_datetime(value)
+        elif isinstance(value, bytes):
+            string_val = value.decode('utf-8')
+        else:
+            string_val = value
+        return string_val
+
+    def safe_datetime(self, value):
+        string_val = ""
+        try:
+            string_val = value.strftime('{0}{1}{2}'.format(
+                current_app.config['DATETIME']['DATE_FORMAT'],
+                current_app.config['DATETIME']['SEPARATOR'],
+                current_app.config['DATETIME']['TIME_FORMAT']))
+        except RuntimeError as error:
+            string_val = value.strftime('%Y-%m-%d %H:%M:%S')
+        return string_val
+
+    def camel_case(self, snake_case):
+        """
+        convert snake case to camel case
+        """
+        components = snake_case.split('_')
+        return components[0] + "".join(x.title() for x in components[1:])

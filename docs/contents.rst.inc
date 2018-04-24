@@ -11,7 +11,6 @@ instructions for web development with EverNode.
    foreword
    installation
    getting-started
-   config
    patterns
 
 API Reference

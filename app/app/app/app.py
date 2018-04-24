@@ -6,8 +6,8 @@ from evernode.classes import App, JsonResponse
 from evernode.models import db
 
 # --- @boot ---
-app_class = App(__name__)
-app = app_class.app
+evernode_app = App(__name__)
+app = evernode_app.app
 # --- @boot ---
 
 
@@ -31,6 +31,4 @@ def teardown_app(exception=None):
 
 # uWSGI entry point
 if __name__ == '__main__':
-    if app.config['DEBUG']:
-        app_class.load_modules(True)
     app.run()

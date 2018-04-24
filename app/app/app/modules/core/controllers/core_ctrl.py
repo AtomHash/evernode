@@ -5,7 +5,8 @@ from flask import request, current_app # noqa
 from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator # noqa
 from evernode.decorators import middleware # noqa
 from ..models import UserModel # noqa
-from evernode.models import PasswordResetModel # noqa
+from evernode.models import PasswordResetModel, JsonModel # noqa
+from datetime import datetime
 
 
 def allowed_file(filename):
@@ -19,7 +20,15 @@ class CoreController:
     @staticmethod
     def test():
         """ evernode testing """
-        return JsonResponse(200, None, "")
+        class JJ(JsonModel):
+            bob = None
+
+            def __init__(self):
+                self.bob = None
+                self.time = datetime.now()
+                self.time2 = {'ti_me': datetime.now()}
+                self.time3 = {'ti_me': ['s', 'f', 1]}
+        return JsonResponse(200, None, JJ())
 
     @staticmethod
     def user_json():
