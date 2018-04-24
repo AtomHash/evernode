@@ -21,8 +21,8 @@ class Json():
         """ alias for object_dict """
         json = Json(value)
         if to_json:
-            return system_json.dumps(json.__safe_object(), ensure_ascii=False)
-        return json.__safe_object()
+            return system_json.dumps(json.safe_object(), ensure_ascii=False)
+        return json.safe_object()
 
     @staticmethod
     def parse(string, is_file=False, obj=False):
@@ -56,7 +56,7 @@ class Json():
         with io.open(file_path, 'r', encoding='utf-8') as json_stream:
             return Json.parse(json_stream, True)
 
-    def __safe_object(self):
+    def safe_object(self):
         if isinstance(self.value, datetime.date):
             return self.safe_datetime(self.value)
         elif isinstance(self.value, dict) or hasattr(self.value, '__dict__'):
