@@ -45,7 +45,7 @@ class BaseUserModel(BaseModel):
         """
         Create a password reset request in the user_password_resets
         database table. Hashed code gets stored in the database.
-        Returns unhashed code
+        Returns unhashed reset code
         """
         if self.email is None:
             return None

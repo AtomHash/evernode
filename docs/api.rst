@@ -3,13 +3,12 @@
 API
 ===
 
-.. module:: evernode.classes
-
 The technical part of the documentation that covers what certain interfaces do within EverNode.
 
 
 Classes
 ---------------------------------------
+.. module:: evernode.classes
 
 This part of the documentation covers all the classes of EverNode.
 
@@ -118,6 +117,62 @@ UserAuth
 ````````````````````
 
 .. autoclass:: UserAuth
+   :members:
+   :inherited-members:
+
+
+Models
+---------------------------------------
+.. module:: evernode.models
+
+This part of the documentation covers all the models of EverNode.
+
+BaseModel
+````````````````````
+
+.. autoclass:: BaseModel
+   :members:
+   :inherited-members:
+
+BaseUserModel
+````````````````````
+
+.. autoclass:: BaseUserModel
+   :members:
+   :inherited-members:
+
+DatabaseModel
+````````````````````
+
+.. autoclass:: DatabaseModel
+   :members:
+   :inherited-members:
+
+JsonModel
+````````````````````
+
+.. autoclass:: JsonModel
+   :members:
+   :inherited-members:
+
+PasswordResetModel
+````````````````````
+
+.. autoclass:: PasswordResetModel
+   :members:
+   :inherited-members:
+
+ResponseModel
+````````````````````
+
+.. autoclass:: ResponseModel
+   :members:
+   :inherited-members:
+
+SessionModel
+````````````````````
+
+.. autoclass:: SessionModel
    :members:
    :inherited-members:
 

@@ -7,8 +7,17 @@ class JsonModel:
     """ easy class to JSON conversion """
 
     exclude_list = []
+    """ add names in here to exclude attributes in serialization """
 
-    def json(self):
+    def add(self, name, value):
+        """ add attribute """
+        setattr(self, name, value)
+
+    def remove(self, name):
+        """ remove attribute """
+        del self.__dict__[name]
+
+    def __json(self):
         """
         using the exclude lists, convert fields to a string.
         """
@@ -22,17 +31,11 @@ class JsonModel:
         obj = Json.safe_object(fields)
         return str(obj)
 
-    def add(self, name, value):
-        setattr(self, name, value)
-
-    def remove(self, name):
-        del self.__dict__[name]
-
     def __repr__(self):
         """
         exclude some keys, convert all to lowercase snake and string
         """
-        return self.json()
+        return self.__json()
 
     def __str__(self):
-        return self.json()
+        return self.__json()
