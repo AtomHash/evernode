@@ -16,7 +16,7 @@ class Session:
 
     @staticmethod
     def set_current_session(session_id) -> bool:
-        """ Add SESSION_ID to current_app config with session_id """
+        """ Add session_id to flask globals for current request """
         try:
             g.session_id = session_id
             return True

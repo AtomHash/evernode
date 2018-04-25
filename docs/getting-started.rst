@@ -4,7 +4,7 @@ Getting Started
 ===============
 
 Ready to get started? This page gives a good introduction to EverNode.  It
-assumes you already have EverNode installed. If you do not, head over to the
+assumes you already have EverNode, Python3.6, uWSGI and NGINX installed. If you do not, head over to the
 :ref:`installation` section.
 
 
@@ -31,12 +31,16 @@ The minimal EverNode application looks something like this:
 Config
 ------
 
-This section will cover the EverNode config.json file
+This section covers the configuration of EverNode. Applications need some kind of configuration.
+There are different settings you might want to change depending on the application environment like toggling the debug mode,
+setting the secret key, and other such environment-specific things.
 
 Overview
-```````````
+`````````
 
-Your EverNode config should look like::
+Example \| *config.json*
+
+::
 
     {
       "NAME": "App Name",
@@ -126,14 +130,14 @@ The following settings are values best suited for a production enviroment::
 uWSGI
 ------
 
-This section will cover how to setup evernode with uWSGI.
+This section will cover how to setup EverNode with uWSGI.
 
 uwsgi.ini
 ````````````
 
-This will start the uwsgi python process, configure as you want.
+Example \| *uwsgi.ini*
 
-Example::
+::
 
     [uwsgi]
     uid=www-data
@@ -154,24 +158,23 @@ Example::
     ignore-write-errors=true
     disable-write-exception=true
 
-Non Hair Losing Settings(this is just an example uwsgi.ini)\:
+* :code:`wsgi-file=/srv/app/app.py` set the absolute path to your evernode app.py file.
+* :code:`callable=app` app is the variable that Flask is running as in your uwsgi-file.
+* :code:`pythonpath=/srv/app/` set this to your root application folder of the evernode_app.
+* :code:`pythonpath=/srv/app/` set chdir of uwsgi to root application path
 
-| :code:`wsgi-file=/srv/app/app.py` set the absolute path to your evernode app.py file.
-| :code:`callable=app` app is the variable that Flask is running as in your uwsgi-file.
-| :code:`pythonpath=/srv/app/` set this to your root application folder of the evernode_app.
-| :code:`pythonpath=/srv/app/` set chdir of uwsgi to root application path
-
+Learn more about uWSGI configuration `here <http://uwsgi-docs.readthedocs.io/en/latest/Configuration.html>`_.
 
 NGINX
 -----
 
+This section covers a basic nginx conf to start hosting your API.
 
-NGINX .conf File
+Virtual Host File
 ```````````````````````````````````````
 
-This section covers a basic nginx conf for evernode. Configure as you want.
-| Note - Replace [website-domain] with your domain name.
-| Example(/etc/nginx/conf.d/[website-domain].conf)::
+Example \| /etc/nginx/conf.d/*[website-domain].conf*
+::
 
     server {
         listen 80;
@@ -193,18 +196,26 @@ This section covers a basic nginx conf for evernode. Configure as you want.
         }
     }
 
+Replace :code:`[website-domain]` with your domain name.
+
+Learn more about NGINX configuration `here <http://nginx.org/en/docs/beginners_guide.html>`_.
+
 Generate Self-Signed Certificate
-`````````````````````````````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
 
     openssl req -new -sha256 -x509 -newkey rsa:4096 \
     -nodes -keyout [website-domain].key -out [website-domain].crt -days 365
 
+Replace :code:`[website-domain]` with your domain name.
+
 Generate Signing Request Certificate
-````````````````````````````````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
 
     openssl req -new -sha256 -newkey rsa:4096 \
     -nodes -keyout [website-domain].key -out [website-domain].csr -days 365
+
+Replace :code:`[website-domain]` with your domain name.

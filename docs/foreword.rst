@@ -8,11 +8,9 @@ should or should not be using it.
 What is EverNode?
 -----------------------
 
-EverNode is a micro Application Programming Interface framework for flask.
-It adds features to flask to make API development a breeze. EverNode does not
-modify flask directly, but just adds nice features to help build API's faster. EverNode is built with
-stateless data transfer in mind and does not use sessions. Security is also a top concern
-and EverNode is also improving security to help keep your application secure. 
+EverNode adds features to flask to make API development a breeze. EverNode does not
+modify flask directly, but just adds nice features to help build APIs faster. EverNode is built with
+stateless data transfer in mind and does not use sessions.
 
 Highlights of the project include:
 
@@ -29,6 +27,6 @@ Highlights of the project include:
 Configuration and Conventions
 -----------------------------
 
-EverNode has many configuration values that can be easily set in the config.json file. To learn more about the EverNode config, :ref:`config`. When building with EverNode you should follow a few
-conventions when getting started, please refer to :ref:`patterns`
+EverNode has many configuration values that can be easily set in the config.json file. To learn more about the EverNode and configuration visit the :ref:`getting-started` section.
+When building with EverNode you should follow a few conventions, please refer to :ref:`patterns`
 

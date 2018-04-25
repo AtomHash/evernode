@@ -26,7 +26,7 @@ class CoreController:
             def __init__(self):
                 self.bob = None
                 self.time = datetime.now()
-                self.time2 = {'ti_me': datetime.now()}
+                self.time2 = {'ti_me': datetime.now(), 'set': set('test')}
                 self.list = [1, datetime.now(), [{'test': [{
                     'date': datetime.now()}]}]]
                 self.time3 = {

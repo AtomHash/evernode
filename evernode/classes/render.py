@@ -10,11 +10,12 @@ from flask import current_app
 
 
 class Render:
-    """ Jinja template renderer """
+    """ Compile templates from root_path resources or module resources """
 
     jinja = None
     template_path = None
     templates = {}
+    """ dict that contains compiled templates """
 
     def __init__(self, module_name=None):
         if module_name is None:
@@ -45,11 +46,11 @@ class Render:
         """
         renders template_name + self.extension file with data using jinja
         """
-        template_name = name.replace('/', "")
+        template_name = name.replace(os.sep, "")
         if folder is None:
             folder = ""
         full_name = os.path.join(
-            folder.strip('/'), template_name)
+            folder.strip(os.sep), template_name)
         if data is None:
             data = {}
         try:

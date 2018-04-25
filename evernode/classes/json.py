@@ -17,13 +17,12 @@ class Json():
 
     @staticmethod
     def string(value) -> str:
-        """ alias for object_dict """
-        json = Json(value)
-        return system_json.dumps(json.safe_object(), ensure_ascii=False)
+        """ string dict/object/value to JSON """
+        return system_json.dumps(Json(value).safe_object(), ensure_ascii=False)
 
     @staticmethod
     def parse(string, is_file=False, obj=False):
-        """ convert a json string to dict or object """
+        """ Convert a JSON string to dict/object """
         try:
             if obj is False:
                 if is_file:
@@ -49,78 +48,65 @@ class Json():
 
     @staticmethod
     def from_file(file_path) -> dict:
-        """ load small json file """
+        """ Load JSON file """
         with io.open(file_path, 'r', encoding='utf-8') as json_stream:
             return Json.parse(json_stream, True)
 
     def safe_object(self) -> dict:
-        if isinstance(self.value, datetime.date):
-            return self.safe_datetime(self.value)
-        elif isinstance(self.value, dict) or hasattr(self.value, '__dict__'):
-            return self.__iterate_object(self.value)
-        elif isinstance(self.value, list):
-            return self.__iterate_list(self.value)
-        else:
-            return self.value
-
-    def __iterate_object(self, obj) -> dict:
-        """ Convert object to flattened object """
-        if hasattr(obj, 'items'):
-            return self.construct_object(obj)
-        elif isinstance(obj, list):
-            return self.__iterate_list(obj)
-        else:
-            return self.construct_object(vars(obj))
-        return None
-
-    def __iterate_list(self, list_value):
-        array = []
-        for value in list_value:
-            if hasattr(value, '__dict__') or isinstance(value, dict):
-                array.append(self.__iterate_object(value))
-            elif isinstance(value, list):
-                array.append(self.__iterate_list(value))
-            else:
-                array.append(self.safe_values(value))
-        return array
-
-    def construct_object(self, obj):
-        new_obj = {}
-        for key, value in obj.items():
-            string_val = ""
-            if hasattr(value, '__dict__') or isinstance(value, dict):
-                string_val = self.__iterate_object(value)
-            elif isinstance(value, list):
-                string_val = self.__iterate_list(value)
-            else:
-                string_val = self.safe_values(value)
-            new_obj[self.camel_case(key)] = string_val
-        return new_obj
+        """ Create an object ready for JSON serialization """
+        return self.__iterate_value(self.value)
 
     def safe_values(self, value):
+        """ Parse non-string values that will not serialize """
+        # TODO: override-able?
         string_val = ""
         if isinstance(value, datetime.date):
-            string_val = self.safe_datetime(value)
+            try:
+                string_val = value.strftime('{0}{1}{2}'.format(
+                    current_app.config['DATETIME']['DATE_FORMAT'],
+                    current_app.config['DATETIME']['SEPARATOR'],
+                    current_app.config['DATETIME']['TIME_FORMAT']))
+            except RuntimeError as error:
+                string_val = value.strftime('%Y-%m-%d %H:%M:%S')
         elif isinstance(value, bytes):
             string_val = value.decode('utf-8')
         else:
             string_val = value
         return string_val
 
-    def safe_datetime(self, value):
-        string_val = ""
-        try:
-            string_val = value.strftime('{0}{1}{2}'.format(
-                current_app.config['DATETIME']['DATE_FORMAT'],
-                current_app.config['DATETIME']['SEPARATOR'],
-                current_app.config['DATETIME']['TIME_FORMAT']))
-        except RuntimeError as error:
-            string_val = value.strftime('%Y-%m-%d %H:%M:%S')
-        return string_val
-
     def camel_case(self, snake_case):
-        """
-        convert snake case to camel case
-        """
+        """ Convert snake case to camel case """
         components = snake_case.split('_')
         return components[0] + "".join(x.title() for x in components[1:])
+
+    def __find_object_children(self, obj) -> dict:
+        """ Convert object to flattened object """
+        if hasattr(obj, 'items'):
+            return self.__construct_object(obj)
+        elif isinstance(obj, (list, tuple, set)):
+            return self.__construct_list(obj)
+        else:
+            return self.__construct_object(vars(obj))
+        return None
+
+    def __construct_list(self, list_value):
+        """ Loop list/set/tuple and parse values """
+        array = []
+        for value in list_value:
+            array.append(self.__iterate_value(value))
+        return array
+
+    def __construct_object(self, obj):
+        """ Loop dict/class object and parse values """
+        new_obj = {}
+        for key, value in obj.items():
+            new_obj[self.camel_case(key)] = self.__iterate_value(value)
+        return new_obj
+
+    def __iterate_value(self, value):
+        """ Return value for JSON serialization """
+        if hasattr(value, '__dict__') or isinstance(value, dict):
+            return self.__find_object_children(value)  # go through dict/class
+        elif isinstance(value, (list, tuple, set)):
+            return self.__construct_list(value)  # go through list
+        return self.safe_values(value)  # return parse value only
