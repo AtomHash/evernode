@@ -20,6 +20,32 @@ class CoreController:
     @staticmethod
     def test():
         """ evernode testing """
+        return JsonResponse(200, None, "")
+
+    @staticmethod
+    def test_validate_password_reset():
+        """ evernode testing """
+        formdata = FormData()
+        formdata.add_field(
+            'code', required=True, error='A code is required.')
+        formdata.add_field(
+            'email', required=True, error='An email is required.')
+        formdata.add_field(
+            'password', required=True, error='A new password is required.')
+        formdata.parse()
+        user = UserModel.get_by_email(formdata.values['email'])
+        return JsonResponse(200, None, user.validate_password_reset(
+            formdata.values['code'], formdata.values['password']))
+
+    @staticmethod
+    def test_create_password_reset():
+        """ evernode testing """
+        user = UserModel.get_by_email('example@atomhash.org')
+        return JsonResponse(200, None, user.create_password_reset())
+
+    @staticmethod
+    def test_json():
+        """ evernode testing """
         class JJ(JsonModel):
             bob = None
 
