@@ -18,7 +18,7 @@ Project Links
 
 Getting Started
 ---
-Docs coming soon.
+- Docs: [http://evernode.readthedocs.io/en/latest/](http://evernode.readthedocs.io/en/latest/)
 
 License
 ---
