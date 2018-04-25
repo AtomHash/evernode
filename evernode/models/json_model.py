@@ -1,9 +1,6 @@
 """ convert a class to json """
 
-import flask
-from datetime import datetime
 from ..classes.json import Json
-import ast
 
 
 class JsonModel:
@@ -21,21 +18,9 @@ class JsonModel:
         for key, item in vars(self).items():
             if str(key).startswith('_') or key in self.exclude_list:
                 continue
-            key = self.camel_case(key)
-            new_key = key[0].lower() + key[1:]
-            item = item
-            fields[new_key] = item
-        obj = Json.string(fields, to_json=False)
-        print('----4454---')
-        print(str(obj))
-        return str(fields)
-
-    def camel_case(self, snake_case):
-        """
-        convert snake case to camel case
-        """
-        components = snake_case.split('_')
-        return components[0] + "".join(x.title() for x in components[1:])
+            fields[key] = item
+        obj = Json.safe_object(fields)
+        return str(obj)
 
     def add(self, name, value):
         setattr(self, name, value)

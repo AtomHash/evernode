@@ -27,7 +27,13 @@ class CoreController:
                 self.bob = None
                 self.time = datetime.now()
                 self.time2 = {'ti_me': datetime.now()}
-                self.time3 = {'ti_me': ['s', 'f', 1]}
+                self.list = [1, datetime.now(), [{'test': [{
+                    'date': datetime.now()}]}]]
+                self.time3 = {
+                    'ti_me': ['s', [datetime.now(), 1], datetime.now(), 1]}
+                self.time4 = {
+                    'ti_me': ['s', 'f', {'another_test': {
+                        'another_date': datetime.now()}}]}
         return JsonResponse(200, None, JJ())
 
     @staticmethod

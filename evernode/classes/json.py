@@ -2,7 +2,6 @@
     Help to do easy JSON modeling for db models and other classes
 """
 
-import ast
 import io
 import datetime
 import json as system_json
@@ -17,12 +16,10 @@ class Json():
         self.value = value
 
     @staticmethod
-    def string(value, to_json=True):
+    def string(value) -> str:
         """ alias for object_dict """
         json = Json(value)
-        if to_json:
-            return system_json.dumps(json.safe_object(), ensure_ascii=False)
-        return json.safe_object()
+        return system_json.dumps(json.safe_object(), ensure_ascii=False)
 
     @staticmethod
     def parse(string, is_file=False, obj=False):
@@ -56,11 +53,13 @@ class Json():
         with io.open(file_path, 'r', encoding='utf-8') as json_stream:
             return Json.parse(json_stream, True)
 
-    def safe_object(self):
+    def safe_object(self) -> dict:
         if isinstance(self.value, datetime.date):
             return self.safe_datetime(self.value)
         elif isinstance(self.value, dict) or hasattr(self.value, '__dict__'):
             return self.__iterate_object(self.value)
+        elif isinstance(self.value, list):
+            return self.__iterate_list(self.value)
         else:
             return self.value
 
@@ -68,9 +67,22 @@ class Json():
         """ Convert object to flattened object """
         if hasattr(obj, 'items'):
             return self.construct_object(obj)
+        elif isinstance(obj, list):
+            return self.__iterate_list(obj)
         else:
             return self.construct_object(vars(obj))
         return None
+
+    def __iterate_list(self, list_value):
+        array = []
+        for value in list_value:
+            if hasattr(value, '__dict__') or isinstance(value, dict):
+                array.append(self.__iterate_object(value))
+            elif isinstance(value, list):
+                array.append(self.__iterate_list(value))
+            else:
+                array.append(self.safe_values(value))
+        return array
 
     def construct_object(self, obj):
         new_obj = {}
@@ -78,6 +90,8 @@ class Json():
             string_val = ""
             if hasattr(value, '__dict__') or isinstance(value, dict):
                 string_val = self.__iterate_object(value)
+            elif isinstance(value, list):
+                string_val = self.__iterate_list(value)
             else:
                 string_val = self.safe_values(value)
             new_obj[self.camel_case(key)] = string_val
