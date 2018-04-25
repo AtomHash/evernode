@@ -4,7 +4,7 @@ EverNode
 
 EverNode for fast beautiful APIs
 ---
-EverNode adds enhanced features to [Flask](https://github.com/pallets/flask) out of the box for rapid API development. Support for [Flask-SQLAlchemy](https://github.com/mitsuhiko/flask-sqlalchemy) model serialization, and internationalization, easy to handle form data, JWT Bearer Authorization, authorized emails and more. Our primary focus for EverNode is modular based API development and to remain as light weight and fast as possible.
+EverNode adds enhanced features to [Flask](https://github.com/pallets/flask) out of the box for rapid API development. Support for [Flask-SQLAlchemy](https://github.com/mitsuhiko/flask-sqlalchemy) model serialization, internationalization, easy to handle form data, JWT Bearer Authorization, authorized emails and more. Our primary focus for EverNode is modular based API development and to remain as light weight and fast as possible.
 
 Get it now
 ---

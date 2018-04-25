@@ -5,7 +5,8 @@ from flask import request, current_app # noqa
 from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator # noqa
 from evernode.decorators import middleware # noqa
 from ..models import UserModel # noqa
-from evernode.models import PasswordResetModel # noqa
+from evernode.models import PasswordResetModel, JsonModel # noqa
+from datetime import datetime
 
 
 def allowed_file(filename):
@@ -19,14 +20,32 @@ class CoreController:
     @staticmethod
     def test():
         """ evernode testing """
-        return JsonResponse(200, None, "")
+        class JJ(JsonModel):
+            bob = None
+
+            def __init__(self):
+                self.bob = None
+                self.time = datetime.now()
+                self.time2 = {'ti_me': datetime.now(), 'set': set('test')}
+                self.list = [1, datetime.now(), [{'test': [{
+                    'date': datetime.now()}]}]]
+                self.time3 = {
+                    'ti_me': ['s', [datetime.now(), 1], datetime.now(), 1]}
+                self.time4 = {
+                    'ti_me': ['s', 'f', {'another_test': {
+                        'another_date': datetime.now()}}]}
+        return JsonResponse(200, None, JJ())
+
+    @staticmethod
+    def user_json():
+        user = UserModel.get_by_id(0)
+        return JsonResponse(200, None, user)
 
     @staticmethod
     def test_email():
         email = Email(send_as_one=True)
         email.html('hello')
         email.text('hello')
-        email.add_address('dylan.harty@growsafe.com')
         email.add_address('me@dylanharty.com')
         email.add_cc('dylantechy@gmail.com')
         email.add_file('/srv/logs/uwsgi.log')

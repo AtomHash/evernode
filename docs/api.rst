@@ -43,3 +43,82 @@ BaseResponse
 .. autoclass:: BaseResponse
    :members:
    :inherited-members:
+
+Email
+````````````````````
+
+.. autoclass:: Email
+   :members:
+   :inherited-members:
+
+FormData
+````````````````````
+
+.. autoclass:: FormData
+   :members:
+   :inherited-members:
+
+Json
+````````````````````
+
+.. autoclass:: Json
+   :members:
+   :inherited-members:
+
+JsonResponse
+````````````````````
+
+.. autoclass:: JsonResponse
+   :members:
+   :inherited-members:
+
+JWT
+````````````````````
+
+.. autoclass:: JWT
+   :members:
+   :inherited-members:
+
+Middleware
+````````````````````
+
+.. autoclass:: Middleware
+   :members:
+   :inherited-members:
+
+Render
+````````````````````
+
+.. autoclass:: Render
+   :members:
+   :inherited-members:
+
+Security
+````````````````````
+
+.. autoclass:: Security
+   :members:
+   :inherited-members:
+
+Session
+````````````````````
+
+.. autoclass:: Session
+   :members:
+   :inherited-members:
+
+Translator
+````````````````````
+
+.. autoclass:: Translator
+   :members:
+   :inherited-members:
+
+UserAuth
+````````````````````
+
+.. autoclass:: UserAuth
+   :members:
+   :inherited-members:
+
+

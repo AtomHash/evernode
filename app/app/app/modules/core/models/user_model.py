@@ -7,10 +7,6 @@ from evernode.models import BaseUserModel
 
 class UserModel(BaseUserModel):
     """ user db model """
-    exclude_list = [
-        'updated_at',
-        'created_at',
-        'password']
 
     @classmethod
     def where_id(cls, id):

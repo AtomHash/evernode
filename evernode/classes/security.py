@@ -14,6 +14,7 @@ class Security:
 
     @staticmethod
     def generate_key() -> str:
+        """ Generate a Fernet key"""
         return Fernet.generate_key().decode("utf-8")
 
     @staticmethod

@@ -5,10 +5,10 @@
 from sqlalchemy import Column, String
 from ..classes.security import Security
 from ..classes.session import Session
-from . import BaseModel, JsonModel
+from .base_model import BaseModel
 
 
-class BaseUserModel(BaseModel, JsonModel):
+class BaseUserModel(BaseModel):
     """ user db model """
 
     __abstract__ = True

@@ -7,6 +7,7 @@ from .json import Json
 
 class Translator:
     """ Uses dot-key syntax to translate phrases to words """
+
     app_language = None
     module_name = None
 
@@ -36,22 +37,19 @@ class Translator:
 
     def trans(self, key) -> str:
         """
-        ** Execute a translate command **
-            file.command
-            file.level1.command
-            file.level1.level2.command
-            ect...
-        Example:
-            Translator.trans('messages.hello')
-            If language is en,
-            In the example a file called
-                resources/lang/en/messages.lang will be opened
-            and parsed for { 'hello': 'Some english text' }
-            If language is fr,
-            In the example a file called
-                resources/lang/fr/messages.lang will be opened
-            and parsed for { 'hello': 'Some french text' }
+        Root Example:
+        Translator()
+        Translator.trans('messages.hello')
+        resources/lang/en/messages.lang will be opened
+        and parsed for { 'hello': 'Some english text' }
+        If language is fr,
+        resources/lang/fr/messages.lang will be opened
+        and parsed for { 'hello': 'Some french text' }
+        Module Example:
+        Translator('[module-name]')
+        Translator.trans('messages.hello')
         """
+
         key_list = self.__list_key(key)
         current_selection = \
             current_app.config['LANGUAGE_PACKS'][
