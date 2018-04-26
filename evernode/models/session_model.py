@@ -12,7 +12,7 @@ class SessionModel(BaseModel):
 
     @classmethod
     def where_session_id(cls, session_id):
-        """ easy way to query by session id """
+        """ Easy way to query by session id """
         try:
             session = cls.query.filter_by(session_id=session_id).one()
             return session
@@ -21,7 +21,7 @@ class SessionModel(BaseModel):
 
     @classmethod
     def where_user_id(cls, user_id):
-        """ easy way to query by uer id """
+        """ Easy way to query by user id """
         return cls.query.filter_by(user_id=user_id).first()
 
     @classmethod
@@ -32,12 +32,12 @@ class SessionModel(BaseModel):
 
     @classmethod
     def where_earliest(cls, user_id):
-        """ get earilest session by created_at timestamp """
+        """ Get earilest session by created_at timestamp """
         return cls.query.filter_by(user_id=user_id)\
             .order_by(cls.created_at.asc()).first()
 
     @classmethod
     def count(cls, user_id):
-        """ count sessions wuth user_id """
+        """ Count sessions with user_id """
         return cls.query.with_entities(
             cls.user_id).filter_by(user_id=user_id).count()

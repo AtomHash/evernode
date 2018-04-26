@@ -10,7 +10,7 @@ from .password_reset_model import PasswordResetModel
 
 
 class BaseUserModel(BaseModel):
-    """ user db model """
+    """ User db model """
 
     __abstract__ = True
     __tablename__ = 'users'
@@ -19,20 +19,20 @@ class BaseUserModel(BaseModel):
     password = Column(String(255))
     firstname = Column(String(255))
     lastname = Column(String(255))
-    exclude_list = ['password', 'updated_at', 'created_at', 'id']
+    __exclude_list = ['password', 'updated_at', 'created_at', 'id']
 
     @classmethod
     def where_username(cls, username):
-        """ get db model by username """
+        """ Get db model by username """
         return cls.query.filter_by(email=username).first()
 
     @classmethod
     def where_email(cls, email):
-        """ get db model by username """
+        """ Get db model by email """
         return cls.query.filter_by(email=email).first()
 
     def set_password(self, password):
-        """ set user password with hash """
+        """ Set user password with hash """
         self.password = Security.hash(password)
         self.save()
 
@@ -72,10 +72,8 @@ class BaseUserModel(BaseModel):
 
     @classmethod
     def by_current_session(cls):
+        """ Returns current user session """
         session = Session.current_session()
         if session is None:
             return None
         return cls.where_id(session.user_id)
-
-    def __repr__(self):
-        return super().json()

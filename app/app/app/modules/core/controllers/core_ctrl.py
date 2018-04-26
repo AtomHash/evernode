@@ -33,14 +33,14 @@ class CoreController:
         formdata.add_field(
             'password', required=True, error='A new password is required.')
         formdata.parse()
-        user = UserModel.get_by_email(formdata.values['email'])
+        user = UserModel.where_email(formdata.values['email'])
         return JsonResponse(200, None, user.validate_password_reset(
             formdata.values['code'], formdata.values['password']))
 
     @staticmethod
     def test_create_password_reset():
         """ evernode testing """
-        user = UserModel.get_by_email('example@atomhash.org')
+        user = UserModel.where_email('example@atomhash.org')
         return JsonResponse(200, None, user.create_password_reset())
 
     @staticmethod
@@ -64,7 +64,7 @@ class CoreController:
 
     @staticmethod
     def user_json():
-        user = UserModel.get_by_id(0)
+        user = UserModel.where_id(1)
         return JsonResponse(200, None, user)
 
     @staticmethod
@@ -73,7 +73,7 @@ class CoreController:
         email.html('hello')
         email.text('hello')
         email.add_address('me@dylanharty.com')
-        email.add_cc('dylantechy@gmail.com')
+        email.add_cc('example@atomhash.org')
         email.add_file('/srv/logs/uwsgi.log')
         email.send()
         return JsonResponse(200, None, "")
@@ -135,7 +135,7 @@ class CoreController:
         user = UserModel()
         user.firstname = 'Dylan'
         user.lastname = 'Harty'
-        user.email = 'dylan.harty@growsafe.com'
+        user.email = 'example@atomhash.org'
         user.set_password('123321')
         user.save()
         return JsonResponse(200, None, user)

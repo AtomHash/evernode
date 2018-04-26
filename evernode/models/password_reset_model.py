@@ -6,7 +6,7 @@ from sqlalchemy import Column, String, Integer
 
 
 class PasswordResetModel(BaseModel):
-    """ user db model """
+    """ Password Reset db Model """
 
     __tablename__ = 'user_password_resets'
     email = Column(String(255), unique=True)

@@ -1,7 +1,7 @@
 """
     Help to do easy JSON modeling for db models and other classes
 """
-
+import inspect
 import io
 import datetime
 import json as system_json
@@ -12,12 +12,16 @@ from flask import current_app
 class Json():
     """ help break down and construct json objects """
 
+    __exclude_list = []
+
     def __init__(self, value):
         self.value = value
 
     @staticmethod
     def string(value) -> str:
         """ string dict/object/value to JSON """
+        print('--called---')
+        print(inspect.stack())
         return system_json.dumps(Json(value).safe_object(), ensure_ascii=False)
 
     @staticmethod
@@ -81,6 +85,13 @@ class Json():
 
     def __find_object_children(self, obj) -> dict:
         """ Convert object to flattened object """
+        print(type(obj))
+        if hasattr(obj, '__exclude_list'):
+            print('---exclude-list---')
+            print(str(obj.__exclude_list))
+        if hasattr(obj, 'exclude_list'):
+            print('---old-exclude-list---')
+            print(str(obj.exclude_list))
         if hasattr(obj, 'items'):
             return self.__construct_object(obj)
         elif isinstance(obj, (list, tuple, set)):
@@ -100,6 +111,8 @@ class Json():
         """ Loop dict/class object and parse values """
         new_obj = {}
         for key, value in obj.items():
+            if str(key).startswith('_'):
+                continue
             new_obj[self.camel_case(key)] = self.__iterate_value(value)
         return new_obj
 

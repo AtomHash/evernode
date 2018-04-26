@@ -56,6 +56,6 @@
   "SQLALCHEMY_POOL_SIZE": 100,
   "SQLALCHEMY_POOL_RECYCLE": 280,
   "SQLALCHEMY_BINDS": {
-    "DEFAULT": "mysql://api_user:password@192.168.1.80/api"
+    "DEFAULT": "mysql://api_user:password@ip/api"
   }
 }
