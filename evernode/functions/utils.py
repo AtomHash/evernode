@@ -3,13 +3,14 @@ import os
 
 
 def get_subdirectories(directory):
-    """ get subdirectories without pycache """
+    """ Get subdirectories without pycache """
     return [name for name in os.listdir(directory)
             if name != '__pycache__'
             if os.path.isdir(os.path.join(directory, name))]
 
 
 def get_python_path() -> str:
+    """ Accurately get python executable """
     python_bin = None
     if os.name == 'nt':
         python_root = os.path.abspath(

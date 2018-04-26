@@ -177,3 +177,44 @@ SessionModel
    :inherited-members:
 
 
+Decorators
+---------------------------------------
+.. module:: evernode.decorators
+
+This part of the documentation covers all the decorators of EverNode.
+
+@middleware
+````````````````````
+
+.. autofunction:: middleware
+
+Functions
+---------------------------------------
+.. module:: evernode.functions
+
+This part of the documentation covers all the functions of EverNode.
+
+get_subdirectories()
+````````````````````
+
+.. autofunction:: get_subdirectories
+
+get_python_path()
+````````````````````
+
+.. autofunction:: get_python_path
+
+Scripts
+---------------------------------------
+.. module:: evernode.scripts
+
+This part of the documentation covers all the scripts of EverNode.
+
+SendEmail
+````````````````````
+
+.. autoclass:: SendEmail
+   :members:
+   :inherited-members:
+
+
