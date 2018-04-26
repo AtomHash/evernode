@@ -22,19 +22,14 @@ class BaseUserModel(BaseModel):
     exclude_list = ['password', 'updated_at', 'created_at', 'id']
 
     @classmethod
-    def get_by_username(cls, username):
+    def where_username(cls, username):
         """ get db model by username """
         return cls.query.filter_by(email=username).first()
 
     @classmethod
-    def get_by_email(cls, email):
+    def where_email(cls, email):
         """ get db model by username """
         return cls.query.filter_by(email=email).first()
-
-    @classmethod
-    def get_by_id(cls, user_id):
-        """ get db user model by id """
-        return cls.query.get(user_id)
 
     def set_password(self, password):
         """ set user password with hash """
@@ -49,7 +44,7 @@ class BaseUserModel(BaseModel):
         """
         if self.email is None:
             return None
-        PasswordResetModel.delete_by_email(self.email)
+        PasswordResetModel.delete_where_email(self.email)
         code = Security.random_string(6)
         password_reset_model = PasswordResetModel()
         password_reset_model.code = Security.hash(code)
@@ -66,7 +61,7 @@ class BaseUserModel(BaseModel):
         """
         if self.email is None:
             return None  # needs user email
-        password_reset_model = PasswordResetModel.get_by_email(self.email)
+        password_reset_model = PasswordResetModel.where_email(self.email)
         if password_reset_model is None:
             return False
         if Security.verify_hash(code, password_reset_model.code):
@@ -80,7 +75,7 @@ class BaseUserModel(BaseModel):
         session = Session.current_session()
         if session is None:
             return None
-        return cls.get_by_id(session.user_id)
+        return cls.where_id(session.user_id)
 
     def __repr__(self):
         return super().json()

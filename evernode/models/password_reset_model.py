@@ -14,14 +14,14 @@ class PasswordResetModel(BaseModel):
     user_id = Column(Integer)
 
     @classmethod
-    def get_by_email(cls, email):
+    def where_email(cls, email):
         """ get by email """
         return cls.query.filter_by(email=email).first()
 
     @classmethod
-    def delete_by_email(cls, email):
+    def delete_where_email(cls, email):
         """ delete by email """
-        result = cls.get_by_email(email)
+        result = cls.where_email(email)
         if result is None:
             return None
         result.delete()

@@ -31,7 +31,7 @@ class Session:
         """ Return session id in app globals, only current request """
         session_id = getattr(g, 'session_id', None)
         if session_id is not None:
-            return SessionModel.get_by_session_id(session_id)
+            return SessionModel.where_session_id(session_id)
         return None
 
     @classmethod
@@ -48,7 +48,7 @@ class Session:
             cls.__save_session(session_id, user_id)
             return
         elif count >= current_app.config['AUTH']['MAX_SESSIONS']:
-            earliest_session = SessionModel.get_earliest()
+            earliest_session = SessionModel.where_earliest(user_id)
             earliest_session.delete()
             cls.__save_session(session_id, user_id)
             return

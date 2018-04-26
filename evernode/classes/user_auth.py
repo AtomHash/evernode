@@ -43,7 +43,7 @@ class UserAuth:
 
     def session(self) -> str:
         """ Generate a session(authorization Bearer) JWT token """
-        self.user = self.user_model.get_by_username(self.username)
+        self.user = self.user_model.where_username(self.username)
         if self.user is None:
             return None
         self.user.updated()  # update timestamp on user access

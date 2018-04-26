@@ -11,7 +11,7 @@ class SessionModel(BaseModel):
     user_id = Column(Integer)
 
     @classmethod
-    def get_by_session_id(cls, session_id):
+    def where_session_id(cls, session_id):
         """ easy way to query by session id """
         try:
             session = cls.query.filter_by(session_id=session_id).one()
@@ -20,19 +20,21 @@ class SessionModel(BaseModel):
             return None
 
     @classmethod
-    def get_by_user_id(cls, user_id):
+    def where_user_id(cls, user_id):
         """ easy way to query by uer id """
         return cls.query.filter_by(user_id=user_id).first()
 
     @classmethod
-    def get_lastest(cls):
-        """ get lastest session by created_at timestamp """
-        return cls.query.order_by(cls.created_at.desc()).first()
+    def where_lastest(cls, user_id):
+        """ Get lastest session by created_at timestamp """
+        return cls.query.filter_by(user_id=user_id)\
+            .order_by(cls.created_at.desc()).first()
 
     @classmethod
-    def get_earliest(cls):
+    def where_earliest(cls, user_id):
         """ get earilest session by created_at timestamp """
-        return cls.query.order_by(cls.created_at.asc()).first()
+        return cls.query.filter_by(user_id=user_id)\
+            .order_by(cls.created_at.asc()).first()
 
     @classmethod
     def count(cls, user_id):
