@@ -18,9 +18,9 @@ class BaseModel(DatabaseModel, JsonModel):
         DatabaseModel.__init__(self)
 
     @classmethod
-    def where_id(cls, user_id):
+    def where_id(cls, id):
         """ Get db model by id """
-        return cls.query.get(user_id)
+        return cls.query.get(id)
 
     def exists(self):
         """ Checks if item already exists in database """
