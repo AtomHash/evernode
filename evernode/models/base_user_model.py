@@ -12,14 +12,13 @@ from .password_reset_model import PasswordResetModel
 class BaseUserModel(BaseModel):
     """ User db model """
 
-    __abstract__ = True
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
     email = Column(String(255), unique=True)
     password = Column(String(255))
     firstname = Column(String(255))
     lastname = Column(String(255))
-    __exclude_list = ['password', 'updated_at', 'created_at', 'id']
+    json_exclude_list = ['password', 'updated_at', 'created_at', 'id']
 
     @classmethod
     def where_username(cls, username):

@@ -4,8 +4,7 @@
 from flask import request, current_app # noqa
 from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator # noqa
 from evernode.decorators import middleware # noqa
-from ..models import UserModel # noqa
-from evernode.models import PasswordResetModel, JsonModel # noqa
+from evernode.models import PasswordResetModel, JsonModel, BaseUserModel # noqa
 from datetime import datetime
 
 
@@ -33,14 +32,14 @@ class CoreController:
         formdata.add_field(
             'password', required=True, error='A new password is required.')
         formdata.parse()
-        user = UserModel.where_email(formdata.values['email'])
+        user = BaseUserModel.where_email(formdata.values['email'])
         return JsonResponse(200, None, user.validate_password_reset(
             formdata.values['code'], formdata.values['password']))
 
     @staticmethod
     def test_create_password_reset():
         """ evernode testing """
-        user = UserModel.where_email('example@atomhash.org')
+        user = BaseUserModel.where_email('example@atomhash.org')
         return JsonResponse(200, None, user.create_password_reset())
 
     @staticmethod
@@ -64,7 +63,7 @@ class CoreController:
 
     @staticmethod
     def user_json():
-        user = UserModel.where_id(1)
+        user = BaseUserModel.where_id(1)
         return JsonResponse(200, None, user)
 
     @staticmethod
@@ -132,7 +131,7 @@ class CoreController:
         return JsonResponse(200, None, form.values['name'])
 
     def make_user():
-        user = UserModel()
+        user = BaseUserModel()
         user.firstname = 'Dylan'
         user.lastname = 'Harty'
         user.email = 'example@atomhash.org'
@@ -142,7 +141,7 @@ class CoreController:
 
     def user_token():
         session = UserAuth(
-            UserModel,
+            BaseUserModel,
             username_error="Please enter a username",
             password_error="Please Enter a password").session()
         if session is None:

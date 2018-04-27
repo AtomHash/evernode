@@ -20,8 +20,6 @@ class Json():
     @staticmethod
     def string(value) -> str:
         """ string dict/object/value to JSON """
-        print('--called---')
-        print(inspect.stack())
         return system_json.dumps(Json(value).safe_object(), ensure_ascii=False)
 
     @staticmethod
@@ -85,19 +83,16 @@ class Json():
 
     def __find_object_children(self, obj) -> dict:
         """ Convert object to flattened object """
-        print(type(obj))
-        if hasattr(obj, '__exclude_list'):
-            print('---exclude-list---')
-            print(str(obj.__exclude_list))
-        if hasattr(obj, 'exclude_list'):
-            print('---old-exclude-list---')
-            print(str(obj.exclude_list))
         if hasattr(obj, 'items'):
             return self.__construct_object(obj)
         elif isinstance(obj, (list, tuple, set)):
             return self.__construct_list(obj)
         else:
-            return self.__construct_object(vars(obj))
+            exclude_list = []
+            if hasattr(obj, 'json_exclude_list'):
+                # do not serialize any values in this list
+                exclude_list = obj.json_exclude_list
+            return self.__construct_object(vars(obj), exclude_list)
         return None
 
     def __construct_list(self, list_value):
@@ -107,11 +102,12 @@ class Json():
             array.append(self.__iterate_value(value))
         return array
 
-    def __construct_object(self, obj):
+    def __construct_object(self, obj, exclude_list=[]):
         """ Loop dict/class object and parse values """
         new_obj = {}
         for key, value in obj.items():
-            if str(key).startswith('_'):
+            if str(key).startswith('_') or \
+                    key is 'json_exclude_list' or key in exclude_list:
                 continue
             new_obj[self.camel_case(key)] = self.__iterate_value(value)
         return new_obj

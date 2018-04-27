@@ -20,7 +20,7 @@ class BaseModel(DatabaseModel, JsonModel):
     @classmethod
     def where_id(cls, id):
         """ Get db model by id """
-        return cls.query.get(id)
+        return cls.query.filter_by(id=id).first()
 
     def exists(self):
         """ Checks if item already exists in database """
