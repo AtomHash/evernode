@@ -16,7 +16,6 @@ __pycache__
 dist
 eggs
 parts
-bin
 var
 sdist
 develop-eggs
