@@ -54,6 +54,15 @@ class Json():
         with io.open(file_path, 'r', encoding='utf-8') as json_stream:
             return Json.parse(json_stream, True)
 
+    @staticmethod
+    def save_file(file_path, data):
+        with open(file_path, 'w') as json_file:
+            system_json.dump(
+                data,
+                json_file,
+                ensure_ascii=False,
+                indent=4)
+
     def safe_object(self) -> dict:
         """ Create an object ready for JSON serialization """
         return self.__iterate_value(self.value)

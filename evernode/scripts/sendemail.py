@@ -1,4 +1,5 @@
-#! /usr/local/bin/python
+#!/usr/bin/env python
+
 """ script to send an email async-wise """
 import json
 import os

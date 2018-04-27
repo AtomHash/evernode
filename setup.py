@@ -16,6 +16,7 @@ setup(
         'evernode.middleware',
         'evernode.models',
         'evernode.scripts',
+        'evernode.bin',
     ],
     description='EverNode is built by expanding upon flask by adding great features and easy-to-use modular design.', # noqa
     author='AtomHash',
@@ -38,4 +39,9 @@ setup(
         'cryptography',
         'requests'
     ],
+    entry_points={
+    'console_scripts': [
+        ['evernode=evernode.evernode:main'],
+    ]
+    },
     classifiers=[])
