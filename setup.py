@@ -1,9 +1,8 @@
-import io
 import re
 from setuptools import setup
 
-with io.open('evernode/__init__.py', 'rt', encoding='utf8') as f:
-    version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
+with open('evernode/__init__.py', 'r') as init_file:
+    version = re.search(r'__version__ = "(.*?)"', init_file.read()).group(1)
 
 setup(
     name='evernode',
