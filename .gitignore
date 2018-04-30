@@ -1,6 +1,6 @@
 # Demo App
-app/logs/*
-!app/logs/.gitkeep 
+app/app/logs/*
+!app/app/logs/.gitkeep 
 app/uploads/*
 !app/uploads/.gitkeep 
 

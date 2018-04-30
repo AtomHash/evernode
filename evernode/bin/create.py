@@ -3,6 +3,7 @@
 import os
 import sys
 import click
+import yaml
 from urllib import request
 from evernode.classes import Json, Security
 
@@ -10,6 +11,7 @@ from evernode.classes import Json, Security
 class Create:
     """ Easy evernode app creation"""
 
+    app_name = None
     dir_name = None
     config_file = None
     uwsgi_file = None
@@ -17,8 +19,9 @@ class Create:
     http_messages_file = None
     branch = None
 
-    def __init__(self, dir_name, branch='dev-1.1.0'):
-        self.dir_name = './evernode_%s' % (dir_name)
+    def __init__(self, app_name, branch='master'):
+        self.app_name = 'evernode_%s' % (app_name)
+        self.dir_name = './%s' % (self.app_name)
         self.branch = branch
         self.app_file = os.path.join(self.dir_name, 'app', 'app.py')
         self.http_messages_file = os.path.join(
@@ -122,7 +125,29 @@ class Create:
                 os.mkdir(os.path.join(self.dir_name, root))
                 for file in value:
                     self.__docker_file_download(root, file)
-            # TODO: parse docker-compose yaml remove evernode dist
+        docker_compose = os.path.join(
+            self.dir_name, 'docker', 'docker-compose.yml')
+        with open(docker_compose, 'r') as docker_compose_opened:
+            try:
+                yml = yaml.load(docker_compose_opened)
+                yml['services'][self.app_name] = \
+                    yml['services'].pop('evernode-development', None)
+                yml['services'][self.app_name]['container_name'] = \
+                    self.app_name
+                del yml['services'][self.app_name]['volumes'][-1]
+                with open(docker_compose, 'w') as new_docker_compose:
+                    yaml.dump(yml, new_docker_compose,
+                              default_flow_style=False, allow_unicode=True)
+            except yaml.YAMLError as exc:
+                print('Error: Cannot parse docker-compose.yml')
+        dockerfile = os.path.join(
+            self.dir_name, 'docker', 'build', 'Dockerfile')
+        with open(dockerfile, 'r') as dockerfile_opened:
+            lines = dockerfile_opened.readlines()
+            lines[-1] = ('ENTRYPOINT pip3.6 install -r /srv/app/'
+                         'requirements.txt && python2.7 /usr/bin/supervisord')
+            with open(dockerfile, 'w') as df_opened_writable:
+                df_opened_writable.writelines(lines)
 
     def __docker_file_download(self, root, file):
         self.download_file(file, os.path.join(
@@ -137,6 +162,11 @@ class Create:
         os.mkdir(self.dir_name)
         # make app folder
         os.mkdir(os.path.join(self.dir_name, 'app'))
+        requirements_file = os.path.join(
+            self.dir_name, 'app', 'requirements.txt')
+        self.__touch(requirements_file)
+        with open(requirements_file, 'w') as requirements_file_writable:
+            requirements_file_writable.write('evernode')
         # make app folder
         os.mkdir(os.path.join(self.dir_name, 'logs'))
         # make uploads folder
