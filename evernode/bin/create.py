@@ -108,20 +108,21 @@ class Create:
             ]}]
         for folder in needed_files:
             for key, value in folder.items():
-                    root = ''
-                    if key is 'docker':
-                        root = 'docker'
-                    elif key is 'build':
-                        root = 'docker/build'
-                    elif key is 'nginx':
-                        root = 'docker/build/nginx'
-                    elif key is 'ssls':
-                        root = 'docker/build/nginx/ssls'
-                    elif key is 'conf.d':
-                        root = 'docker/build/nginx/conf.d'
-                    os.mkdir(os.path.join(self.dir_name, root))
-                    for file in value:
-                        self.__docker_file_download(root, file)
+                root = ''
+                if key is 'docker':
+                    root = 'docker'
+                elif key is 'build':
+                    root = 'docker/build'
+                elif key is 'nginx':
+                    root = 'docker/build/nginx'
+                elif key is 'ssls':
+                    root = 'docker/build/nginx/ssls'
+                elif key is 'conf.d':
+                    root = 'docker/build/nginx/conf.d'
+                os.mkdir(os.path.join(self.dir_name, root))
+                for file in value:
+                    self.__docker_file_download(root, file)
+            # TODO: parse docker-compose yaml remove evernode dist
 
     def __docker_file_download(self, root, file):
         self.download_file(file, os.path.join(
