@@ -39,8 +39,10 @@ class Create:
         self.download_sample_app()
         print('Downloading sample resources/lang/en/http_messages.lang...')
         self.download_sample_http_errors()
-        if click.confirm('Use a docker development enviroment?', default=True):
+        if click.confirm('Use a docker development enviroment? [Default=Yes]', default=True):
             self.configure_docker()
+        if click.confirm('Create a mock starting module? [Default=No]', default=False):
+            self.configure_module()
         print('Done!')
 
     def __touch(self, path):
@@ -61,7 +63,7 @@ class Create:
         config['SERECT'] = Security.generate_key()
         config['KEY'] = Security.generate_key()
         config['SQLALCHEMY_BINDS']['DEFAULT'] = \
-            'mysql://db_user:password@localhost/db_name'
+            'mysql://<db_user>:<password>@<host>/<db_name>'
         Json.save_file(self.config_file, config)
 
     def download_sample_uwsgi(self):
@@ -82,6 +84,10 @@ class Create:
                 '%s/app/app/resources/lang/en/http_messages.lang'
                 % (self.branch)),
             self.http_messages_file)
+
+    def configure_module(self):
+        # TODO: mock module
+        pass
 
     def configure_docker(self):
         needed_files = [

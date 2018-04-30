@@ -18,18 +18,20 @@ Root Folder Structure
 Your EverNode root should look like this::
 
     evernode_[app-name]/
-        modules/
-            ...
-        resources/
-            lang/
-                en/
-                    http_messages.lang
-            templates/
-                emails/
-                    ...
+        app/
+            modules/
                 ...
-        config.json
-        app.py
+            resources/
+                lang/
+                    en/
+                        http_messages.lang
+                templates/
+                    emails/
+                        ...
+                    ...
+            config.json
+            app.py
+        
 
 
 Module Structure

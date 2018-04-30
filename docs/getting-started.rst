@@ -9,7 +9,7 @@ assumes you already have EverNode, Python3.6, uWSGI and NGINX installed. If you 
 
 
 Minimal Application
----------------------
+-------------------
 
 The minimal EverNode application looks something like this:
 
@@ -27,6 +27,46 @@ The minimal EverNode application looks something like this:
     if __name__ == '__main__':
         app.run()
 
+
+EverNode Console
+-------------------
+
+You can easily create a new EverNode application by using the :code:`evernode create` command via command line.
+
+.. code-block:: sh
+
+    $ evernode create <app-name>
+
+Once the files have been downloaded they will be in a evernode\_<app-name> folder, relative to where the command was run.
+It's optional to download the docker files and the mock module.
+
+    1. Update the database connection string in the config file. :code:`evernode_<app-name>/app/config.json`
+  
+        .. code-block:: json
+
+            "SQLALCHEMY_BINDS": {
+                "DEFAULT": "mysql://<db_user>:<password>@<host>/<db_name>"
+            }
+
+        Note:
+            * EverNode can run without a database, but cannot use JWT sessions / DB Models.
+            * You can change :code:`mysql` to your odbc database connector.
+
+    2. Process models and Migrate the database. Navigate to :code:`evernode_<app-name>/app/`. Run the following commands in the terminal:
+  
+        .. code-block:: sh
+
+            $ flask db init
+            $ flask db migrate
+            $ flask db upgrade
+
+    3. If you downloaded the Docker files, you can run :code:`docker-compose up --build` in the :code:`evernode\_<app-name>/docker` directory.
+
+        * Please add the host below to your HOSTS file::
+
+            127.0.0.1           api.localhost
+
+    4. If you downloaded the Mock Module, once the docker image has started you can navigate to :code:`https://api.localhost/v1/hello-world`.
 
 Config
 ------
