@@ -6,7 +6,7 @@ db = SQLAlchemy()
 
 
 class DatabaseModel(db.Model):
-    """ abstract class for db models """
+    """ Abstract class for db models """
 
     __abstract__ = True
     __bind_key__ = "DEFAULT"

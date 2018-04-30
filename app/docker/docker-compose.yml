@@ -1,0 +1,16 @@
+version: "2"
+services:
+  evernode-development:
+    restart: on-failure
+    container_name: evernode-development
+    build:
+      context: ./build
+    volumes:
+      - ../:/srv/
+      - ../../dist:/var/evernode/
+    ports:
+      - "80:80"
+      - "443:443"
+    expose:
+      - "80"
+      - "443"

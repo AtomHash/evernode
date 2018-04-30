@@ -10,7 +10,6 @@ from .middleware import Middleware # noqa
 from .security import Security # noqa
 from .session import Session # noqa
 from .translator import Translator # noqa
-from .password_reset import PasswordReset # noqa
 from .render import Render # noqa
 from .form_data import FormData # noqa
 from .json import Json # noqa

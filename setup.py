@@ -1,9 +1,8 @@
-import io
 import re
 from setuptools import setup
 
-with io.open('evernode/__init__.py', 'rt', encoding='utf8') as f:
-    version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
+with open('evernode/__init__.py', 'r') as init_file:
+    version = re.search(r'__version__ = "(.*?)"', init_file.read()).group(1)
 
 setup(
     name='evernode',
@@ -16,12 +15,14 @@ setup(
         'evernode.middleware',
         'evernode.models',
         'evernode.scripts',
+        'evernode.bin',
     ],
     description='EverNode is built by expanding upon flask by adding great features and easy-to-use modular design.', # noqa
     author='AtomHash',
     author_email='me@dylanharty.com',
     url='https://github.com/atomhash/evernode',
-    download_url='https://github.com/atomhash/evernode/archive/%s.tar.gz' % (version),
+    download_url=('https://github.com/atomhash/evernode/'
+                  'archive/%s.tar.gz') % (version),
     keywords=[
         'server',
         'flask-based',
@@ -36,6 +37,13 @@ setup(
         'Flask-SQLAlchemy>=2.2',
         'PyJWT',
         'cryptography',
-        'requests'
+        'requests',
+        'click',
+        'pyyaml'
     ],
+    entry_points={
+    'console_scripts': [
+        ['evernode=evernode.evernode:main'],
+    ]
+    },
     classifiers=[])

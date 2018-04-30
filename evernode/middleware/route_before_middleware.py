@@ -22,8 +22,8 @@ class RouteBeforeMiddleware:
                     environ['PATH_INFO'][len(self.prefix) + 1:]
                 environ['SCRIPT_NAME'] = self.prefix
                 return self.wsgi_app(environ, start_response)
-            if 404 in self.flask_app.error_handlers:
-                response = self.flask_app.error_handlers[404][NotFound](
+            if 404 in self.flask_app.error_handler_spec:
+                response = self.flask_app.error_handler_spec[404][NotFound](
                     NotFound, environ=environ)
                 start_response(
                     response.status(),

@@ -29,12 +29,12 @@ routes = [
         'middleware': [SessionMiddleware],
         'function': CoreController.user_check},
     {
-        'url': '/test_form',
+        'url': '/test-form',
         'name': 'core-test-form',
         'methods': ['GET', 'POST'],
         'function': CoreController.test_form},
     {
-        'url': '/generate_key',
+        'url': '/generate-key',
         'name': 'core-generate-key',
         'methods': ['GET', 'POST'],
         'function': CoreController.generate_key},

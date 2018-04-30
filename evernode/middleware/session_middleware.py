@@ -15,7 +15,7 @@ class SessionMiddleware(Middleware):
         jwt = JWT()
         if jwt.verify_token():
             if not current_app.config['AUTH']['FAST_SESSIONS']:
-                session = SessionModel.get_by_session_id(
+                session = SessionModel.where_session_id(
                     jwt.data['session_id'])
                 if session is None:
                     return False

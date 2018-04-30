@@ -1,7 +1,7 @@
 """
     Help to do easy JSON modeling for db models and other classes
 """
-
+import inspect
 import io
 import datetime
 import json as system_json
@@ -11,6 +11,8 @@ from flask import current_app
 
 class Json():
     """ help break down and construct json objects """
+
+    __exclude_list = []
 
     def __init__(self, value):
         self.value = value
@@ -52,6 +54,15 @@ class Json():
         with io.open(file_path, 'r', encoding='utf-8') as json_stream:
             return Json.parse(json_stream, True)
 
+    @staticmethod
+    def save_file(file_path, data):
+        with open(file_path, 'w') as json_file:
+            system_json.dump(
+                data,
+                json_file,
+                ensure_ascii=False,
+                indent=4)
+
     def safe_object(self) -> dict:
         """ Create an object ready for JSON serialization """
         return self.__iterate_value(self.value)
@@ -86,7 +97,11 @@ class Json():
         elif isinstance(obj, (list, tuple, set)):
             return self.__construct_list(obj)
         else:
-            return self.__construct_object(vars(obj))
+            exclude_list = []
+            if hasattr(obj, 'json_exclude_list'):
+                # do not serialize any values in this list
+                exclude_list = obj.json_exclude_list
+            return self.__construct_object(vars(obj), exclude_list)
         return None
 
     def __construct_list(self, list_value):
@@ -96,10 +111,13 @@ class Json():
             array.append(self.__iterate_value(value))
         return array
 
-    def __construct_object(self, obj):
+    def __construct_object(self, obj, exclude_list=[]):
         """ Loop dict/class object and parse values """
         new_obj = {}
         for key, value in obj.items():
+            if str(key).startswith('_') or \
+                    key is 'json_exclude_list' or key in exclude_list:
+                continue
             new_obj[self.camel_case(key)] = self.__iterate_value(value)
         return new_obj
 

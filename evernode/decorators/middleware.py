@@ -6,7 +6,7 @@ from ..classes import JsonResponse
 
 
 def middleware(func):
-    """ executes middleware """
+    """ Executes routes.py route middleware """
     @wraps(func)
     def parse(*args, **kwargs):
         """ get middleware from route, execute middleware in order """

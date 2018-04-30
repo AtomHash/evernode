@@ -4,4 +4,4 @@ language: python
 python:
   - "3.6"
 script:
-  - python setup.py sdist && cd dist && pip install --upgrade "$(ls | tail -1)" && cd ../ && echo "$(pwd)/$line""app/app/app" > tests/root_path.txt && ls && cat tests/root_path.txt && python -m unittest discover -s tests
+  - python setup.py sdist && cd dist && pip install --upgrade "$(ls | tail -1)" && cd ../ && echo "$(pwd)/$line""app/app" > tests/root_path.txt && ls && cat tests/root_path.txt && python -m unittest discover -s tests

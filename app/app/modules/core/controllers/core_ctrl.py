@@ -4,8 +4,7 @@
 from flask import request, current_app # noqa
 from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator # noqa
 from evernode.decorators import middleware # noqa
-from ..models import UserModel # noqa
-from evernode.models import PasswordResetModel, JsonModel # noqa
+from evernode.models import PasswordResetModel, JsonModel, BaseUserModel # noqa
 from datetime import datetime
 
 
@@ -19,6 +18,32 @@ class CoreController:
 
     @staticmethod
     def test():
+        """ evernode testing """
+        return JsonResponse(200, None, "")
+
+    @staticmethod
+    def test_validate_password_reset():
+        """ evernode testing """
+        formdata = FormData()
+        formdata.add_field(
+            'code', required=True, error='A code is required.')
+        formdata.add_field(
+            'email', required=True, error='An email is required.')
+        formdata.add_field(
+            'password', required=True, error='A new password is required.')
+        formdata.parse()
+        user = BaseUserModel.where_email(formdata.values['email'])
+        return JsonResponse(200, None, user.validate_password_reset(
+            formdata.values['code'], formdata.values['password']))
+
+    @staticmethod
+    def test_create_password_reset():
+        """ evernode testing """
+        user = BaseUserModel.where_email('example@atomhash.org')
+        return JsonResponse(200, None, user.create_password_reset())
+
+    @staticmethod
+    def test_json():
         """ evernode testing """
         class JJ(JsonModel):
             bob = None
@@ -38,7 +63,7 @@ class CoreController:
 
     @staticmethod
     def user_json():
-        user = UserModel.get_by_id(0)
+        user = BaseUserModel.where_id(1)
         return JsonResponse(200, None, user)
 
     @staticmethod
@@ -47,7 +72,7 @@ class CoreController:
         email.html('hello')
         email.text('hello')
         email.add_address('me@dylanharty.com')
-        email.add_cc('dylantechy@gmail.com')
+        email.add_cc('example@atomhash.org')
         email.add_file('/srv/logs/uwsgi.log')
         email.send()
         return JsonResponse(200, None, "")
@@ -106,17 +131,17 @@ class CoreController:
         return JsonResponse(200, None, form.values['name'])
 
     def make_user():
-        user = UserModel()
+        user = BaseUserModel()
         user.firstname = 'Dylan'
         user.lastname = 'Harty'
-        user.email = 'dylan.harty@growsafe.com'
+        user.email = 'example@atomhash.org'
         user.set_password('123321')
         user.save()
         return JsonResponse(200, None, user)
 
     def user_token():
         session = UserAuth(
-            UserModel,
+            BaseUserModel,
             username_error="Please enter a username",
             password_error="Please Enter a password").session()
         if session is None:
