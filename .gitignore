@@ -1,8 +1,8 @@
 # Demo App
-app/app/logs/*
-!app/app/logs/.gitkeep 
-app/app/uploads/*
-!app/app/uploads/.gitkeep 
+app/logs/*
+!app/logs/.gitkeep 
+app/uploads/*
+!app/uploads/.gitkeep 
 
 # Docs
 docs/_build/*
