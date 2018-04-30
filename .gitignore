@@ -1,4 +1,5 @@
 # Demo App
+app/app/migrations/*
 app/logs/*
 !app/logs/.gitkeep 
 app/uploads/*

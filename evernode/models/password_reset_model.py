@@ -2,7 +2,7 @@
     User Model
 """
 from .base_model import BaseModel
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, ForeignKey
 
 
 class PasswordResetModel(BaseModel):
@@ -10,8 +10,8 @@ class PasswordResetModel(BaseModel):
 
     __tablename__ = 'user_password_resets'
     email = Column(String(255), unique=True)
-    code = Column(String(255))
-    user_id = Column(Integer)
+    code = Column(String(10))
+    user_id = Column(Integer, ForeignKey('users.id'))
 
     @classmethod
     def where_email(cls, email):

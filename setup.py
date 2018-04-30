@@ -39,7 +39,8 @@ setup(
         'cryptography',
         'requests',
         'click',
-        'pyyaml'
+        'pyyaml',
+        'Flask-Migrate'
     ],
     entry_points={
     'console_scripts': [
