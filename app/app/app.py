@@ -2,6 +2,7 @@
 Provides an entrypoint for for uWSGI
 sets up a flask app with defaults from App.py
 """
+from flask_migrate import Migrate
 from evernode.classes import App, JsonResponse
 from evernode.models import db
 
@@ -9,6 +10,9 @@ from evernode.models import db
 evernode_app = App(__name__)
 app = evernode_app.app
 # --- @boot ---
+
+# migrations
+migrate = Migrate(app, db)
 
 
 @app.errorhandler(404)

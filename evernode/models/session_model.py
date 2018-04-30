@@ -1,5 +1,5 @@
 """ db model for sessions """
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from .base_model import BaseModel
 
@@ -8,7 +8,7 @@ class SessionModel(BaseModel):
     """ class to handle db model for session """
     __tablename__ = 'user_sessions'
     session_id = Column(String(255), unique=True)
-    user_id = Column(Integer)
+    user_id = Column(Integer, ForeignKey('users.id'))
 
     @classmethod
     def where_session_id(cls, session_id):
