@@ -61,7 +61,7 @@ class Create:
         config['SERECT'] = Security.generate_key()
         config['KEY'] = Security.generate_key()
         config['SQLALCHEMY_BINDS']['DEFAULT'] = \
-            'mysql://db_user:password@ip/db_name'
+            'mysql://db_user:password@localhost/db_name'
         Json.save_file(self.config_file, config)
 
     def download_sample_uwsgi(self):
