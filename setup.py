@@ -22,7 +22,8 @@ setup(
     author='AtomHash',
     author_email='me@dylanharty.com',
     url='https://github.com/atomhash/evernode',
-    download_url='https://github.com/atomhash/evernode/archive/%s.tar.gz' % (version),
+    download_url=('https://github.com/atomhash/evernode/'
+                  'archive/%s.tar.gz') % (version),
     keywords=[
         'server',
         'flask-based',
@@ -37,7 +38,9 @@ setup(
         'Flask-SQLAlchemy>=2.2',
         'PyJWT',
         'cryptography',
-        'requests'
+        'requests',
+        'click',
+        'pyyaml'
     ],
     entry_points={
     'console_scripts': [

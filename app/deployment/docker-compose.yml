@@ -1,8 +1,0 @@
-version: "2"
-services:
-  evernode-development:
-    restart: on-failure
-    container_name: evernode-development
-    extends:
-      file: ./nginx-uwsgi.yml
-      service: nginx-uwsgi

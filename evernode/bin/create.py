@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import os
+import sys
+import click
 from urllib import request
 from evernode.classes import Json, Security
 
@@ -32,6 +34,8 @@ class Create:
         self.download_sample_app()
         print('Downloading sample resources/lang/en/http_messages.lang...')
         self.download_sample_http_errors()
+        if click.confirm('Use a docker development enviroment?', default=True):
+            self.configure_docker()
         print('Done!')
 
     def __touch(self, path):
@@ -70,9 +74,14 @@ class Create:
                 'master/app/app/app/resources/lang/en/http_messages.lang'),
             self.http_messages_file)
 
+    def configure_docker(self):
+        pass
+
     def make_structure(self):
         if os.path.isdir(self.dir_name):
-            raise FileExistsError
+            print('Error: Projects already exists.')
+            sys.exit(1)
+            return
         # make root folder
         os.mkdir(self.dir_name)
         # make app folder
