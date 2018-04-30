@@ -51,9 +51,14 @@ class Translator:
         """
 
         key_list = self.__list_key(key)
-        current_selection = \
-            current_app.config['LANGUAGE_PACKS'][
-                self.module_name][self.app_language]
+        try:
+            current_selection = \
+                current_app.config['LANGUAGE_PACKS'][
+                    self.module_name][self.app_language]
+        except KeyError as error:
+            if current_app.config['DEBUG']:
+                raise error
+            return None
         for parsed_dot_key in key_list:
             try:
                 current_selection = current_selection[parsed_dot_key]
