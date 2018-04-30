@@ -57,8 +57,11 @@ class Create:
                 '%s/app/app/config.json' % (self.branch)),
             self.config_file)
         config = Json.from_file(self.config_file)
+        config['NAME'] = self.app_name
         config['SERECT'] = Security.generate_key()
         config['KEY'] = Security.generate_key()
+        config['SQLALCHEMY_BINDS']['DEFAULT'] = \
+            'mysql://db_user:password@ip/db_name'
         Json.save_file(self.config_file, config)
 
     def download_sample_uwsgi(self):
@@ -144,7 +147,7 @@ class Create:
             self.dir_name, 'docker', 'build', 'Dockerfile')
         with open(dockerfile, 'r') as dockerfile_opened:
             lines = dockerfile_opened.readlines()
-            lines[-1] = ('ENTRYPOINT pip3.6 install -r /srv/app/'
+            lines[-1] = ('ENTRYPOINT pip3.6 install --upgrade -r /srv/app/'
                          'requirements.txt && python2.7 /usr/bin/supervisord')
             with open(dockerfile, 'w') as df_opened_writable:
                 df_opened_writable.writelines(lines)
