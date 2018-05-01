@@ -19,7 +19,7 @@ class Create:
     http_messages_file = None
     branch = None
 
-    def __init__(self, app_name, branch='dev-1.1.3'):
+    def __init__(self, app_name, branch='master'):
         self.app_name = 'evernode_%s' % (app_name)
         self.dir_name = './%s' % (self.app_name)
         self.branch = branch
