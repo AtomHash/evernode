@@ -11,7 +11,10 @@ instructions for web development with EverNode.
    foreword
    installation
    getting-started
-   patterns
+   folders
+   modules
+   translator
+   routes
 
 API Reference
 -------------

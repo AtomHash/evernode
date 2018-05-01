@@ -9,7 +9,7 @@ assumes you already have EverNode, Python3.6, uWSGI and NGINX installed. If you 
 
 
 Minimal Application
----------------------
+-------------------
 
 The minimal EverNode application looks something like this:
 
@@ -28,6 +28,46 @@ The minimal EverNode application looks something like this:
         app.run()
 
 
+EverNode Console
+-------------------
+
+You can easily create a new EverNode application by using the :code:`evernode create` command via command line.
+
+.. code-block:: sh
+
+    $ evernode create <app-name>
+
+Once the files have been downloaded they will be in a evernode\_<app-name> folder, relative to where the command was run.
+It's optional to download the docker files and the mock module.
+
+    1. Update the database connection string in the config file. :code:`evernode_<app-name>/app/config.json`
+  
+        .. code-block:: text
+
+            "SQLALCHEMY_BINDS": {
+                "DEFAULT": "mysql://<db_user>:<password>@<host>/<db_name>"
+            }
+
+        Note:
+            * EverNode can run without a database, but cannot use JWT sessions / DB Models.
+            * You can change :code:`mysql` to your odbc database connector.
+
+    2. Process models and Migrate the database. Navigate to :code:`evernode_<app-name>/app`. Run the following commands in the terminal:
+  
+        .. code-block:: sh
+
+            $ flask db init
+            $ flask db migrate
+            $ flask db upgrade
+
+    3. If you downloaded the Docker files, you can run :code:`docker-compose up --build` in the :code:`evernode_<app-name>/docker` directory.
+
+        * Please add the host below to your HOSTS file::
+
+            127.0.0.1           api.localhost
+
+    4. If you downloaded the Mock Module, once the docker image has started you can navigate to :code:`https://api.localhost/v1/hello-world`.
+
 Config
 ------
 
@@ -43,32 +83,30 @@ Example \| *config.json*
 ::
 
     {
-      "NAME": "App Name",
-      "DEBUG": true,
-      "SERECT": "secret-key-jwt",
-      "KEY": "encryption-key",
+      "NAME": "App Name",  # displayed app name
+      "DEBUG": true,  # production or development
+      "SERECT": "secret-key-jwt",  # JWT secrets
+      "KEY": "encryption-key",  # encryption key
+      "DEFAULT_LANGUAGE": "en",  # default Translator language
+      "HOST": "localhost", # app host
       "DATETIME": {
-        "TIMEZONE": "UTC",
-        "DATE_FORMAT": "%Y-%m-%d",
-        "TIME_FORMAT": "%H:%M:%S",
-        "SEPARATOR": " "
+        "TIMEZONE": "UTC",  # app timezone
+        "DATE_FORMAT": "%Y-%m-%d",  # JSON serialization of date format
+        "TIME_FORMAT": "%H:%M:%S",  # JSON serialization of time format
+        "SEPARATOR": " "  # JSON serialization, separator between date and time
       },
-      "DEFAULT_LANGUAGE": "en",
-      "HOST": "localhost",
-      "SQLALCHEMY_TRACK_MODIFICATIONS": false,
-      "SQLALCHEMY_ECHO": true,
       "API": {
-        "VERSION": "1",
-        "PREFIX": "v{v}"
+        "VERSION": "1",  # api version
+        "PREFIX": "v{v}"  # prefix to url with version
       },
       "UPLOADS": {
-        "FOLDER": "/srv/uploads",
-        "EXTENSIONS": [
+        "FOLDER": "/srv/uploads",  # uploads folder using FormData
+        "EXTENSIONS": [  # allowed extensions using FormData
           "png",
           "jpg"
         ]
       },
-      "CORS": {
+      "CORS": {  # flask-cors http://flask-cors.readthedocs.io/en/latest/
         "ALLOW_HEADERS": [
           "Origin",
           "Content-Type",
@@ -92,11 +130,13 @@ Example \| *config.json*
         "JWT_EXP_SECS": 360,  # JWT validity period
         "FAST_SESSIONS": true,  # don't check session against database
         "MAX_SESSIONS": 1,  # how many active sessions a user can have
-        "USERNAME_FIELD": "email",
-        "PASSWORD_FIELD": "password",
-        "PASSWORD_HASHING": "pbkdf2:sha512"
+        "USERNAME_FIELD": "email",  # when using UserAuth
+        "PASSWORD_FIELD": "password",  # when using userAuth
+        "PASSWORD_HASHING": "pbkdf2:sha512"  # evernode hashing method
       },
-      "MAX_CONTENT_LENGTH": 2000000,
+      "MAX_CONTENT_LENGTH": 2000000,  # upload limits
+      "SQLALCHEMY_TRACK_MODIFICATIONS": false,
+      "SQLALCHEMY_ECHO": true,
       "SQLALCHEMY_POOL_SIZE": 100,
       "SQLALCHEMY_POOL_RECYCLE": 280,
       "SQLALCHEMY_BINDS": {
@@ -163,7 +203,7 @@ Example \| *uwsgi.ini*
 * :code:`pythonpath=/srv/app/` set this to your root application folder of the evernode_app.
 * :code:`pythonpath=/srv/app/` set chdir of uwsgi to root application path
 
-Learn more about uWSGI configuration `here <http://uwsgi-docs.readthedocs.io/en/latest/Configuration.html>`_.
+Learn more about uWSGI configuration: `<http://uwsgi-docs.readthedocs.io/en/latest/Configuration.html>`_.
 
 NGINX
 -----
@@ -198,7 +238,7 @@ Example \| /etc/nginx/conf.d/*[website-domain].conf*
 
 Replace :code:`[website-domain]` with your domain name.
 
-Learn more about NGINX configuration `here <http://nginx.org/en/docs/beginners_guide.html>`_.
+Learn more about NGINX configuration: `<http://nginx.org/en/docs/beginners_guide.html>`_.
 
 Generate Self-Signed Certificate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

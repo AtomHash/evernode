@@ -8,11 +8,11 @@ EverNode requries a web server and Python3.6. It assumes you already have Python
 Python Version
 --------------
 
-We currently only support Python 3.6 and above. Our application replies on certain features only avaible in
+We currently only support Python 3.6 and above. Our application replies on certain features only available in
 python 3.6, such as the secrets module added to core in 3.6.
 
 Python 3.6 & pip
-^^^^^^^^^^^^^^^^^^
+````````````````
 
 **Debian and Ubuntu**
 
@@ -37,7 +37,7 @@ Within the activated environment, use the following command to install EverNode:
     pip install evernode
 
 Development Releases
-~~~~~~~~~~~~~~~~~~~~
+````````````````````
 
 If you want to work with the latest EverNode code before it's released, install or
 update the code from the master branch:

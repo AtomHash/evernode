@@ -8,8 +8,8 @@ Welcome to EverNode
     :align: right
 
 Welcome to EverNode's documentation. Get started with :ref:`installation`
-and then get an overview with the :ref:`getting-started`. Common patterns are described in the
-:ref:`patterns` section. The rest of the docs describe each component of
+and then get an overview with the :ref:`getting-started`. EverNode folders and file patterns are described in the
+:ref:`folders` section. The rest of the docs describe each component of
 EverNode in detail, with a full reference in the :ref:`api` section.
 
 .. include:: contents.rst.inc
