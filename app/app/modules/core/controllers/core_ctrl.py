@@ -6,6 +6,7 @@ from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, Fo
 from evernode.decorators import middleware # noqa
 from evernode.models import PasswordResetModel, JsonModel, BaseUserModel # noqa
 from datetime import datetime
+from ..models import TestModel
 
 
 def allowed_file(filename):
@@ -19,7 +20,7 @@ class CoreController:
     @staticmethod
     def test():
         """ evernode testing """
-        return JsonResponse(200, None, "")
+        return JsonResponse(200, None, TestModel.where_id(1))
 
     @staticmethod
     def test_validate_password_reset():
