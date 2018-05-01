@@ -19,7 +19,7 @@ class Create:
     http_messages_file = None
     branch = None
 
-    def __init__(self, app_name, branch='master'):
+    def __init__(self, app_name, branch='dev-1.1.3'):
         self.app_name = 'evernode_%s' % (app_name)
         self.dir_name = './%s' % (self.app_name)
         self.branch = branch
@@ -39,11 +39,34 @@ class Create:
         self.download_sample_app()
         print('Downloading sample resources/lang/en/http_messages.lang...')
         self.download_sample_http_errors()
-        if click.confirm('Use a docker development enviroment? [Default=Yes]', default=True):
+        if click.confirm(
+                'Use a docker development enviroment? [Default=Yes]',
+                default=True):
             self.configure_docker()
-        if click.confirm('Create a mock starting module? [Default=No]', default=False):
+        if click.confirm(
+                'Create a mock module? [Default=Yes]', default=True):
             self.configure_module()
-        print('Done!')
+        print("""
+              Done!
+              You can now start using EverNode.
+              %s folder created.
+              1. Navigate into the EverNode app
+                    `$ cd %s`
+              2. If you downloaded the docker files
+                    `$ cd docker`
+                    `$ docker-compose up --build`
+              3. If you downloaded the mock module,
+              goto https://api.localhost/v1/hello-world
+              once the docker image has started.
+              4. If using a database, please init!
+                    `$ cd app`
+                    `$ flask db init`
+                    `$ flask db migrate`
+                    `$ flask db upgrade`
+              Notes:
+              Add `127.0.0.1     api.localhost`
+              to your hosts file.
+              """ % (self.app_name, self.app_name))
 
     def __touch(self, path):
         with open(path, 'a'):
@@ -86,8 +109,44 @@ class Create:
             self.http_messages_file)
 
     def configure_module(self):
-        # TODO: mock module
-        pass
+        mock_module_path = os.path.join(
+            self.dir_name, 'app', 'modules', 'mock_module')
+        mock_module_files = [
+            {'mock_module': [
+                ('https://raw.githubusercontent.com/AtomHash/evernode/'
+                 '%s/app/app/modules/mock_module/routes.py') % (self.branch)]},
+            {'controllers': [
+                ('https://raw.githubusercontent.com/AtomHash/evernode/'
+                 '%s/app/app/modules/mock_module/controllers/'
+                 '__init__.py') % (self.branch),
+                ('https://raw.githubusercontent.com/AtomHash/evernode/'
+                 '%s/app/app/modules/mock_module/'
+                 'controllers/mock_controller.py' % (self.branch))]},
+            {'models': [
+                ('https://raw.githubusercontent.com/AtomHash/evernode/'
+                 '%s/app/app/modules/mock_module/'
+                 'models/__init__.py' % (self.branch)),
+                ('https://raw.githubusercontent.com/AtomHash/evernode/'
+                 '%s/app/app/modules/mock_module/'
+                 'models/hello_world_model.py' % (self.branch))]}
+        ]
+        for folder in mock_module_files:
+            for key, value in folder.items():
+                root = ''
+                if key is 'mock_module':
+                    root = 'app/modules/mock_module'
+                elif key is 'controllers':
+                    root = 'app/modules/mock_module/controllers'
+                elif key is 'models':
+                    root = 'app/modules/mock_module/models'
+                os.mkdir(os.path.join(self.dir_name, root))
+                for file in value:
+                    self.easy_file_download(root, file)
+        os.mkdir(os.path.join(mock_module_path, 'resources'))
+        os.mkdir(os.path.join(mock_module_path, 'resources', 'lang'))
+        os.mkdir(os.path.join(mock_module_path, 'resources', 'lang', 'en'))
+        os.mkdir(os.path.join(mock_module_path, 'resources', 'templates'))
+        self.__touch(os.path.join(mock_module_path, '__init__.py'))
 
     def configure_docker(self):
         needed_files = [
@@ -133,7 +192,7 @@ class Create:
                     root = 'docker/build/nginx/conf.d'
                 os.mkdir(os.path.join(self.dir_name, root))
                 for file in value:
-                    self.__docker_file_download(root, file)
+                    self.easy_file_download(root, file)
         docker_compose = os.path.join(
             self.dir_name, 'docker', 'docker-compose.yml')
         with open(docker_compose, 'r') as docker_compose_opened:
@@ -158,9 +217,11 @@ class Create:
             with open(dockerfile, 'w') as df_opened_writable:
                 df_opened_writable.writelines(lines)
 
-    def __docker_file_download(self, root, file):
+    def easy_file_download(self, root, file):
+        file_name = file.rsplit('/', 1)[-1]
+        print('Downloading %s...' % (file_name))
         self.download_file(file, os.path.join(
-            self.dir_name, root, file.rsplit('/', 1)[-1]))
+            self.dir_name, root, file_name))
 
     def make_structure(self):
         if os.path.isdir(self.dir_name):

@@ -42,7 +42,7 @@ It's optional to download the docker files and the mock module.
 
     1. Update the database connection string in the config file. :code:`evernode_<app-name>/app/config.json`
   
-        .. code-block:: json
+        .. code-block:: text
 
             "SQLALCHEMY_BINDS": {
                 "DEFAULT": "mysql://<db_user>:<password>@<host>/<db_name>"
@@ -203,7 +203,7 @@ Example \| *uwsgi.ini*
 * :code:`pythonpath=/srv/app/` set this to your root application folder of the evernode_app.
 * :code:`pythonpath=/srv/app/` set chdir of uwsgi to root application path
 
-Learn more about uWSGI configuration `here <http://uwsgi-docs.readthedocs.io/en/latest/Configuration.html>`_.
+Learn more about uWSGI configuration: `<http://uwsgi-docs.readthedocs.io/en/latest/Configuration.html>`_.
 
 NGINX
 -----
@@ -238,7 +238,7 @@ Example \| /etc/nginx/conf.d/*[website-domain].conf*
 
 Replace :code:`[website-domain]` with your domain name.
 
-Learn more about NGINX configuration `here <http://nginx.org/en/docs/beginners_guide.html>`_.
+Learn more about NGINX configuration: `<http://nginx.org/en/docs/beginners_guide.html>`_.
 
 Generate Self-Signed Certificate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
