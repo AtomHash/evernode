@@ -28,5 +28,5 @@ Configuration and Conventions
 -----------------------------
 
 EverNode has many configuration values that can be easily set in the config.json file. To learn more about the EverNode and configuration visit the :ref:`getting-started` section.
-When building with EverNode you should follow a few conventions, please refer to :ref:`patterns`
+When building with EverNode you should follow a few conventions, please refer to :ref:`folders`
 

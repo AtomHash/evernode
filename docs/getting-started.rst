@@ -52,7 +52,7 @@ It's optional to download the docker files and the mock module.
             * EverNode can run without a database, but cannot use JWT sessions / DB Models.
             * You can change :code:`mysql` to your odbc database connector.
 
-    2. Process models and Migrate the database. Navigate to :code:`evernode_<app-name>/app/`. Run the following commands in the terminal:
+    2. Process models and Migrate the database. Navigate to :code:`evernode_<app-name>/app`. Run the following commands in the terminal:
   
         .. code-block:: sh
 
@@ -60,7 +60,7 @@ It's optional to download the docker files and the mock module.
             $ flask db migrate
             $ flask db upgrade
 
-    3. If you downloaded the Docker files, you can run :code:`docker-compose up --build` in the :code:`evernode\_<app-name>/docker` directory.
+    3. If you downloaded the Docker files, you can run :code:`docker-compose up --build` in the :code:`evernode_<app-name>/docker` directory.
 
         * Please add the host below to your HOSTS file::
 
@@ -83,32 +83,30 @@ Example \| *config.json*
 ::
 
     {
-      "NAME": "App Name",
-      "DEBUG": true,
-      "SERECT": "secret-key-jwt",
-      "KEY": "encryption-key",
+      "NAME": "App Name",  # displayed app name
+      "DEBUG": true,  # production or development
+      "SERECT": "secret-key-jwt",  # JWT secrets
+      "KEY": "encryption-key",  # encryption key
+      "DEFAULT_LANGUAGE": "en",  # default Translator language
+      "HOST": "localhost", # app host
       "DATETIME": {
-        "TIMEZONE": "UTC",
-        "DATE_FORMAT": "%Y-%m-%d",
-        "TIME_FORMAT": "%H:%M:%S",
-        "SEPARATOR": " "
+        "TIMEZONE": "UTC",  # app timezone
+        "DATE_FORMAT": "%Y-%m-%d",  # JSON serialization of date format
+        "TIME_FORMAT": "%H:%M:%S",  # JSON serialization of time format
+        "SEPARATOR": " "  # JSON serialization, separator between date and time
       },
-      "DEFAULT_LANGUAGE": "en",
-      "HOST": "localhost",
-      "SQLALCHEMY_TRACK_MODIFICATIONS": false,
-      "SQLALCHEMY_ECHO": true,
       "API": {
-        "VERSION": "1",
-        "PREFIX": "v{v}"
+        "VERSION": "1",  # api version
+        "PREFIX": "v{v}"  # prefix to url with version
       },
       "UPLOADS": {
-        "FOLDER": "/srv/uploads",
-        "EXTENSIONS": [
+        "FOLDER": "/srv/uploads",  # uploads folder using FormData
+        "EXTENSIONS": [  # allowed extensions using FormData
           "png",
           "jpg"
         ]
       },
-      "CORS": {
+      "CORS": {  # flask-cors http://flask-cors.readthedocs.io/en/latest/
         "ALLOW_HEADERS": [
           "Origin",
           "Content-Type",
@@ -132,11 +130,13 @@ Example \| *config.json*
         "JWT_EXP_SECS": 360,  # JWT validity period
         "FAST_SESSIONS": true,  # don't check session against database
         "MAX_SESSIONS": 1,  # how many active sessions a user can have
-        "USERNAME_FIELD": "email",
-        "PASSWORD_FIELD": "password",
-        "PASSWORD_HASHING": "pbkdf2:sha512"
+        "USERNAME_FIELD": "email",  # when using UserAuth
+        "PASSWORD_FIELD": "password",  # when using userAuth
+        "PASSWORD_HASHING": "pbkdf2:sha512"  # evernode hashing method
       },
-      "MAX_CONTENT_LENGTH": 2000000,
+      "MAX_CONTENT_LENGTH": 2000000,  # upload limits
+      "SQLALCHEMY_TRACK_MODIFICATIONS": false,
+      "SQLALCHEMY_ECHO": true,
       "SQLALCHEMY_POOL_SIZE": 100,
       "SQLALCHEMY_POOL_RECYCLE": 280,
       "SQLALCHEMY_BINDS": {
