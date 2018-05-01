@@ -72,6 +72,14 @@ Init the Translator app::
     translator = Translator()
     print(translator.trans('hello-world.message'))
 
+Output::
+
+    # Content-language: en
+    output: 'Hello World'
+
+    # Content-language: fr
+    output: 'Bonjour le monde'
+
 **Module Folder:**
 Init the Translator app::
 
@@ -79,6 +87,14 @@ Init the Translator app::
 
     translator = Translator(module_name='<module-name>')
     print(translator.trans('hello-world.message'))
+
+Output::
+
+    # Content-language: en
+    output: 'Hello World'
+
+    # Content-language: fr
+    output: 'Bonjour le monde'
 
 What Language is Used?
 ----------------------
