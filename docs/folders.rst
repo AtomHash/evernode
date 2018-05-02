@@ -5,7 +5,6 @@ Folder Structure
 
 This section will cover how to structure your EverNode application.
 
-
 Overview Structure
 ````````````````````````````
 
