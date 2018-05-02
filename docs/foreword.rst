@@ -8,8 +8,8 @@ should or should not be using it.
 What is EverNode?
 -----------------------
 
-EverNode adds features to flask to make API development a breeze. EverNode does not
-modify flask directly, but just adds nice features to help build APIs faster. EverNode is built with
+EverNode adds features to `Flask <https://github.com/pallets/flask>`_ to make API development easier. EverNode does not
+modify Flask directly, but just adds nice features to help build APIs faster. EverNode is built with
 stateless data transfer in mind and does not use sessions.
 
 Highlights of the project include:
