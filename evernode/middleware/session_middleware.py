@@ -13,7 +13,7 @@ class SessionMiddleware(Middleware):
     def condition(self) -> bool:
         """ check JWT, then check session for validity """
         jwt = JWT()
-        if jwt.verify_token():
+        if jwt.verify_http_authorization_token():
             if not current_app.config['AUTH']['FAST_SESSIONS']:
                 session = SessionModel.where_session_id(
                     jwt.data['session_id'])

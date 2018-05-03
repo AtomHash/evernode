@@ -43,7 +43,11 @@
     "PASSWORD": "somePassword"
   },
   "AUTH": {
-    "JWT_EXP_SECS": 360,
+    "JWT": {
+      "TOKEN_SECONDS": 4,
+      "REFRESH_TOKENS_ENABLED": true,
+      "REFRESH_TOKEN_DAYS": 5
+    },
     "FAST_SESSIONS": true,
     "MAX_SESSIONS": 1,
     "USERNAME_FIELD": "email",

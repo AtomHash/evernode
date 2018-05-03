@@ -16,7 +16,10 @@ The Translator class uses a an index from the Content-Language HTTP header. If C
 not set the DEFAULT_LANGUAGE set in your config.json will be used. The Translator class defaults
 to parse language packs from the root resoucres/lang folder.
 
-The Translator Class,  :class:`evernode.classes.Translator`::
+| **Translator Class**
+| class: :class:`evernode.classes.Translator`
+
+::
 
     from evernode.classes import Translator
 

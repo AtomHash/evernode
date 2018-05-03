@@ -2,7 +2,7 @@
     Core Controller
 """
 from flask import request, current_app # noqa
-from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator # noqa
+from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator, JWT # noqa
 from evernode.decorators import middleware # noqa
 from evernode.models import PasswordResetModel, JsonModel, BaseUserModel # noqa
 from datetime import datetime
@@ -19,6 +19,13 @@ class CoreController:
 
     @staticmethod
     def test():
+        """ evernode testing """
+        jwt = JWT()
+        jwt.verify_http_authorization_refresh_token()
+        return JsonResponse(200, None, jwt.data)
+
+    @staticmethod
+    def test_test_model():
         """ evernode testing """
         return JsonResponse(200, None, TestModel.where_id(1))
 

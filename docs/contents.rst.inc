@@ -15,6 +15,7 @@ instructions for web development with EverNode.
    modules
    translator
    routes
+   user-auth
 
 API Reference
 -------------

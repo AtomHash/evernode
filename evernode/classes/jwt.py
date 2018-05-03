@@ -23,32 +23,80 @@ class JWT:
         self.app_secret = self.app.config['SERECT']
         self.request = request
 
-    def create_token(self, data, seconds_to_expire=180) -> str:
-        """ Construct a JWT """
-        jwt_token = jwt.encode({
-            'data': data,
-            'exp': datetime.utcnow() + timedelta(seconds=seconds_to_expire)},
-            self.app_secret)
-        return Security.encrypt(jwt_token)
-
-    def verify_token(self) -> bool:
-        """ Use request information to validate JWT """
+    def get_http_token(self):
         if 'Authorization' in request.headers:
             token = request.headers['Authorization']
             parsed_token = re.search('Bearer (.+)', token)
             if parsed_token:
-                jwt_token = parsed_token.group(1)
+                return parsed_token.group(1)
+            else:
+                return None
+        return None
+
+    def create_token(self, data, token_valid_secs=180,
+                     refresh_token_valid_days=1) -> str:
+        """ Construct a JWT """
+        refresh_token = jwt.encode({
+            'exp':
+                datetime.utcnow() + timedelta(days=refresh_token_valid_days)},
+            self.app_secret).decode("utf-8")
+        jwt_token = jwt.encode({
+            'data': data,
+            'refresh_token': refresh_token,
+            'exp': datetime.utcnow() + timedelta(seconds=token_valid_secs)},
+            self.app_secret)
+        return Security.encrypt(jwt_token)
+
+    def verify_refresh_token(self, expired_token) -> bool:
+        """ self.data is populated with old token data if valid """
+        try:
+            decoded_token = jwt.decode(
+                expired_token,
+                self.app_secret,
+                options={'verify_exp': False})
+            if 'refresh_token' in decoded_token:
                 try:
-                    decrypted_token = Security.decrypt(jwt_token)
-                    self.data = jwt.decode(
-                        decrypted_token,
-                        self.app_secret)['data']
+                    jwt.decode(decoded_token['refresh_token'], self.app_secret)
+                    self.data = decoded_token
                     return True
-                except (Exception, BaseException) as error:
-                    """ catch all decoding exceptions """
-                    if current_app.config['DEBUG']:
-                        print(error)
+                except jwt.exceptions.ExpiredSignatureError as e:
                     return False
+        except (Exception, BaseException) as e:
+            return False
+        return False
+
+    def verify_token(self, token) -> bool:
+        try:
+            self.data = jwt.decode(token, self.app_secret)
+            return True
+        except (Exception, BaseException) as error:
+            return False
+        return False
+
+    def verify_http_authorization_refresh_token(self) -> bool:
+        """ Use request information to validate JWT """
+        authorization_token = self.get_http_token()
+        if authorization_token is not None:
+            decrypted_token = Security.decrypt(authorization_token)
+            if self.verify_refresh_token(decrypted_token):
+                if self.data is not None:
+                    self.data = self.data['data']
+                    return True
+                return False
+            else:
+                return False
+        return False
+
+    def verify_http_authorization_token(self) -> bool:
+        """ Use request information to validate JWT """
+        authorization_token = self.get_http_token()
+        if authorization_token is not None:
+            decrypted_token = Security.decrypt(authorization_token)
+            if self.verify_token(decrypted_token):
+                if self.data is not None:
+                    self.data = self.data['data']
+                    return True
+                return False
             else:
                 return False
         return False
