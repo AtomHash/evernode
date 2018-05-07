@@ -9,16 +9,34 @@ from datetime import datetime
 from ..models import TestModel
 
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in \
-        current_app.config['UPLOADS']['EXTENSIONS']
-
-
 class CoreController:
     """ route controller """
 
     @staticmethod
     def test():
+        """ evernode testing """
+        return JsonResponse(200, None, "")
+
+    @staticmethod
+    def test_paginate(page_number, limit):
+        """ evernode testing """
+        max_pages = TestModel.paginate_max_pages(limit)
+        tests = TestModel.paginate(limit, page_number)
+        json_paginate = {
+            'meta': {
+                'total-pages': max_pages
+            },
+            'data': tests,
+            'links': TestModel.paginate_links(
+                '/%s/tests/' % (current_app.config['FORMATTED_PREFIX']),
+                page_number,
+                limit,
+                max_pages)
+        }
+        return JsonResponse(200, None, json_paginate)
+
+    @staticmethod
+    def test_refresh_token():
         """ evernode testing """
         jwt = JWT()
         jwt.verify_http_auth_refresh_token()

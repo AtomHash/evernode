@@ -62,4 +62,14 @@ routes = [
         'url': '/test-email',
         'name': 'core-test-email',
         'methods': ['GET'],
-        'function': CoreController.test_email}]
+        'function': CoreController.test_email},
+    {
+        'url': '/test-refresh-token',
+        'name': 'core-test-refresh-token',
+        'methods': ['GET'],
+        'function': CoreController.test_refresh_token},
+    {
+        'url': '/tests/page/<int:page_number>/<int:limit>',
+        'name': 'core-test-paginate',
+        'methods': ['GET'],
+        'function': CoreController.test_paginate}]
