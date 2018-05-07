@@ -44,7 +44,7 @@
   },
   "AUTH": {
     "JWT": {
-      "TOKEN_SECONDS": 4,
+      "TOKEN_SECONDS": 7200,
       "REFRESH_TOKENS_ENABLED": true,
       "REFRESH_TOKEN_DAYS": 5
     },

@@ -21,7 +21,7 @@ class CoreController:
     def test():
         """ evernode testing """
         jwt = JWT()
-        jwt.verify_http_authorization_refresh_token()
+        jwt.verify_http_auth_refresh_token()
         return JsonResponse(200, None, jwt.data)
 
     @staticmethod
