@@ -2,7 +2,6 @@
 from flask import current_app
 from datetime import datetime
 from sqlalchemy import Column, Integer, DateTime, text
-from urllib.parse import urlencode
 from .database_model import DatabaseModel
 from .json_model import JsonModel
 
