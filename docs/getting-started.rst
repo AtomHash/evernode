@@ -31,11 +31,14 @@ The minimal EverNode application looks something like this:
 EverNode Console
 -------------------
 
-You can easily create a new EverNode application by using the :code:`evernode create` command via command line.
+New App
+```````
+
+You can easily create a new EverNode application by using the :code:`evernode init` command via command line.
 
 .. code-block:: sh
 
-    $ evernode create <app-name>
+    $ evernode init <app-name>
 
 Once the files have been downloaded they will be in a evernode\_<app-name> folder, relative to where the command was run.
 It's optional to download the docker files and the mock module.
@@ -67,6 +70,17 @@ It's optional to download the docker files and the mock module.
             127.0.0.1           api.localhost
 
     4. If you downloaded the Mock Module, once the docker image has started you can navigate to :code:`https://api.localhost/v1/hello-world`.
+
+New Module
+``````````
+
+You can easily create new EverNode modules by using the :code:`evernode module init` command via command line. 
+
+**WARNING:** Make sure to navigate to the :code:`app/modules` folder. This command will make a folder relative to your command line :code:`cd` location.
+
+.. code-block:: sh
+
+    $ evernode module init <module-name>
 
 Config
 ------

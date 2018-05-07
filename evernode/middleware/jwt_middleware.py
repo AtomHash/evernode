@@ -11,7 +11,7 @@ class JWTMiddleware(Middleware):
 
     def condition(self) -> bool:
         """ Check a JWT token """
-        return JWT().verify_token()
+        return JWT().verify_http_authorization_token()
 
     def create_response(self):
         """ is condition false, return 401"""

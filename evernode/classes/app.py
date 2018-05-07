@@ -23,7 +23,6 @@ class App:
     def __init__(self, name, prefix=None, middleware=None,
                  root_path=None, config_path=None):
         self.app = Flask(name)
-        self.prefix = prefix
         self.root_path = root_path
         self.config_path = config_path
         self.__root_path()
@@ -32,6 +31,7 @@ class App:
         self.load_cors()
         self.load_modules()
         self.load_language_files()
+        self.prefix = self.__format_prefix(prefix)
         self.load_before_middleware(middleware)
 
     def __root_path(self):
@@ -43,6 +43,28 @@ class App:
             raise RuntimeError('EverNode requires a valid root path.'
                                ' Directory: %s does not exist'
                                % (self.root_path))
+
+    def __format_prefix(self, prefix):
+        """ Format prefix  """
+        api_version = None
+        if prefix is not None:
+            self.prefix = prefix
+        else:
+            if 'API' in self.app.config:
+                if self.prefix is None:
+                    self.prefix = self.app.config['API']['PREFIX'] \
+                        if 'PREFIX' in self.app.config['API'] else None
+                api_version = self.app.config['API']['VERSION'] \
+                    if 'VERSION' in self.app.config['API'] else None
+            if self.prefix is not None and api_version is not None:
+                if '{v}' in self.prefix:
+                    self.prefix = '%s' % \
+                        (self.prefix.replace('{v}', api_version))
+            elif self.prefix is None:
+                self.prefix = ''
+        if self.prefix is not None:
+            self.prefix = self.prefix.strip('/')
+        self.app.config.update({'FORMATTED_PREFIX': self.prefix})
 
     def get_modules(self) -> list:
         """  Get the module names(folders) in root modules folder """
@@ -117,7 +139,7 @@ class App:
         # prefix api middleware
         self.app.wsgi_app = RouteBeforeMiddleware(
             self.app.wsgi_app,
-            self.app, prefix=self.prefix)
+            self.app)
         # custom middleware
         if before_middleware is not None:
             for middleware in before_middleware:

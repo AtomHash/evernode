@@ -54,9 +54,17 @@ class UserAuth:
                 'user_id': self.user.id,
                 'user_email': self.user.email,
             }
-            jwt_exp_secs = current_app.config['AUTH']['JWT_EXP_SECS'] if \
-                'JWT_EXP_SECS' in current_app.config['AUTH'] else 180
-            session_jwt = JWT().create_token(data, jwt_exp_secs)
+            token_seconds = \
+                current_app.config['AUTH']['JWT']['TOKEN_SECONDS'] if \
+                'TOKEN_SECONDS' in current_app.config['AUTH']['JWT'] else 180
+            refresh_token_days = \
+                current_app.config['AUTH']['JWT']['REFRESH_TOKEN_DAYS'] if \
+                'REFRESH_TOKEN_DAYS' in \
+                current_app.config['AUTH']['JWT'] else 1
+            session_jwt = JWT().create_token(
+                data,
+                token_seconds,
+                refresh_token_days)
             Session.create_session(session_id, self.user.id)
             return session_jwt
         return None

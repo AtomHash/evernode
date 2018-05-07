@@ -36,16 +36,6 @@ Within the activated environment, use the following command to install EverNode:
 
     pip install evernode
 
-Development Releases
-````````````````````
-
-If you want to work with the latest EverNode code before it's released, install or
-update the code from the master branch:
-
-.. code-block:: sh
-
-    pip install -U https://github.com/AtomHash/evernode/archive/dev-[version].zip
-
 Install NGINX
 ----------------
 
