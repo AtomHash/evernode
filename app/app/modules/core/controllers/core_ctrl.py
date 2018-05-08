@@ -2,7 +2,7 @@
     Core Controller
 """
 from flask import request, current_app # noqa
-from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator, JWT # noqa
+from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator, JWT, Paginate # noqa
 from evernode.decorators import middleware # noqa
 from evernode.models import PasswordResetModel, JsonModel, BaseUserModel # noqa
 from datetime import datetime
@@ -20,20 +20,12 @@ class CoreController:
     @staticmethod
     def test_paginate(page_number, limit):
         """ evernode testing """
-        max_pages = TestModel.paginate_max_pages(limit)
-        tests = TestModel.paginate(limit, page_number)
-        json_paginate = {
-            'meta': {
-                'total-pages': max_pages
-            },
-            'data': tests,
-            'links': TestModel.paginate_links(
-                '/%s/tests/' % (current_app.config['FORMATTED_PREFIX']),
-                page_number,
-                limit,
-                max_pages)
-        }
-        return JsonResponse(200, None, json_paginate)
+        paginate = Paginate(TestModel, limit)
+        paginate.add_filter('name', 'LIKE', 'te%')
+        return JsonResponse(
+            200,
+            None,
+            paginate.json_paginate('/v1/tests/', page_number))
 
     @staticmethod
     def test_refresh_token():
