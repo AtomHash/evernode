@@ -13,3 +13,4 @@ from .translator import Translator # noqa
 from .render import Render # noqa
 from .form_data import FormData # noqa
 from .json import Json # noqa
+from .paginate import Paginate # noqa
