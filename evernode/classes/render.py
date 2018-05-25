@@ -18,6 +18,7 @@ class Render:
     """ dict that contains compiled templates """
 
     def __init__(self, module_name=None):
+        self.templates = {}
         if module_name is None:
             path = os.path.join(sys.path[0], 'resources', 'templates')
             if os.path.isdir(path):
