@@ -23,6 +23,14 @@ class Email:
     send_as_one = None
 
     def __init__(self, send_as_one=False):
+        self.config_path = None
+        self.__addresses = []
+        self.__ccs = []
+        self.__files = []
+        self.__html = ''
+        self.__text = ''
+        self.__subject = ''
+        self.__data = {}
         self.send_as_one = send_as_one
         if 'CONFIG_PATH' in current_app.config:
             self.config_path = current_app.config['CONFIG_PATH']

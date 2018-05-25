@@ -15,6 +15,10 @@ class FormData:
     files = {}
 
     def __init__(self):
+        self.field_arguments = []
+        self.file_arguments = []
+        self.values = {}
+        self.files = {}
         self.json_form_data = self.get_json_form_data()
 
     def get_json_form_data(self):
