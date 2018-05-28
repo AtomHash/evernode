@@ -9,7 +9,7 @@ class PasswordResetModel(BaseModel):
     """ Password Reset db Model """
 
     __tablename__ = 'user_password_resets'
-    token = Column(String(550))
+    token = Column(String(1000))
     user_id = Column(Integer, ForeignKey('users.id'))
 
     @classmethod
