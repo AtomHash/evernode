@@ -16,7 +16,7 @@ class BaseUserModel(BaseModel):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
     email = Column(String(255), unique=True)
-    password = Column(String(255))
+    password = Column(String(1000))
     firstname = Column(String(255))
     lastname = Column(String(255))
     json_exclude_list = ['password', 'updated_at', 'created_at', 'id']
