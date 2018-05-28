@@ -51,23 +51,23 @@ class BaseUserModel(BaseModel):
             'code': Security.random_string(5),  # make unique
             'user_id': user.id},
             token_valid_for=valid_for)
-        uuid = Security.generate_uuid(1) + "-" + Security.random_string(5)
+        code = Security.generate_uuid(1) + "-" + Security.random_string(5)
         password_reset_model = PasswordResetModel()
         password_reset_model.token = token
-        password_reset_model.uuid = uuid
+        password_reset_model.code = code
         password_reset_model.user_id = user.id
         password_reset_model.save()
-        return uuid
+        return code
 
     @classmethod
-    def validate_password_reset(cls, uuid, new_password):
+    def validate_password_reset(cls, code, new_password):
         """
         Validates an unhashed code against a hashed code.
         Once the code has been validated and confirmed
         new_password will replace the old users password
         """
         password_reset_model = \
-            PasswordResetModel.where_uuid(uuid)
+            PasswordResetModel.where_code(code)
         if password_reset_model is None:
             return False
         jwt = JWT()
