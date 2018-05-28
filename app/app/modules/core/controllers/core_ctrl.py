@@ -55,7 +55,7 @@ class CoreController:
     @staticmethod
     def test_create_password_reset(email):
         """ evernode testing """
-        token = BaseUserModel.create_password_reset(email, valid_for=1)
+        token = BaseUserModel.create_password_reset(email, valid_for=3600)
         return JsonResponse(200, None, token)
 
     @staticmethod
