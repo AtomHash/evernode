@@ -81,7 +81,7 @@ class JWT:
 
     def verify_token(self, token) -> bool:
         try:
-            self.data = jwt.decode(token, self.app_secret)
+            self.data = jwt.decode(Security.decrypt(token), self.app_secret)
             return True
         except (Exception, BaseException) as error:
             self.errors.append(error)
@@ -92,7 +92,7 @@ class JWT:
         """ Use expired token to check refresh token information """
         authorization_token = self.get_http_token()
         if authorization_token is not None:
-            decrypted_token = Security.decrypt(authorization_token)
+            decrypted_token = authorization_token
             if self.verify_refresh_token(decrypted_token):
                 if self.data is not None:
                     self.data = self.data['data']
@@ -106,7 +106,7 @@ class JWT:
         """ Use request information to validate JWT """
         authorization_token = self.get_http_token()
         if authorization_token is not None:
-            decrypted_token = Security.decrypt(authorization_token)
+            decrypted_token = authorization_token
             if self.verify_token(decrypted_token):
                 if self.data is not None:
                     self.data = self.data['data']

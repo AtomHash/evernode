@@ -5,6 +5,7 @@
 from sqlalchemy import Column, String
 from ..classes.security import Security
 from ..classes.session import Session
+from ..classes.jwt import JWT
 from .base_model import BaseModel
 from .password_reset_model import PasswordResetModel
 
@@ -35,38 +36,46 @@ class BaseUserModel(BaseModel):
         self.password = Security.hash(password)
         self.save()
 
-    def create_password_reset(self) -> str:
+    @classmethod
+    def create_password_reset(cls, email, valid_for=3600) -> str:
         """
         Create a password reset request in the user_password_resets
         database table. Hashed code gets stored in the database.
         Returns unhashed reset code
         """
-        if self.email is None:
+        user = cls.where_email(email)
+        if user is None:
             return None
-        PasswordResetModel.delete_where_email(self.email)
-        code = Security.random_string(6)
+        PasswordResetModel.delete_where_user_id(user.id)
+        token = JWT().create_token({
+            'code': Security.random_string(5),
+            'user_id': user.id},
+            token_valid_for=valid_for)
         password_reset_model = PasswordResetModel()
-        password_reset_model.code = Security.hash(code)
-        password_reset_model.email = self.email
-        password_reset_model.user_id = self.id
+        password_reset_model.token = token
+        password_reset_model.user_id = user.id
         password_reset_model.save()
-        return code
+        return token
 
-    def validate_password_reset(self, code, new_password):
+    @classmethod
+    def validate_password_reset(cls, token, new_password):
         """
         Validates an unhashed code against a hashed code.
         Once the code has been validated and confirmed
         new_password will replace the old users password
         """
-        if self.email is None:
-            return None  # needs user email
-        password_reset_model = PasswordResetModel.where_email(self.email)
-        if password_reset_model is None:
-            return False
-        if Security.verify_hash(code, password_reset_model.code):
-            self.set_password(new_password)
-            PasswordResetModel.delete_by_email(self.email)
-            return True
+        jwt = JWT()
+        if jwt.verify_token(token):
+            print(jwt.data)
+            user = cls.where_id(jwt.data['data']['user_id'])
+            if user is not None:
+                password_reset_model = \
+                    PasswordResetModel.where_user_id(user.id)
+                if password_reset_model is None:
+                    return False
+                user.set_password(new_password)
+                PasswordResetModel.delete_where_user_id(user.id)
+                return True
         return False
 
     @classmethod
