@@ -1,8 +1,8 @@
 """
     Static methods to help handle state-less app sessions
 """
-import secrets
 from flask import current_app, g
+from ..classes.security import Security
 from ..models.session_model import SessionModel
 
 
@@ -12,7 +12,7 @@ class Session:
     @staticmethod
     def create_session_id() -> str:
         """ Create a session token """
-        return secrets.token_hex() + secrets.token_hex()
+        return Security.generate_uuid(2)
 
     @staticmethod
     def set_current_session(session_id) -> bool:

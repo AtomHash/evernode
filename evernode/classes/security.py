@@ -1,7 +1,7 @@
 """
     Helper functions for application security
 """
-
+import secrets
 import random
 import string
 from cryptography.fernet import Fernet
@@ -11,6 +11,15 @@ from flask import current_app
 
 class Security:
     """ Static functions to help app security """
+
+    @staticmethod
+    def generate_uuid(multiplier=1):
+        uuid = ''
+        counter = 0
+        while counter < multiplier:
+            uuid = uuid + secrets.token_hex()
+            counter = counter + 1
+        return uuid
 
     @staticmethod
     def generate_key() -> str:

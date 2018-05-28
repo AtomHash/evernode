@@ -48,31 +48,32 @@ class BaseUserModel(BaseModel):
             return None
         PasswordResetModel.delete_where_user_id(user.id)
         token = JWT().create_token({
-            'code': Security.random_string(5),
+            'code': Security.random_string(5),  # make unique
             'user_id': user.id},
             token_valid_for=valid_for)
+        uuid = Security.generate_uuid(1) + "-" + Security.random_string(5)
         password_reset_model = PasswordResetModel()
         password_reset_model.token = token
+        password_reset_model.uuid = uuid
         password_reset_model.user_id = user.id
         password_reset_model.save()
-        return token
+        return uuid
 
     @classmethod
-    def validate_password_reset(cls, token, new_password):
+    def validate_password_reset(cls, uuid, new_password):
         """
         Validates an unhashed code against a hashed code.
         Once the code has been validated and confirmed
         new_password will replace the old users password
         """
+        password_reset_model = \
+            PasswordResetModel.where_uuid(uuid)
+        if password_reset_model is None:
+            return False
         jwt = JWT()
-        if jwt.verify_token(token):
-            print(jwt.data)
+        if jwt.verify_token(password_reset_model.token):
             user = cls.where_id(jwt.data['data']['user_id'])
             if user is not None:
-                password_reset_model = \
-                    PasswordResetModel.where_user_id(user.id)
-                if password_reset_model is None:
-                    return False
                 user.set_password(new_password)
                 PasswordResetModel.delete_where_user_id(user.id)
                 return True

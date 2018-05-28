@@ -44,12 +44,12 @@ class CoreController:
         """ evernode testing """
         formdata = FormData()
         formdata.add_field(
-            'token', required=True, error='A token is required.')
+            'uuid', required=True, error='A uuid is required.')
         formdata.add_field(
             'password', required=True, error='A new password is required.')
         formdata.parse()
         reset = BaseUserModel.validate_password_reset(
-            formdata.values['token'], formdata.values['password'])
+            formdata.values['uuid'], formdata.values['password'])
         return JsonResponse(200, None, reset)
 
     @staticmethod
