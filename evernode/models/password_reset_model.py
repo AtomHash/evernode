@@ -10,7 +10,7 @@ class PasswordResetModel(BaseModel):
 
     __tablename__ = 'user_password_resets'
     token = Column(String(1000))
-    uuid = Column(String(70))
+    code = Column(String(70))
     user_id = Column(Integer, ForeignKey('users.id'))
 
     @classmethod
@@ -19,9 +19,9 @@ class PasswordResetModel(BaseModel):
         return cls.query.filter_by(token=token).first()
 
     @classmethod
-    def where_uuid(cls, uuid):
-        """ get by uuid """
-        return cls.query.filter_by(uuid=uuid).first()
+    def where_code(cls, code):
+        """ get by code """
+        return cls.query.filter_by(code=code).first()
 
     @classmethod
     def where_user_id(cls, user_id):
