@@ -1,5 +1,5 @@
 """
-Provides an entrypoint for for uWSGI
+Provides an entrypoint for uWSGI
 sets up a flask app with defaults from App.py
 """
 from flask_migrate import Migrate

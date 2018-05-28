@@ -97,30 +97,29 @@ Example \| *config.json*
 ::
 
     {
-      "NAME": "App Name",  # displayed app name
-      "DEBUG": true,  # production or development
-      "SERECT": "secret-key-jwt",  # JWT secrets
-      "KEY": "encryption-key",  # encryption key
-      "DEFAULT_LANGUAGE": "en",  # default Translator language
-      "HOST": "localhost", # app host
+      "NAME": "<app-name>",
+      "DEBUG": true,
+      "SERECT": "<generate-fernet-key>",
+      "KEY": "<generate-fernet-key>",
+      "DEFAULT_LANGUAGE": "en",
       "DATETIME": {
-        "TIMEZONE": "UTC",  # app timezone
-        "DATE_FORMAT": "%Y-%m-%d",  # JSON serialization of date format
-        "TIME_FORMAT": "%H:%M:%S",  # JSON serialization of time format
-        "SEPARATOR": " "  # JSON serialization, separator between date and time
+        "TIMEZONE": "UTC",
+        "DATE_FORMAT": "%Y-%m-%d",
+        "TIME_FORMAT": "%H:%M:%S",
+        "SEPARATOR": " "
       },
       "API": {
-        "VERSION": "1",  # api version
-        "PREFIX": "v{v}"  # prefix to url with version
+        "VERSION": "1",
+        "PREFIX": "v{v}"
       },
       "UPLOADS": {
-        "FOLDER": "/srv/uploads",  # uploads folder using FormData
-        "EXTENSIONS": [  # allowed extensions using FormData
+        "FOLDER": "/srv/uploads",
+        "EXTENSIONS": [
           "png",
           "jpg"
         ]
       },
-      "CORS": {  # flask-cors http://flask-cors.readthedocs.io/en/latest/
+      "CORS": {
         "ALLOW_HEADERS": [
           "Origin",
           "Content-Type",
@@ -131,32 +130,48 @@ Example \| *config.json*
         ]
       },
       "EMAIL": {
-        "HOST": "smtp.example.com",  # email smtp host
-        "PORT": 587,  # port over ssl/tls
-        "EMAIL": "noreply@example.com",  # from email
-        "NAME": "EverNode",  # from name
-        "AUTH": "true",  # login to smtp
-        "TRANSPORT": "tls",  # secure layer
-        "USERNAME": "noreply@example.com",  # smtp server username
-        "PASSWORD": "somePassword" # smtp server password
+        "HOST": "<stmp.example.com>",
+        "PORT": 587,
+        "EMAIL": "<example@atomhash.org>",
+        "NAME": "<email-sending-name>",
+        "AUTH": "true",
+        "TRANSPORT": "tls",
+        "USERNAME": "<example@atomhash.org>",
+        "PASSWORD": "<password>"
       },
       "AUTH": {
-        "JWT_EXP_SECS": 360,  # JWT validity period
-        "FAST_SESSIONS": true,  # don't check session against database
-        "MAX_SESSIONS": 1,  # how many active sessions a user can have
-        "USERNAME_FIELD": "email",  # when using UserAuth
-        "PASSWORD_FIELD": "password",  # when using userAuth
-        "PASSWORD_HASHING": "pbkdf2:sha512"  # evernode hashing method
+        "JWT": {
+          "TOKENS": {
+            "VALID_FOR": 7200
+          },
+          "REFRESH_TOKENS": {
+            "ENABLED": false,
+            "VALID_FOR": 86400
+          }
+        },
+        "FAST_SESSIONS": false,
+        "MAX_SESSIONS": 3,
+        "USERNAME_FIELD": "<http-body-form-username-field-name>",
+        "PASSWORD_FIELD": "<http-body-form-password-field-name>",
+        "PASSWORD_HASHING": "pbkdf2:sha512"
       },
-      "MAX_CONTENT_LENGTH": 2000000,  # upload limits
+      "MAX_CONTENT_LENGTH": 2000000,
       "SQLALCHEMY_TRACK_MODIFICATIONS": false,
       "SQLALCHEMY_ECHO": true,
       "SQLALCHEMY_POOL_SIZE": 100,
       "SQLALCHEMY_POOL_RECYCLE": 280,
       "SQLALCHEMY_BINDS": {
-        "DEFAULT": "mysql://db_user:db_password@your-db-ip/db"
+        "DEFAULT": "mysql://api_user:password@ip/api"
       }
     }
+    
+**Ambiguous Types**
+
+| DATE_FORMAT is strftime python format
+| TIME_FORMAT is strftime python format
+| MAX_CONTENT_LENGTH(FLASK) is in bytes
+| JWT TOKENS -> VALID_FOR is in seconds
+| JWT REFRESH_TOKENS -> VALID_FOR is in seconds
 
 Debug Values
 ````````````

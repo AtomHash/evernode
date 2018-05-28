@@ -15,8 +15,12 @@ class JWT:
     app_secret = None
     request = None
     data = None
+    errors = []
 
     def __init__(self):
+        self.token = None
+        self.data = None
+        self.errors = []
         self.app_key = current_app.config['KEY']
         self.app_secret = current_app.config['SERECT']
         self.request = request
@@ -31,56 +35,29 @@ class JWT:
                 return None
         return None
 
-    def create_token(self, data, token_valid_secs=180,
-                     refresh_token_valid_days=1) -> str:
-        """ Construct a JWT """
-        refresh_token = None
-        if current_app.config['AUTH']['JWT']['REFRESH_TOKENS_ENABLED']:
-            refresh_token = jwt.encode({
-                'exp':
-                    datetime.utcnow() +
-                    timedelta(days=refresh_token_valid_days)},
-                self.app_secret).decode("utf-8")
+    def create_token(self, data, token_valid_for=180) -> str:
+        """ Create encrypted JWT """
         jwt_token = jwt.encode({
             'data': data,
-            'refresh_token': refresh_token,
-            'exp': datetime.utcnow() + timedelta(seconds=token_valid_secs)},
+            'exp': datetime.utcnow() + timedelta(seconds=token_valid_for)},
             self.app_secret)
         return Security.encrypt(jwt_token)
 
-    def verify_refresh_token(self, expired_token) -> bool:
-        """ self.data is populated with old token data if valid """
-        try:
-            decoded_token = jwt.decode(
-                expired_token,
-                self.app_secret,
-                options={'verify_exp': False})
-            if 'refresh_token' in decoded_token and \
-                    decoded_token['refresh_token'] is not None:
-                try:
-                    jwt.decode(decoded_token['refresh_token'], self.app_secret)
-                    self.data = decoded_token
-                    return True
-                except jwt.exceptions.ExpiredSignatureError as e:
-                    return False
-        except (Exception, BaseException) as e:
-            return False
-        return False
-
     def verify_token(self, token) -> bool:
+        """ Verify encrypted JWT """
         try:
-            self.data = jwt.decode(token, self.app_secret)
+            self.data = jwt.decode(Security.decrypt(token), self.app_secret)
             return True
         except (Exception, BaseException) as error:
+            self.errors.append(error)
             return False
         return False
 
-    def verify_http_auth_refresh_token(self) -> bool:
-        """ Use expired token to check refresh token information """
+    def verify_http_auth_token(self) -> bool:
+        """ Use request information to validate JWT """
         authorization_token = self.get_http_token()
         if authorization_token is not None:
-            decrypted_token = Security.decrypt(authorization_token)
-            if self.verify_refresh_token(decrypted_token):
+            if self.verify_token(authorization_token):
                 if self.data is not None:
                     self.data = self.data['data']
                     return True
@@ -89,12 +66,48 @@ class JWT:
                 return False
         return False
 
-    def verify_http_auth_token(self) -> bool:
-        """ Use request information to validate JWT """
+    def create_token_with_refresh_token(self, data, token_valid_for=180,
+                                        refresh_token_valid_for=86400):
+        """ Create an encrypted JWT with a refresh_token """
+        refresh_token = None
+        refresh_token = jwt.encode({
+            'exp':
+                datetime.utcnow() +
+                timedelta(seconds=refresh_token_valid_for)},
+            self.app_secret).decode("utf-8")
+        jwt_token = jwt.encode({
+            'data': data,
+            'refresh_token': refresh_token,
+            'exp': datetime.utcnow() + timedelta(seconds=token_valid_for)},
+            self.app_secret)
+        return Security.encrypt(jwt_token)
+
+    def verify_refresh_token(self, expired_token) -> bool:
+        """  Use request information to validate refresh JWT """
+        try:
+            decoded_token = jwt.decode(
+                Security.decrypt(expired_token),
+                self.app_secret,
+                options={'verify_exp': False})
+            if 'refresh_token' in decoded_token and \
+                    decoded_token['refresh_token'] is not None:
+                try:
+                    jwt.decode(decoded_token['refresh_token'], self.app_secret)
+                    self.data = decoded_token
+                    return True
+                except (Exception, BaseException) as error:
+                    self.errors.append(error)
+                    return False
+        except (Exception, BaseException) as error:
+            self.errors.append(error)
+            return False
+        return False
+
+    def verify_http_auth_refresh_token(self) -> bool:
+        """ Use expired token to check refresh token information """
         authorization_token = self.get_http_token()
         if authorization_token is not None:
-            decrypted_token = Security.decrypt(authorization_token)
-            if self.verify_token(decrypted_token):
+            if self.verify_refresh_token(authorization_token):
                 if self.data is not None:
                     self.data = self.data['data']
                     return True

@@ -43,6 +43,7 @@ class UserAuth:
 
     def session(self) -> str:
         """ Generate a session(authorization Bearer) JWT token """
+        session_jwt = None
         self.user = self.user_model.where_username(self.username)
         if self.user is None:
             return None
@@ -54,17 +55,23 @@ class UserAuth:
                 'user_id': self.user.id,
                 'user_email': self.user.email,
             }
-            token_seconds = \
-                current_app.config['AUTH']['JWT']['TOKEN_SECONDS'] if \
-                'TOKEN_SECONDS' in current_app.config['AUTH']['JWT'] else 180
-            refresh_token_days = \
-                current_app.config['AUTH']['JWT']['REFRESH_TOKEN_DAYS'] if \
-                'REFRESH_TOKEN_DAYS' in \
-                current_app.config['AUTH']['JWT'] else 1
-            session_jwt = JWT().create_token(
-                data,
-                token_seconds,
-                refresh_token_days)
+            token_valid_for = \
+                current_app.config['AUTH']['JWT']['TOKENS']['VALID_FOR'] if \
+                'VALID_FOR' in \
+                current_app.config['AUTH']['JWT']['TOKENS'] else 180
+            if current_app.config['AUTH']['JWT']['REFRESH_TOKENS']['ENABLED']:
+                refresh_token_valid_for = \
+                    current_app \
+                    .config['AUTH']['JWT']['REFRESH_TOKENS']['VALID_FOR'] if \
+                    'VALID_FOR' in \
+                    current_app.config['AUTH']['JWT']['REFRESH_TOKENS'] else \
+                    86400
+                session_jwt = JWT().create_token_with_refresh_token(
+                    data,
+                    token_valid_for,
+                    refresh_token_valid_for)
+            else:
+                session_jwt = JWT().create_token(data, token_valid_for)
             Session.create_session(session_id, self.user.id)
             return session_jwt
         return None

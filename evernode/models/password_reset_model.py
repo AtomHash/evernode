@@ -9,19 +9,22 @@ class PasswordResetModel(BaseModel):
     """ Password Reset db Model """
 
     __tablename__ = 'user_password_resets'
-    email = Column(String(255), unique=True)
-    code = Column(String(10))
+    token = Column(String(550))
     user_id = Column(Integer, ForeignKey('users.id'))
 
     @classmethod
-    def where_email(cls, email):
-        """ get by email """
-        return cls.query.filter_by(email=email).first()
+    def where_token(cls, token):
+        """ get by token """
+        return cls.query.filter_by(token=token).first()
 
     @classmethod
-    def delete_where_email(cls, email):
+    def where_user_id(cls, user_id):
+        return cls.query.filter_by(user_id=user_id).first()
+
+    @classmethod
+    def delete_where_user_id(cls, user_id):
         """ delete by email """
-        result = cls.where_email(email)
+        result = cls.where_user_id(user_id)
         if result is None:
             return None
         result.delete()

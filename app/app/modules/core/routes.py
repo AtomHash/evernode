@@ -8,6 +8,16 @@ routes = [
         'methods': ['GET', 'POST'],
         'function': CoreController.test},
     {
+        'url': '/password-reset',
+        'name': 'core-password-reset-validate',
+        'methods': ['POST'],
+        'function': CoreController.test_validate_password_reset},
+    {
+        'url': '/password-reset/<email>',
+        'name': 'core-password-reset-create',
+        'methods': ['GET'],
+        'function': CoreController.test_create_password_reset},
+    {
         'url': '/user-json',
         'name': 'core-user-json',
         'methods': ['GET'],

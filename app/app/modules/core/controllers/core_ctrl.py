@@ -44,21 +44,19 @@ class CoreController:
         """ evernode testing """
         formdata = FormData()
         formdata.add_field(
-            'code', required=True, error='A code is required.')
-        formdata.add_field(
-            'email', required=True, error='An email is required.')
+            'token', required=True, error='A token is required.')
         formdata.add_field(
             'password', required=True, error='A new password is required.')
         formdata.parse()
-        user = BaseUserModel.where_email(formdata.values['email'])
-        return JsonResponse(200, None, user.validate_password_reset(
-            formdata.values['code'], formdata.values['password']))
+        reset = BaseUserModel.validate_password_reset(
+            formdata.values['token'], formdata.values['password'])
+        return JsonResponse(200, None, reset)
 
     @staticmethod
-    def test_create_password_reset():
+    def test_create_password_reset(email):
         """ evernode testing """
-        user = BaseUserModel.where_email('example@atomhash.org')
-        return JsonResponse(200, None, user.create_password_reset())
+        token = BaseUserModel.create_password_reset(email, valid_for=3600)
+        return JsonResponse(200, None, token)
 
     @staticmethod
     def test_json():
@@ -163,5 +161,5 @@ class CoreController:
             username_error="Please enter a username",
             password_error="Please Enter a password").session()
         if session is None:
-            return JsonResponse(401).create()
+            return JsonResponse(401)
         return JsonResponse(200, None, session)
