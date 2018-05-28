@@ -141,9 +141,13 @@ Example \| *config.json*
       },
       "AUTH": {
         "JWT": {
-          "TOKEN_VALID_FOR": 7200,
-          "REFRESH_TOKENS_ENABLED": true,
-          "REFRESH_TOKEN_VALID_FOR": 86400
+          "TOKENS": {
+            "VALID_FOR": 7200
+          },
+          "REFRESH_TOKENS": {
+            "ENABLED": false,
+            "VALID_FOR": 86400
+          }
         },
         "FAST_SESSIONS": false,
         "MAX_SESSIONS": 3,
@@ -166,8 +170,8 @@ Example \| *config.json*
 | DATE_FORMAT is strftime python format
 | TIME_FORMAT is strftime python format
 | MAX_CONTENT_LENGTH(FLASK) is in bytes
-| JWT -> TOKEN_VALID_FOR is in seconds
-| JWT -> REFRESH_TOKEN_VALID_FOR is in seconds
+| JWT TOKENS -> VALID_FOR is in seconds
+| JWT REFRESH_TOKENS -> VALID_FOR is in seconds
 
 Debug Values
 ````````````

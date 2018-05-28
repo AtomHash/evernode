@@ -56,13 +56,16 @@ class UserAuth:
                 'user_email': self.user.email,
             }
             token_valid_for = \
-                current_app.config['AUTH']['JWT']['TOKEN_VALID_FOR'] if \
-                'TOKEN_VALID_FOR' in current_app.config['AUTH']['JWT'] else 180
-            if current_app.config['AUTH']['JWT']['REFRESH_TOKENS_ENABLED']:
-                refresh_token_valid_for = current_app.config['AUTH']['JWT']
-                ['REFRESH_TOKEN_VALID_FOR'] if \
-                    'REFRESH_TOKEN_VALID_FOR' in \
-                    current_app.config['AUTH']['JWT'] else 86400
+                current_app.config['AUTH']['JWT']['TOKENS']['VALID_FOR'] if \
+                'VALID_FOR' in \
+                current_app.config['AUTH']['JWT']['TOKENS'] else 180
+            if current_app.config['AUTH']['JWT']['REFRESH_TOKENS']['ENABLED']:
+                refresh_token_valid_for = \
+                    current_app \
+                    .config['AUTH']['JWT']['REFRESH_TOKENS']['VALID_FOR'] if \
+                    'VALID_FOR' in \
+                    current_app.config['AUTH']['JWT']['REFRESH_TOKENS'] else \
+                    86400
                 session_jwt = JWT().create_token_with_refresh_token(
                     data,
                     token_valid_for,

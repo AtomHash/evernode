@@ -44,9 +44,13 @@
   },
   "AUTH": {
     "JWT": {
-      "TOKEN_VALID_FOR": 7200,
-      "REFRESH_TOKENS_ENABLED": true,
-      "REFRESH_TOKEN_VALID_FOR": 86400
+      "TOKENS": {
+        "VALID_FOR": 7200
+      },
+      "REFRESH_TOKENS": {
+        "ENABLED": true,
+        "VALID_FOR": 86400
+      }
     },
     "FAST_SESSIONS": true,
     "MAX_SESSIONS": 1,
@@ -60,6 +64,6 @@
   "SQLALCHEMY_POOL_SIZE": 100,
   "SQLALCHEMY_POOL_RECYCLE": 280,
   "SQLALCHEMY_BINDS": {
-    "DEFAULT": "mysql://api_user:password@192.168.1.84/api"
+    "DEFAULT": "mysql://api_user:password@ip/api"
   }
 }

@@ -161,5 +161,5 @@ class CoreController:
             username_error="Please enter a username",
             password_error="Please Enter a password").session()
         if session is None:
-            return JsonResponse(401).create()
+            return JsonResponse(401)
         return JsonResponse(200, None, session)
