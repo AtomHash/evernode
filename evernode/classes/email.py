@@ -38,28 +38,45 @@ class Email:
     def add_address(self, address):
         """ Add email address """
         self.__addresses.append(address)
+        return self
+
+    def add_addresses(self, addresses):
+        """ Add addresses from array """
+        self.__addresses.extend(addresses)
+        return self
 
     def add_cc(self, address):
+        """ Add carbon copy """
         self.__ccs.append(address)
+        return self
+
+    def add_ccs(self, addresses):
+        """ Add carbon copy with array of addresses """
+        self.__ccs.extend(addresses)
+        return self
 
     def add_file(self, absolute_file_path):
+        """ Add attachment to email """
         self.__files.append(absolute_file_path)
+        return self
 
     def html(self, html):
         """ Set html content """
         self.__html = html
+        return self
 
     def text(self, text):
         """ Set text content """
         self.__text = text
+        return self
 
     def subject(self, subject):
         """ Set email subject """
         self.__subject = subject
+        return self
 
     def __create(self):
         """ Construct the email """
-        # TODO: Use pickle instead of encode base64 & JSON
         self.__data = json.dumps({
             'config_path': self.encode(self.config_path),
             'subject': self.encode(self.__subject),
