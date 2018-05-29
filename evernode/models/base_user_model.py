@@ -77,6 +77,7 @@ class BaseUserModel(BaseModel):
                 user.set_password(new_password)
                 PasswordResetModel.delete_where_user_id(user.id)
                 return user
+        password_reset_model.delete()  # delete expired/invalid token
         return None
 
     @classmethod
