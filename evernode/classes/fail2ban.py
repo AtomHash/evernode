@@ -14,7 +14,7 @@ class Fail2Ban:
     ban_for = None
     max_attempts = None
 
-    def __init__(self, object_id, location="",
+    def __init__(self, object_id=None, location="",
                  max_attempts=3, ip=None, ban_for=1800):
         self.__object_id = object_id
         self.ban_for = ban_for
@@ -22,6 +22,13 @@ class Fail2Ban:
         self.__location = location
         if ip is None:
             self.__ip = request.remote_addr
+        self.__fail2ban_model = Fail2BanModel.where_unique(
+            self.__ip,
+            self.__object_id,
+            self.__location)
+
+    def object_id(self, object_id):
+        self.__object_id = object_id
         self.__fail2ban_model = Fail2BanModel.where_unique(
             self.__ip,
             self.__object_id,
