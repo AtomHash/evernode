@@ -11,8 +11,8 @@ class BaseModel(DatabaseModel, JsonModel):
 
     __abstract__ = True
     id = Column(Integer, primary_key=True)
-    updated_at = Column(DateTime, default=datetime.now())
-    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime)
+    created_at = Column(DateTime)
 
     def __init__(self):
         DatabaseModel.__init__(self)
