@@ -27,16 +27,20 @@ class CoreController:
             username_error="Please enter a username",
             password_error="Please Enter a password")
         session = user_auth.session()
+        fail2ban = Fail2Ban(
+            location=fail2ban_location,
+            ban_for=60)
         if session is None:
             if user_auth.user is not None:
-                fail2ban = Fail2Ban(
-                    user_auth.user.id,
-                    location=fail2ban_location,
-                    ban_for=60)
+                fail2ban.object_id(user_auth.user.id)
                 fail2ban.add_attempt()
                 if fail2ban.is_banned():
                     return JsonResponse(403)
             return JsonResponse(401)
+        else:
+            fail2ban.object_id(user_auth.user.id)
+            if fail2ban.is_banned():
+                    return JsonResponse(403)
         Fail2Ban.clear(user_auth.user.id, fail2ban_location)
         return JsonResponse(200, None, session)
 
