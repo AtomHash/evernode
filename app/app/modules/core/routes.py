@@ -8,6 +8,11 @@ routes = [
         'methods': ['GET', 'POST'],
         'function': CoreController.test},
     {
+        'url': '/fail2ban-login',
+        'name': 'core-fail2ban-login',
+        'methods': ['POST'],
+        'function': CoreController.fail2ban_login},
+    {
         'url': '/password-reset',
         'name': 'core-password-reset-validate',
         'methods': ['POST'],

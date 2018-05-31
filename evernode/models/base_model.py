@@ -1,7 +1,7 @@
 """ sets base db model for applciation """
 from flask import current_app
 from datetime import datetime
-from sqlalchemy import Column, Integer, DateTime, text
+from sqlalchemy import Column, Integer, DateTime
 from .database_model import DatabaseModel
 from .json_model import JsonModel
 
@@ -11,8 +11,8 @@ class BaseModel(DatabaseModel, JsonModel):
 
     __abstract__ = True
     id = Column(Integer, primary_key=True)
-    updated_at = Column(DateTime)
-    created_at = Column(DateTime)
+    updated_at = Column(DateTime, default=datetime.now())
+    created_at = Column(DateTime, default=datetime.now())
 
     def __init__(self):
         DatabaseModel.__init__(self)
