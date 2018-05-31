@@ -2,7 +2,7 @@
     Core Controller
 """
 from flask import request, current_app # noqa
-from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator, JWT, Paginate # noqa
+from evernode.classes import JsonResponse, Render, Security, Email, UserAuth, FormData, Translator, JWT, Paginate, Fail2Ban # noqa
 from evernode.decorators import middleware # noqa
 from evernode.models import PasswordResetModel, JsonModel, BaseUserModel # noqa
 from datetime import datetime
@@ -15,7 +15,30 @@ class CoreController:
     @staticmethod
     def test():
         """ evernode testing """
-        return JsonResponse(200, None, "")
+        fail2ban = Fail2Ban(1, location="passwords", ban_for=60)
+        fail2ban.add_attempt(1)
+        return JsonResponse(200, None, fail2ban.is_banned())
+
+    @staticmethod
+    def fail2ban_login():
+        fail2ban_location = "login"
+        user_auth = UserAuth(
+            BaseUserModel,
+            username_error="Please enter a username",
+            password_error="Please Enter a password")
+        session = user_auth.session()
+        if session is None:
+            if user_auth.user is not None:
+                fail2ban = Fail2Ban(
+                    user_auth.user.id,
+                    location=fail2ban_location,
+                    ban_for=60)
+                fail2ban.add_attempt()
+                if fail2ban.is_banned():
+                    return JsonResponse(403)
+            return JsonResponse(401)
+        Fail2Ban.clear(user_auth.user.id, fail2ban_location)
+        return JsonResponse(200, None, session)
 
     @staticmethod
     def test_paginate(page_number, limit):

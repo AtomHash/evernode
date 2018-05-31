@@ -6,3 +6,4 @@ from .response_model import ResponseModel # noqa
 from .session_model import SessionModel # noqa
 from .base_user_model import BaseUserModel # noqa
 from .password_reset_model import PasswordResetModel # noqa
+from .fail2ban_model import Fail2BanModel # noqa

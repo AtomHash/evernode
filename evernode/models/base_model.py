@@ -1,7 +1,7 @@
 """ sets base db model for applciation """
 from flask import current_app
 from datetime import datetime
-from sqlalchemy import Column, Integer, DateTime, text
+from sqlalchemy import Column, Integer, DateTime
 from .database_model import DatabaseModel
 from .json_model import JsonModel
 

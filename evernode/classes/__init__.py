@@ -14,3 +14,4 @@ from .render import Render # noqa
 from .form_data import FormData # noqa
 from .json import Json # noqa
 from .paginate import Paginate # noqa
+from .fail2ban import Fail2Ban # noqa
