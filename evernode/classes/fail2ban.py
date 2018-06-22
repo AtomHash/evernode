@@ -46,11 +46,10 @@ class Fail2Ban:
             self.max_attempts,
             valid_for=self.ban_for)
 
-    @staticmethod
-    def clear(object_id, location, ip=None):
+    def clear(self, object_id, ip=None):
         if ip is None:
             ip = request.remote_addr
-        Fail2BanModel.delete_where_unique(ip, object_id, location)
+        Fail2BanModel.delete_where_unique(ip, object_id, self.__location)
 
     def is_banned(self):
         if self.__fail2ban_model is None:

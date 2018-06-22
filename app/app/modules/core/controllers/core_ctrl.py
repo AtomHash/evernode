@@ -21,14 +21,13 @@ class CoreController:
 
     @staticmethod
     def fail2ban_login():
-        fail2ban_location = "login"
         user_auth = UserAuth(
             BaseUserModel,
             username_error="Please enter a username",
             password_error="Please Enter a password")
         session = user_auth.session()
         fail2ban = Fail2Ban(
-            location=fail2ban_location,
+            location="login",
             ban_for=60)
         if session is None:
             if user_auth.user is not None:
@@ -41,7 +40,7 @@ class CoreController:
             fail2ban.object_id(user_auth.user.id)
             if fail2ban.is_banned():
                     return JsonResponse(403)
-        Fail2Ban.clear(user_auth.user.id, fail2ban_location)
+        fail2ban.clear(user_auth.user.id)
         return JsonResponse(200, None, session)
 
     @staticmethod
