@@ -1,7 +1,7 @@
 """
     Help to do easy JSON modeling for db models and other classes
 """
-import inspect
+import types
 import io
 import datetime
 import json as system_json
@@ -92,7 +92,8 @@ class Json():
 
     def __find_object_children(self, obj) -> dict:
         """ Convert object to flattened object """
-        if hasattr(obj, 'items'):
+        if hasattr(obj, 'items') and \
+                isinstance(obj.items, types.BuiltinFunctionType):
             return self.__construct_object(obj)
         elif isinstance(obj, (list, tuple, set)):
             return self.__construct_list(obj)
