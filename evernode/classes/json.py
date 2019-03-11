@@ -6,6 +6,8 @@ import io
 import datetime
 import json as system_json
 from collections import namedtuple
+from sqlalchemy import inspect
+from sqlalchemy import orm
 from flask import current_app
 
 
@@ -99,6 +101,13 @@ class Json():
             return self.__construct_list(obj)
         else:
             exclude_list = []
+            if hasattr(obj, '_sa_instance_state'):
+                # load only deferred objects
+                if len(orm.attributes.instance_state(obj).unloaded) > 0:
+                    mapper = inspect(obj)
+                    for column in mapper.attrs:
+                        column.key
+                        column.value
             if hasattr(obj, 'json_exclude_list'):
                 # do not serialize any values in this list
                 exclude_list = obj.json_exclude_list

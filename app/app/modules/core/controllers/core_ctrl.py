@@ -165,11 +165,15 @@ class CoreController:
         return JsonResponse(200, None, key).create()
 
     @staticmethod
+    def form_fail_callback():
+        print('callback called')
+
+    @staticmethod
     def test_form():
         """ evernode testing """
         form = FormData()
         form.add_field('name', error="you need a name", required=True)
-        form.parse()
+        form.parse(fail_callback=CoreController.form_fail_callback)
         return JsonResponse(200, None, form.values['name'])
 
     def make_user():
