@@ -1,3 +1,4 @@
 evernode
+sphinx
 sphinx_issues
 sphinx_rtd_theme
