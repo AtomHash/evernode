@@ -47,7 +47,7 @@ routes = [
     {
         'url': '/test-form',
         'name': 'core-test-form',
-        'methods': ['GET', 'POST'],
+        'methods': ['POST'],
         'function': CoreController.test_form},
     {
         'url': '/generate-key',

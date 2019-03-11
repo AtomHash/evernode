@@ -60,17 +60,21 @@ class FormData:
                 folder, clean_filename))
         return None
 
-    def parse(self):
+    def parse(self, fail_callback=None):
         """ Parse text fields and file fields for values and files """
         # get text fields
         for field in self.field_arguments:
             self.values[field['name']] = self.__get_value(field['name'])
             if self.values[field['name']] is None and field['required']:
+                if fail_callback is not None:
+                    fail_callback()
                 self.__invalid_request(field['error'])
         # get file fields
         for file in self.file_arguments:
             self.files[file['name']] = self.__get_file(file)
             if self.files[file['name']] is None and file['required']:
+                if fail_callback is not None:
+                    fail_callback()
                 self.__invalid_request(file['error'])
 
     def __get_value(self, field_name):
