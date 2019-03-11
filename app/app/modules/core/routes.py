@@ -1,4 +1,5 @@
 from .controllers import CoreController
+from .controllers import TestCtrl
 from evernode.middleware import SessionMiddleware # noqa
 
 routes = [
@@ -87,4 +88,10 @@ routes = [
         'url': '/tests/page/<int:page_number>/<int:limit>',
         'name': 'core-test-paginate',
         'methods': ['GET'],
-        'function': CoreController.test_paginate}]
+        'function': CoreController.test_paginate},
+    # test ctrl
+    {
+        'url': '/test/model-json',
+        'name': 'test-model-json',
+        'methods': ['GET'],
+        'function': TestCtrl.model_serialization_json}]
