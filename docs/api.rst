@@ -43,6 +43,13 @@ BaseResponse
    :members:
    :inherited-members:
 
+Cron
+````````````````````
+
+.. autoclass:: Cron
+   :members:
+   :inherited-members:
+
 Email
 ````````````````````
 
@@ -103,6 +110,13 @@ Session
 ````````````````````
 
 .. autoclass:: Session
+   :members:
+   :inherited-members:
+
+Singleton
+````````````````````
+
+.. autoclass:: Singleton
    :members:
    :inherited-members:
 

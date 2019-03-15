@@ -2,8 +2,9 @@
 Provides an entrypoint for uWSGI
 sets up a flask app with defaults from App.py
 """
+from datetime import datetime
 from flask_migrate import Migrate
-from evernode.classes import App, JsonResponse
+from evernode.classes import App, JsonResponse, Cron
 from evernode.models import db
 
 # --- @boot ---
@@ -13,6 +14,28 @@ app = evernode_app.app
 
 # migrations
 migrate = Migrate(app, db)
+
+# enable Cron
+cron = Cron()
+
+
+# test cron job
+def test_job():
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print('cron job executed: ' + now)
+
+def test_jo2():
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print('cron job executed - 2: ' + now)
+
+
+# cron.schedule.every(1).seconds.do(test_job)
+# cron.schedule.every(1).minutes.do(test_job)
+# cron.schedule.every().minute.at(":00").do(test_job)
+cron.schedule.every(1).seconds.do(test_job)
+
+cron2 = Cron()  # does not duplicate task firing
+cron.schedule.every(1).seconds.do(test_jo2)
 
 
 @app.errorhandler(404)

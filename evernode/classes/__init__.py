@@ -15,3 +15,5 @@ from .form_data import FormData # noqa
 from .json import Json # noqa
 from .paginate import Paginate # noqa
 from .fail2ban import Fail2Ban # noqa
+from .singleton import Singleton # noqa
+from .cron import Cron # noqa

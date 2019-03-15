@@ -40,7 +40,8 @@ setup(
         'requests',
         'click',
         'pyyaml',
-        'Flask-Migrate'
+        'Flask-Migrate',
+        'schedule'
     ],
     entry_points={
     'console_scripts': [
