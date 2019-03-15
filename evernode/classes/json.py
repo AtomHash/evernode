@@ -2,6 +2,7 @@
     Help to do easy JSON modeling for db models and other classes
 """
 import types
+import decimal
 import io
 import datetime
 import json as system_json
@@ -83,6 +84,8 @@ class Json():
                 string_val = value.strftime('%Y-%m-%d %H:%M:%S')
         elif isinstance(value, bytes):
             string_val = value.decode('utf-8')
+        elif isinstance(value, decimal.Decimal):
+            string_val = float(value)
         else:
             string_val = value
         return string_val

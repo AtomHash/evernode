@@ -94,4 +94,9 @@ routes = [
         'url': '/test/model-json',
         'name': 'test-model-json',
         'methods': ['GET'],
-        'function': TestCtrl.model_serialization_json}]
+        'function': TestCtrl.model_serialization_json},
+    {
+        'url': '/test/decimal-json',
+        'name': 'test-decimal-json',
+        'methods': ['GET'],
+        'function': TestCtrl.decimal_serialization_json}]
