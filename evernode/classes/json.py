@@ -5,7 +5,7 @@ import types
 import decimal
 import io
 import datetime
-import json as system_json
+import ujson as system_json
 from collections import namedtuple
 from sqlalchemy import inspect
 from sqlalchemy import orm
@@ -48,7 +48,7 @@ class Json():
                 if current_app.config['DEBUG']:
                     raise error
             except RuntimeError as flask_error:
-                raise error
+                raise flask_error
             return None
 
     @staticmethod
@@ -80,7 +80,7 @@ class Json():
                     current_app.config['DATETIME']['DATE_FORMAT'],
                     current_app.config['DATETIME']['SEPARATOR'],
                     current_app.config['DATETIME']['TIME_FORMAT']))
-            except RuntimeError as error:
+            except RuntimeError:
                 string_val = value.strftime('%Y-%m-%d %H:%M:%S')
         elif isinstance(value, bytes):
             string_val = value.decode('utf-8')
