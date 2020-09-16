@@ -64,6 +64,9 @@ class LoadLanguageFiles:
                 for subdir in subdirs:
                     module_pack['languages'].append(subdir)
                 for name in files:
+                    if name.startswith('.'):
+                        # ignore hidden files
+                        continue
                     module_pack['file_packs'].append(dict(
                         file=os.path.join(path, name),
                         name=name.rsplit('.', 1)[0].lower(),
