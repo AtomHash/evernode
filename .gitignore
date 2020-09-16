@@ -11,6 +11,9 @@ docs/_build/*
 # Python cache
 __pycache__
 
+# Mac Cache File for Finder
+.DS_Store
+
 # Packages
 *.egg
 *.egg-info
