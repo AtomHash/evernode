@@ -4,6 +4,11 @@ from evernode.middleware import SessionMiddleware # noqa
 
 routes = [
     {
+        'url': '/no-database',
+        'name': 'core-no-database',
+        'methods': ['GET'],
+        'function': CoreController.no_database},
+    {
         'url': '/test',
         'name': 'core-test',
         'methods': ['GET', 'POST'],
