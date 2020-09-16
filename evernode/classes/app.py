@@ -80,6 +80,9 @@ class App:
 
     def load_database(self):
         """ Load default database, init flask-SQLAlchemy """
+        if 'DISABLE_DATABASE' in self.app.config:
+            if self.app.config['DISABLE_DATABASE']:
+                return
         if 'SQLALCHEMY_DATABASE_URI' not in self.app.config:
             self.app.config['SQLALCHEMY_DATABASE_URI'] = \
                 self.app.config['SQLALCHEMY_BINDS']['DEFAULT']

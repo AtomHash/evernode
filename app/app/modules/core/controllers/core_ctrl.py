@@ -13,6 +13,10 @@ class CoreController:
     """ route controller """
 
     @staticmethod
+    def no_database():
+        return JsonResponse(200, None, "No Database")
+
+    @staticmethod
     def test():
         """ evernode testing """
         fail2ban = Fail2Ban(1, location="passwords", ban_for=60)
