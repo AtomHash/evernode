@@ -15,16 +15,10 @@ class BaseUserModel(BaseModel):
 
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
+    fullname = Column(String(255))
     email = Column(String(255), unique=True)
     password = Column(String(1000))
-    firstname = Column(String(255))
-    lastname = Column(String(255))
     json_exclude_list = ['password', 'updated_at', 'created_at', 'id']
-
-    @classmethod
-    def where_username(cls, username):
-        """ Get db model by username """
-        return cls.query.filter_by(email=username).first()
 
     @classmethod
     def where_email(cls, email):
