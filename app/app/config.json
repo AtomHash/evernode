@@ -1,7 +1,7 @@
 {
   "NAME": "EvernodeTest",
   "DEBUG": true,
-  "SERECT": "d6vDaAP8JWDh9Vv3SrFUpBDdtrJEyL9XYJzvnt3m",
+  "SECRET": "d6vDaAP8JWDh9Vv3SrFUpBDdtrJEyL9XYJzvnt3m",
   "KEY": "sgmABbi6V5DLmLsjCAkf68UHYYIJEtGF714MnmPRSp4=",
   "DEFAULT_LANGUAGE": "en",
   "HOST": "localhost",

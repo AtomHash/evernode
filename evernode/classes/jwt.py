@@ -22,7 +22,7 @@ class JWT:
         self.data = None
         self.errors = []
         self.app_key = current_app.config['KEY']
-        self.app_secret = current_app.config['SERECT']
+        self.app_secret = current_app.config['SECRET']
         self.request = request
 
     def get_http_token(self):
@@ -40,13 +40,14 @@ class JWT:
         jwt_token = jwt.encode({
             'data': data,
             'exp': datetime.utcnow() + timedelta(seconds=token_valid_for)},
-            self.app_secret)
+            self.app_secret, algorithm="HS256")
         return Security.encrypt(jwt_token)
 
     def verify_token(self, token) -> bool:
         """ Verify encrypted JWT """
         try:
-            self.data = jwt.decode(Security.decrypt(token), self.app_secret)
+            self.data = jwt.decode(Security.decrypt(token), self.app_secret,
+                                   algorithms=["HS256"])
             return True
         except (Exception, BaseException) as error:
             self.errors.append(error)

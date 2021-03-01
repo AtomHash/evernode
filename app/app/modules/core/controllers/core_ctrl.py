@@ -70,6 +70,14 @@ class CoreController:
         return JsonResponse(200, None, TestModel.where_id(1))
 
     @staticmethod
+    def test_jwt_token():
+        """ evernode testing """
+        jwt = JWT()
+        to = jwt.create_token("data")
+
+        return JsonResponse(200, None, {"result": jwt.verify_token(to), "jwterror": str(jwt.errors)})
+
+    @staticmethod
     def test_validate_password_reset():
         """ evernode testing """
         formdata = FormData()

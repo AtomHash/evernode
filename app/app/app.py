@@ -13,12 +13,12 @@ app = evernode_app.app
 # --- @boot ---
 
 # migrations
-migrate = Migrate(app, db)
+# migrate = Migrate(app, db)
 
 # enable Cron
 cron = Cron()
 
-
+"""
 # test cron job
 def test_job():
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -37,6 +37,8 @@ cron.schedule.every(1).seconds.do(test_job)
 cron2 = Cron()  # does not duplicate task firing
 cron.schedule.every(1).seconds.do(test_jo2)
 
+"""
+
 
 @app.errorhandler(404)
 def page_not_found(e, environ=None):
@@ -46,8 +48,8 @@ def page_not_found(e, environ=None):
 @app.teardown_request
 def teardown_request(exception=None):
     """ do on request tear down """
-    if db.session is not None:
-        db.session.close()
+    # if db.session is not None:
+        # db.session.close()
 
 
 @app.teardown_appcontext
