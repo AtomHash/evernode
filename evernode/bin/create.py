@@ -83,7 +83,7 @@ class Create:
             self.config_file)
         config = Json.from_file(self.config_file)
         config['NAME'] = self.app_name
-        config['SERECT'] = Security.generate_key()
+        config['SECRET'] = Security.generate_key()
         config['KEY'] = Security.generate_key()
         config['SQLALCHEMY_BINDS']['DEFAULT'] = \
             'mysql://<db_user>:<password>@<host>/<db_name>'

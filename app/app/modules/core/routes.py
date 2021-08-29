@@ -14,6 +14,11 @@ routes = [
         'methods': ['GET', 'POST'],
         'function': CoreController.test},
     {
+        'url': '/test-jwt-token',
+        'name': 'core-test-jwt-token',
+        'methods': ['GET'],
+        'function': CoreController.test_jwt_token},
+    {
         'url': '/fail2ban-login',
         'name': 'core-fail2ban-login',
         'methods': ['POST'],
